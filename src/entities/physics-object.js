@@ -52,6 +52,15 @@ class PhysicsObject extends Entity {
     cycle(elapsed) {
         super.cycle(elapsed);
 
+        let remaining = elapsed;
+        while (remaining > 0) {
+            const rem = Math.min(remaining, 1 / 120);
+            remaining -= rem;
+            this.cycleUnsafe(rem);
+        }
+    }
+
+    cycleUnsafe(elapsed) {
         // Momentum
         this.position.x += this.momentum.position.x * elapsed * 50;
         this.position.y += this.momentum.position.y * elapsed * 50;

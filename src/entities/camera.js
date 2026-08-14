@@ -10,6 +10,13 @@ class Camera extends Entity {
         // TODO follow player
         // console.log('I follow player')
 
+        const player = firstItem(this.world.category('bike'));
+        if (!player) return;
+
+        this.position.x = player.position.x + CANVAS_WIDTH * 0.3;
+        this.position.y = player.position.y
+        return;
+
 
         let x = 0, y = 0;
         if (downKeys[37]) x = -1;

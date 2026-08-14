@@ -45,6 +45,6 @@ class Ground extends Entity {
     }
 
     curveAt(x) {
-        return Math.sin(x * PI * 2 / 400) * 50 + 100;
+        return x > 100 && x < 500 ? 200 : Math.sin(x * PI * 2 / 400) * 50 + 100;
     }
 }
