@@ -9,7 +9,14 @@ import yargs from 'yargs/yargs';
 const JS_FILES = [
     'globals.js',
     'graphics/wrap.js',
+    'utils/math.js',
     'utils/resizer.js',
+    'utils/first-item.js',
+    'input/keyboard.js',
+    'screens/screen.js',
+    'screens/world-screen.js',
+    'model/entity.js',
+    'model/world.js',
     'game.js',
     'index.js',
 ];
