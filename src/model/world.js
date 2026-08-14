@@ -37,7 +37,7 @@ class World {
     render() {
         const camera = firstItem(this.category('camera'));
 
-        ctx.fillStyle = '#f0f'
+        ctx.fillStyle = '#111'
         ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 
         ctx.wrap(() => {
