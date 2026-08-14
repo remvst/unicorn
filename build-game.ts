@@ -16,6 +16,7 @@ const JS_FILES = [
     'utils/hitbox.js',
     'utils/cache.js',
     'utils/easing.js',
+    'utils/perlin-curve.js',
     'input/keyboard.js',
     'screens/screen.js',
     'screens/world-screen.js',
