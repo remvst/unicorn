@@ -4,6 +4,7 @@ class PerlinCurve {
         this.amplitude = opts.amplitude ?? 0;
         this.plus = opts.plus ?? [];
         this.seeds = [];
+        this.multiplier = opts.multiplier ?? (() => 1);
         for (let i = 0 ; i < 50 ; i++) {
             this.seeds.push(Math.random());
         }
@@ -21,10 +22,10 @@ class PerlinCurve {
         const gradientBefore = (Math.cos(before * Math.PI * 2) + Math.sin(before * Math.PI * 2)) * ratio;
         const gradientAfter = (Math.cos(after * Math.PI * 2) + Math.sin(after * Math.PI * 2)) * (ratio - 1);
 
-        return plus + interpolate(
+        return (plus + interpolate(
             gradientBefore * this.amplitude,
             gradientAfter * this.amplitude,
             smoothstep(ratio),
-        );
+        )) * this.multiplier(x);
     }
 }
