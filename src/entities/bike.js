@@ -50,8 +50,8 @@ class Bike extends PhysicsObject {
                         - sdy * (backWheel.position.x - this.backWheel.lastCollisionSegment.p1.x);
             const sign = cross > 0 ? -1 : 1;
 
-            this.momentum.position.x += sign * sdx * elapsed * 20;
-            this.momentum.position.y += sign * sdy * elapsed * 20;
+            this.momentum.position.x += sign * sdx * elapsed * 1000;
+            this.momentum.position.y += sign * sdy * elapsed * 1000;
         }
 
         // Friction

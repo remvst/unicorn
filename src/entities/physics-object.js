@@ -62,12 +62,12 @@ class PhysicsObject extends Entity {
 
     cycleUnsafe(elapsed) {
         // Momentum
-        this.position.x += this.momentum.position.x * elapsed * 50;
-        this.position.y += this.momentum.position.y * elapsed * 50;
+        this.position.x += this.momentum.position.x * elapsed;
+        this.position.y += this.momentum.position.y * elapsed;
         this.rotation += this.momentum.rotation * elapsed;
 
         // Gravity
-        this.momentum.position.y += elapsed * 10;
+        this.momentum.position.y += elapsed * 500;
 
         const reusableHitbox = new Hitbox();
 
@@ -118,7 +118,7 @@ class PhysicsObject extends Entity {
                     const na = Math.sign(readjustmentAngle);
                     const rotProj = this.momentum.rotation * na;
                     if (rotProj < 0) this.momentum.rotation -= rotProj * na;
-                    this.momentum.rotation += na * (-linearProj) * 0.8;
+                    this.momentum.rotation += na * (-linearProj) * 0.016 / 2;
                 }
             }
         }
