@@ -13,6 +13,7 @@ const JS_FILES = [
     'utils/resizer.js',
     'utils/first-item.js',
     'utils/segment.js',
+    'utils/hitbox.js',
     'utils/cache.js',
     'input/keyboard.js',
     'screens/screen.js',
@@ -21,6 +22,8 @@ const JS_FILES = [
     'model/world.js',
     'entities/camera.js',
     'entities/ground.js',
+    'entities/physics-object.js',
+    'entities/bike.js',
     'game.js',
     'index.js',
 ];

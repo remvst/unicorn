@@ -2,6 +2,7 @@ class Ground extends Entity {
 
     constructor() {
         super();
+        this.categories.push('ground');
         this.segments = new Cache();
     }
 
@@ -10,7 +11,7 @@ class Ground extends Entity {
 
         ctx.strokeStyle = 'red';
         ctx.beginPath();
-        for (let x = camera.x - CANVAS_WIDTH / 2 ; x < camera.x + CANVAS_WIDTH / 2 ; x += 5) {
+        for (let x = camera.position.x - CANVAS_WIDTH / 2 ; x < camera.position.x + CANVAS_WIDTH / 2 ; x += 5) {
             ctx.lineTo(x, Math.sin(x * PI * 2 / 200) * 100);
         }
         ctx.stroke();
@@ -26,13 +27,13 @@ class Ground extends Entity {
 
         const stepX = 20;
         const window = 200;
-        const ref = floorToNearest(camera.x, stepX);
+        const refX = floorToNearest(camera.position.x, stepX);
 
         return this.segments.getOrCreate(
-            floorToNearest(ref, stepX * 2),
+            floorToNearest(refX, stepX * 2),
             () => {
                 const segments = [];
-                for (let x = camera.x - window / 2 ; x < camera.x + window / 2 ; x += stepX) {
+                for (let x = refX - window / 2 ; x < refX + window / 2 ; x += stepX) {
                     segments.push(new Segment(
                         { x: x, y : this.curveAt(x) },
                         { x: x- stepX, y : this.curveAt(x- stepX) },

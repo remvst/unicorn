@@ -5,6 +5,7 @@ class World {
 
         this.add(new Camera());
         this.add(new Ground());
+        this.add(new Bike());
     }
 
     add(entity) {
@@ -36,14 +37,14 @@ class World {
     render() {
         const camera = firstItem(this.category('camera'));
 
-        ctx.fillStyle = '#000'
+        ctx.fillStyle = '#f0f'
         ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 
         ctx.wrap(() => {
-            ctx.translate(-camera.x + CANVAS_WIDTH / 2, -camera.y + CANVAS_HEIGHT / 2)
+            ctx.translate(-camera.position.x + CANVAS_WIDTH / 2, -camera.position.y + CANVAS_HEIGHT / 2);
 
             for (const entity of this.entities) {
-                entity.render();
+                ctx.wrap(() => entity.render());
             }
         })
     }

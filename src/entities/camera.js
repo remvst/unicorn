@@ -5,6 +5,8 @@ class Camera extends Entity {
     }
 
     cycle(elapsed) {
+        super.cycle(elapsed);
+
         // TODO follow player
         // console.log('I follow player')
 
@@ -17,15 +19,15 @@ class Camera extends Entity {
 
         if (x || y) {
             const angle = Math.atan2(y, x);
-            this.x += cos(angle) * 100 * elapsed;
-            this.y += sin(angle) * 100 * elapsed;
+            this.position.x += cos(angle) * 100 * elapsed;
+            this.position.y += sin(angle) * 100 * elapsed;
         }
     }
 
     render(elapsed) {
         if (DEBUG) {
             ctx.fillStyle = '#fff';
-            ctx.fillRect(this.x, this.y, 10, 10);
+            ctx.fillRect(this.position.x, this.position.y, 10, 10);
         }
     }
 }
