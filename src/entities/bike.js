@@ -15,13 +15,13 @@ class Bike extends PhysicsObject {
         this.head = this.addHitbox();
         this.head.position.y = -20;
         this.head.radius = 5;
-
     }
 
     cycle(elapsed) {
         const raiseWheel = downKeys[37];
         const lowerWheel = downKeys[39];
         const accelerate = downKeys[38];
+        const brake = downKeys[40];
 
         // Backflip/frontflip
         if (raiseWheel) this.momentum.rotation -= elapsed * Math.PI * 2;
@@ -31,11 +31,10 @@ class Bike extends PhysicsObject {
 
         super.cycle(elapsed);
 
-        if (accelerate && this.age - this.backWheel.lastCollisionAge < 0.1) {
-            // TODO check that the back wheel is in contact with the ground
-            // TODO momentum should be based off the curve of the ground
-            // TODO update rotation momentum as well
+        const backWheelOnGround = this.age - this.backWheel.lastCollisionAge < 0.1;
+        const frontWheelOnGround = this.age - this.frontWheel.lastCollisionAge < 0.1;
 
+        if (accelerate && backWheelOnGround) {
             // Base momentum off the curve
             let sdx = this.backWheel.lastCollisionSegment.p2.x - this.backWheel.lastCollisionSegment.p1.x;
             let sdy = this.backWheel.lastCollisionSegment.p2.y - this.backWheel.lastCollisionSegment.p1.y;
@@ -55,13 +54,16 @@ class Bike extends PhysicsObject {
         }
 
         // Friction
-        // TODO only add friction if on the ground
-        if (!accelerate) {
-            this.momentum.position.x += -Math.sign(this.momentum.position.x) * Math.min(
-                Math.abs(this.momentum.position.x),
-                elapsed * 1,
-            );
+        let friction = 0;
+        if (backWheelOnGround || frontWheelOnGround) {
+            if (accelerate) friction = 0;
+            else if (brake) friction = 1000;
+            else friction = 200;
         }
+        this.momentum.position.x += -Math.sign(this.momentum.position.x) * Math.min(
+            Math.abs(this.momentum.position.x),
+            elapsed * friction,
+        );
 
         if (raiseWheel || lowerWheel) {
             this.momentum.rotation = momentumRotationBefore;
