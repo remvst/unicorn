@@ -17,6 +17,8 @@ const JS_FILES = [
     'screens/world-screen.js',
     'model/entity.js',
     'model/world.js',
+    'entities/camera.js',
+    'entities/ground.js',
     'game.js',
     'index.js',
 ];

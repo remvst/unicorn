@@ -2,6 +2,9 @@ class World {
     constructor() {
         this.entities = new Set();
         this.categories = {};
+
+        this.add(new Camera());
+        this.add(new Ground());
     }
 
     add(entity) {
@@ -31,8 +34,17 @@ class World {
     }
 
     render() {
-        for (const entity of this.entities) {
-            entity.render();
-        }
+        const camera = firstItem(this.category('camera'));
+
+        ctx.fillStyle = '#000'
+        ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+
+        ctx.wrap(() => {
+            ctx.translate(-camera.x + CANVAS_WIDTH / 2, -camera.y + CANVAS_HEIGHT / 2)
+
+            for (const entity of this.entities) {
+                entity.render();
+            }
+        })
     }
 }
