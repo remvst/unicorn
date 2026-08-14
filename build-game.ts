@@ -15,6 +15,7 @@ const JS_FILES = [
     'utils/segment.js',
     'utils/hitbox.js',
     'utils/cache.js',
+    'utils/easing.js',
     'input/keyboard.js',
     'screens/screen.js',
     'screens/world-screen.js',
