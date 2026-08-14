@@ -12,7 +12,7 @@ class Ground extends Entity {
         ctx.strokeStyle = 'red';
         ctx.beginPath();
         for (let x = camera.position.x - CANVAS_WIDTH / 2 ; x < camera.position.x + CANVAS_WIDTH / 2 ; x += 5) {
-            ctx.lineTo(x, Math.sin(x * PI * 2 / 200) * 100);
+            ctx.lineTo(x, this.curveAt(x));
         }
         ctx.stroke();
 
@@ -23,11 +23,11 @@ class Ground extends Entity {
 
     getSegments() {
         // TODO use the player as a ref
-        const camera = firstItem(this.world.category('camera'));
+        const bike = firstItem(this.world.category('bike'));
 
         const stepX = 20;
         const window = 200;
-        const refX = floorToNearest(camera.position.x, stepX);
+        const refX = floorToNearest(bike.position.x, stepX);
 
         return this.segments.getOrCreate(
             floorToNearest(refX, stepX * 2),
@@ -45,6 +45,6 @@ class Ground extends Entity {
     }
 
     curveAt(x) {
-        return Math.sin(x * PI * 2 / 200) * 100;
+        return Math.sin(x * PI * 2 / 400) * 50 + 100;
     }
 }
