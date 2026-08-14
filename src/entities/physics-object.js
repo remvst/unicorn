@@ -4,9 +4,6 @@ class PhysicsObject extends Entity {
         this.rotation = 0;
         this.hitboxes = [];
 
-        this.lastBackWheelOnGround = 0;
-        this.lastBackWheelSegment = null;
-
         this.momentum = {
             position: {x: 0, y: 0},
             rotation: 0,
@@ -53,66 +50,15 @@ class PhysicsObject extends Entity {
     }
 
     cycle(elapsed) {
-        // let x = 0;
-        // let y = 0;
         super.cycle(elapsed);
 
-        const raiseWheel = downKeys[37];
-        const lowerWheel = downKeys[39];
-        const accelerate = downKeys[38];
-
-        if (raiseWheel) this.momentum.rotation -= elapsed * Math.PI * 2;
-        if (lowerWheel) this.momentum.rotation += elapsed * Math.PI * 2;
-        if (accelerate && this.age - this.lastBackWheelOnGround < 0.1) {
-            // TODO check that the back wheel is in contact with the ground
-            // TODO momentum should be based off the curve of the ground
-            // TODO update rotation momentum as well
-
-            // Base momentum off the curve
-            let sdx = this.lastBackWheelSegment.p2.x - this.lastBackWheelSegment.p1.x;
-            let sdy = this.lastBackWheelSegment.p2.y - this.lastBackWheelSegment.p1.y;
-            // Force direction to always point rightward
-            if (sdx < 0) { sdx = -sdx; sdy = -sdy; }
-            const slen = Math.hypot(sdx, sdy);
-            sdx /= slen; sdy /= slen;
-
-            // Cross product: positive means wheel is below the segment (ceiling contact)
-            const backWheel = this.absolute(this.hitboxes[1], new Hitbox());
-            const cross = sdx * (backWheel.position.y - this.lastBackWheelSegment.p1.y)
-                        - sdy * (backWheel.position.x - this.lastBackWheelSegment.p1.x);
-            const sign = cross > 0 ? -1 : 1;
-
-            this.momentum.position.x += sign * sdx * elapsed * 20;
-            this.momentum.position.y += sign * sdy * elapsed * 20;
-        }
-
-        // TODO brakes
-        // if (down['ArrowDown']) y = 1;
-
+        // Momentum
         this.position.x += this.momentum.position.x * elapsed * 50;
         this.position.y += this.momentum.position.y * elapsed * 50;
-
-        // Friction
-        // TODO only add friction if on the ground
-        if (!accelerate) {
-            this.momentum.position.x += -Math.sign(this.momentum.position.x) * Math.min(
-                Math.abs(this.momentum.position.x),
-                elapsed * 1,
-            );
-        }
-
-        // if (!raiseWheel && !lowerWheel) {
-        //     this.momentum.rotation += -Math.sign(this.momentum.rotation) * Math.min(
-        //         Math.abs(this.momentum.rotation),
-        //         elapsed * Math.PI * 4,
-        //     );
-        //     // this.momentum.rotation += elapsed * Math.PI * 4;
-        // }
+        this.rotation += this.momentum.rotation * elapsed;
 
         // Gravity
         this.momentum.position.y += elapsed * 10;
-
-        this.rotation += this.momentum.rotation * elapsed;
 
         const reusableHitbox = new Hitbox();
 
@@ -122,21 +68,18 @@ class PhysicsObject extends Entity {
         const avgAngleToCenterBefore = this.avgAngleToPoint(absolutes, avgBefore);
 
         // Readjust all the hitboxes
-        let readjustmentCount = 0;
         for (let i = 0 ; i < this.hitboxes.length ; i++) {
-            const absolute = this.absolute(this.hitboxes[i], absolutes[i]);
+            const hitbox = this.hitboxes[i];
+            const absolute = this.absolute(hitbox, absolutes[i]);
 
-            for (const seg of this.segments()) {
-                if (!seg.collidesWith(absolute)) continue;
-                const readjusted = seg.readjust(absolute, { x: 0, y: 0 });
+            for (const segment of this.segments()) {
+                if (!segment.collidesWith(absolute)) continue;
+                const readjusted = segment.readjust(absolute, { x: 0, y: 0 });
                 absolute.position.x += readjusted.x;
                 absolute.position.y += readjusted.y;
-                readjustmentCount++;
 
-                if (i === 1) {
-                    this.lastBackWheelOnGround = this.age;
-                    this.lastBackWheelSegment = seg;
-                }
+                hitbox.lastCollisionAge = this.age;
+                hitbox.lastCollisionSegment = segment;
             }
         }
 
@@ -148,46 +91,28 @@ class PhysicsObject extends Entity {
         this.position.x += avgAfter.x - avgBefore.x;
         this.position.y += avgAfter.y - avgBefore.y;
         this.rotation += normalizeAngle(avgAngleToCenterAfter - avgAngleToCenterBefore);
-        // console.log(avgAngleToCenterAfter - avgAngleToCenterBefore);
 
-        if (Math.abs(normalizeAngle(avgAngleToCenterAfter - avgAngleToCenterBefore)) > Math.PI / 2) {
-            console.error('boom');
-        }
-
-        const deltaAngle = normalizeAngle(avgAngleToCenterAfter - avgAngleToCenterBefore);
+        const readjustmentAngle = normalizeAngle(avgAngleToCenterAfter - avgAngleToCenterBefore);
 
         const dx = avgAfter.x - avgBefore.x;
         const dy = avgAfter.y - avgBefore.y;
-        const len = Math.sqrt(dx * dx + dy * dy);
-        if (len > 0.001) {
-            const nx = dx / len;
-            const ny = dy / len;
+        const readjustmentDistance = hypot(dx, dy);
+        if (readjustmentDistance > 0.001) {
+            const nx = dx / readjustmentDistance;
+            const ny = dy / readjustmentDistance;
             const linearProj = this.momentum.position.x * nx + this.momentum.position.y * ny;
             if (linearProj < 0) {
                 this.momentum.position.x -= linearProj * nx;
                 this.momentum.position.y -= linearProj * ny;
 
-                if (Math.abs(deltaAngle) > 0.0001 && !raiseWheel && !lowerWheel) {
-                    const na = Math.sign(deltaAngle);
+                if (Math.abs(readjustmentAngle) > 0.0001) {
+                    const na = Math.sign(readjustmentAngle);
                     const rotProj = this.momentum.rotation * na;
                     if (rotProj < 0) this.momentum.rotation -= rotProj * na;
                     this.momentum.rotation += na * (-linearProj) * 0.8;
                 }
             }
         }
-
-        // if (
-        //     readjustmentCount === this.hitboxes.length &&
-        //     avgAfter.y - avgBefore.y
-        // ) {
-        //     // TODO readjust, this ain't gr8
-        //     this.momentum.position.y = 0;
-        //     console.log('land');
-        //     // this.momentum.rotation *= 0.5;
-        // } else if (readjustmentCount > 0) {
-        //     // this.momentum.position.y = avgAfter.y - avgBefore.y;
-        //     // console.log(this.momentum.position.y);
-        // }
     }
 
     render() {
