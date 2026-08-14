@@ -4,8 +4,11 @@ class World {
         this.categories = {};
 
         this.add(new Camera());
-        this.add(new Ground());
-        this.add(new Bike());
+
+        const ground = this.add(new Ground());
+
+        const bike = this.add(new Bike());
+        bike.position.y = ground.curveAt(bike.position.x) - 50;
     }
 
     add(entity) {
@@ -14,6 +17,7 @@ class World {
         for (const category of entity.categories) {
             this.category(category).add(entity);
         }
+        return entity;
     }
 
     remove(entity) {
