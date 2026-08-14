@@ -12,6 +12,8 @@ const JS_FILES = [
     'utils/math.js',
     'utils/resizer.js',
     'utils/first-item.js',
+    'utils/segment.js',
+    'utils/cache.js',
     'input/keyboard.js',
     'screens/screen.js',
     'screens/world-screen.js',

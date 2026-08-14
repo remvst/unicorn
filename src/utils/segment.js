@@ -8,7 +8,7 @@ class Segment {
     render() {
         ctx.save();
         ctx.lineWidth = 2;
-        ctx.strokeStyle = '#000';
+        ctx.strokeStyle = '#ff0';
         ctx.beginPath();
         ctx.moveTo(this.p1.x, this.p1.y);
         ctx.lineTo(this.p2.x, this.p2.y);
