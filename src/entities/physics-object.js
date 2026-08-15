@@ -90,10 +90,7 @@ class PhysicsObject extends Entity {
         // Gravity
         this.momentum.position.y += elapsed * 500;
 
-        // TODO limit the number of Hitbox objects being created
-        const reusableHitbox = new Hitbox();
-
-        const absolutes = this.hitboxes.map((hb) => this.absolute(hb, new Hitbox()));
+        const absolutes = this.hitboxes.map((hb) => this.absolute(hb, (hb.absolute ??= new Hitbox())));
 
         const avgBefore = this.gravityCenter(absolutes, { x: 0, y: 0 });
         const avgAngleToCenterBefore = this.avgAngleToPoint(absolutes, avgBefore);
