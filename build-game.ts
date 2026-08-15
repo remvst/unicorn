@@ -18,6 +18,7 @@ const JS_FILES = [
     'utils/easing.js',
     'utils/perlin-curve.js',
     'utils/value-change-helper.js',
+    'tricks/trick-tracker.js',
     'input/keyboard.js',
     'screens/screen.js',
     'screens/world-screen.js',
@@ -27,6 +28,7 @@ const JS_FILES = [
     'entities/ground.js',
     'entities/physics-object.js',
     'entities/bike.js',
+    'entities/hud.js',
     'game.js',
     'index.js',
 ];

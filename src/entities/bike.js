@@ -21,6 +21,13 @@ class Bike extends PhysicsObject {
         this.safety.radius = 3;
 
         this.jumpChange = new ValueChangeHelper();
+
+        this.comboTracker = new ComboTracker(this);
+    }
+
+    get airborne() {
+        return !this.hasCollision(this.backWheel, 0.1) &&
+            !this.hasCollision(this.frontWheel, 0.1);
     }
 
     jump() {
@@ -55,15 +62,13 @@ class Bike extends PhysicsObject {
             this.jump();
         }
 
-        const airborne = !backWheelOnGround && !frontWheelOnGround;
-
         // Stomping
-        if (brake && airborne) {
+        if (brake && this.airborne) {
             this.momentum.position.y += 500 * elapsed;
         }
 
         // Rotation dampening
-        if (!backWheelOnGround && !frontWheelOnGround && !raiseWheel && !lowerWheel) {
+        if (this.airborne && !raiseWheel && !lowerWheel) {
             this.momentum.rotation -= between(
                 -elapsed * Math.PI,
                 this.momentum.rotation,
@@ -111,5 +116,7 @@ class Bike extends PhysicsObject {
             Math.abs(this.momentum.position.x),
             elapsed * friction,
         );
+
+        this.comboTracker.cycle(elapsed);
     }
 }

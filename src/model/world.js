@@ -4,6 +4,7 @@ class World {
         this.categories = {};
 
         this.add(new Camera());
+        this.add(new HUD());
 
         const ground = this.add(new Ground());
 
