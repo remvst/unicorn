@@ -17,8 +17,9 @@ class Item extends Entity {
                 this.world.remove(this);
                 // bike.power = min(1, bike.power + 0.1);
 
-                bike.momentum.position.x += Math.cos(bike.rotation) * 50;
-                bike.momentum.position.y += Math.sin(bike.rotation) * 50;
+                // TODO use slope momentum instead
+                bike.momentum.position.x += cos(bike.rotation) * 50;
+                bike.momentum.position.y += sin(bike.rotation) * 50;
 
                 dustCloud({
                     world: this.world,
