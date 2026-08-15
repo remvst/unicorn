@@ -10,6 +10,10 @@ class PhysicsObject extends Entity {
         };
     }
 
+    hasCollision(hitbox, delay = 0.1) {
+        return this.age - hitbox.lastCollisionAge <= delay;
+    }
+
     addHitbox() {
         const hitbox = new Hitbox();
         this.hitboxes.push(hitbox);
@@ -58,7 +62,7 @@ class PhysicsObject extends Entity {
         // to the nearest segment keeps the substep count a function of speed alone - resting on
         // a segment (distance ~0) no longer explodes it, which is what made time-scaled momentum
         // updates elsewhere in the class behave inconsistently.
-        const safeDist = Math.min(...this.hitboxes.map((hb) => hb.radius)) / 2;
+        const safeDist = Math.min(...this.hitboxes.map((hb) => hb.radius)) / 3;
 
         // A hitbox's actual speed through the world is its linear speed plus its tangential
         // speed from rotation (omega * distance from origin). Ignoring the rotational part
@@ -94,20 +98,28 @@ class PhysicsObject extends Entity {
         const avgBefore = this.gravityCenter(absolutes, { x: 0, y: 0 });
         const avgAngleToCenterBefore = this.avgAngleToPoint(absolutes, avgBefore);
 
-        // Readjust all the hitboxes
-        for (let i = 0 ; i < this.hitboxes.length ; i++) {
-            const hitbox = this.hitboxes[i];
-            const absolute = this.absolute(hitbox, absolutes[i]);
+        const RESOLVE_PASSES = 3;
+        for (let pass = 0 ; pass < RESOLVE_PASSES ; pass++) {
+            let anyCollision = false;
 
-            for (const segment of this.segments()) {
-                if (!segment.collidesWith(absolute)) continue;
-                const readjusted = segment.readjust(absolute, { x: 0, y: 0 });
-                absolute.position.x += readjusted.x;
-                absolute.position.y += readjusted.y;
+            for (let i = 0 ; i < this.hitboxes.length ; i++) {
+                const hitbox = this.hitboxes[i];
+                const absolute = absolutes[i];
 
-                hitbox.lastCollisionAge = this.age;
-                hitbox.lastCollisionSegment = segment;
+                for (const segment of this.segments()) {
+                    if (!segment.collidesWith(absolute)) continue;
+                    anyCollision = true;
+
+                    const readjusted = segment.readjust(absolute, { x: 0, y: 0 });
+                    absolute.position.x += readjusted.x;
+                    absolute.position.y += readjusted.y;
+
+                    hitbox.lastCollisionAge = this.age;
+                    hitbox.lastCollisionSegment = segment;
+                }
             }
+
+            if (!anyCollision) break;
         }
 
         const avgAfter = this.gravityCenter(absolutes, { x: 0, y: 0 });
