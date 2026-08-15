@@ -30,6 +30,8 @@ class Bike extends PhysicsObject {
         this.comboTracker = new ComboTracker(this);
 
         this.usingPower = false;
+
+        this.bikeRenderable = new BikeRenderable(this);
     }
 
     get airborne() {
@@ -160,6 +162,17 @@ class Bike extends PhysicsObject {
         }
     }
 
+    render() {
+        super.render();
+
+        ctx.wrap(() => {
+            ctx.translate(this.position.x, this.position.y);
+            ctx.rotate(this.rotation);
+
+            this.bikeRenderable.render();
+        });
+    }
+
     die() {
         this.dead = true;
         this.world.remove(this);
@@ -183,5 +196,90 @@ class Bike extends PhysicsObject {
             const hb = gib.addHitbox();
             hb.radius = wheel.radius;
         }
+    }
+}
+
+class LineRenderable {
+
+    constructor() {
+        this.lines = [];
+    }
+
+    addLine(from, to) {
+        this.lines.push([from, to]);
+        return this;
+    }
+
+    render() {
+        for (const [from, to] of this.lines) {
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = '#fff';
+            ctx.beginPath();
+            ctx.moveTo(from.x, from.y);
+            ctx.lineTo(to.x, to.y);
+            ctx.stroke();
+        }
+    }
+}
+
+class BikeRenderable extends LineRenderable {
+    constructor(bike) {
+        super();
+
+        const backWheel = bike.backWheel.position;
+        const frontWheel = bike.frontWheel.position;
+
+        const pedalsCenter = {
+            x: interpolate(
+                backWheel.x,
+                frontWheel.x,
+                0.5,
+            ),
+            y: backWheel.y,
+        }
+
+        const forkLink = {
+            x: frontWheel.x - 5,
+            y: frontWheel.y - 15,
+        }
+
+        const handlebarsConnection = {
+            x: frontWheel.x - 5,
+            y: forkLink.y - 5,
+        }
+
+        const handlebarsBottom = {
+            x: handlebarsConnection.x + 5,
+            y: handlebarsConnection.y,
+        }
+
+        const handlebarsTop = {
+            x: handlebarsConnection.x + 5,
+            y: handlebarsConnection.y - 10,
+        }
+
+        const seatBase = {
+            x: interpolate(
+                backWheel.x,
+                frontWheel.x,
+                0.4,
+            ),
+            y: interpolate(backWheel.y, handlebarsConnection.y, 0.5),
+        }
+
+        const seatCenter = {
+            x: seatBase.x,
+            y: seatBase.y - 5,
+        }
+
+        this
+            .addLine(backWheel, seatBase)
+            .addLine(backWheel, pedalsCenter)
+            .addLine(pedalsCenter, seatCenter)
+            .addLine(seatBase, forkLink)
+            .addLine(pedalsCenter, forkLink)
+            .addLine(frontWheel, handlebarsConnection)
+            .addLine(handlebarsBottom, handlebarsConnection)
+            .addLine(handlebarsBottom, handlebarsTop)
     }
 }
