@@ -29,6 +29,8 @@ const JS_FILES = [
     'entities/physics-object.js',
     'entities/bike.js',
     'entities/hud.js',
+    'entities/particle.js',
+    'entities/interpolator.js',
     'game.js',
     'index.js',
 ];

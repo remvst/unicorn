@@ -12,4 +12,22 @@ class Entity {
     render() {
 
     }
+
+    interp(
+        owner,
+        interpProperty,
+        fromValue,
+        toValue,
+        interpDuration,
+        easing = linear,
+    ) {
+        return this.world.add(new Interpolator(
+            owner,
+            interpProperty,
+            fromValue,
+            toValue,
+            interpDuration,
+            easing,
+        )).awaitCompletion();
+    }
 }

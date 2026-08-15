@@ -22,6 +22,9 @@ class Bike extends PhysicsObject {
 
         this.jumpChange = new ValueChangeHelper();
 
+        this.backWheelOnGroundChange = new ValueChangeHelper();
+        this.frontWheelOnGroundChange = new ValueChangeHelper();
+
         this.comboTracker = new ComboTracker(this);
     }
 
@@ -118,5 +121,42 @@ class Bike extends PhysicsObject {
         );
 
         this.comboTracker.cycle(elapsed);
+
+        const [backWheelBefore, backWheelAfter] = this.backWheelOnGroundChange.change(this.hasCollision(this.backWheel));
+        const [frontWheelBefore, frontWheelAfter] = this.frontWheelOnGroundChange.change(this.hasCollision(this.frontWheel));
+
+        if (!backWheelBefore && backWheelAfter) {
+            for (let i = 0 ; i < 5 ; i ++) {
+                const p = new Particle();
+                p.position.x = this.backWheel.absolute.position.x;
+                p.position.y = this.backWheel.absolute.position.y + this.backWheel.radius;
+                p.rotation = random() * PI;
+                this.world.add(p);
+
+                p.animate(0.5, {
+                    x: rnd(-40, 0),
+                    y: -20 + Math.random() * 20,
+                    size: 10,
+                    alpha: -1,
+                });
+            }
+        }
+
+        if (!frontWheelBefore && frontWheelAfter) {
+            for (let i = 0 ; i < 5 ; i ++) {
+                const p = new Particle();
+                p.position.x = this.frontWheel.absolute.position.x;
+                p.position.y = this.frontWheel.absolute.position.y + this.frontWheel.radius;
+                p.rotation = random() * PI;
+                this.world.add(p);
+
+                p.animate(0.5, {
+                    x: rnd(-40, 0),
+                    y: -20 + Math.random() * 20,
+                    size: 10,
+                    alpha: -1,
+                });
+            }
+        }
     }
 }

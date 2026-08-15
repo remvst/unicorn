@@ -24,7 +24,7 @@ class World {
     remove(entity) {
         this.entities.delete(entity);
         for (const category of Object.values(this.categories)) {
-            category.remove(entity);
+            category.delete(entity);
         }
     }
 
