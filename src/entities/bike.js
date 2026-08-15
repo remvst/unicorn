@@ -24,7 +24,6 @@ class Bike extends PhysicsObject {
     }
 
     jump() {
-        console.log('jumpy');
         this.momentum.position.y -= 200;
         this.momentum.rotation -= Math.PI / 4;
     }
@@ -33,6 +32,7 @@ class Bike extends PhysicsObject {
         const raiseWheel = downKeys[37];
         const lowerWheel = downKeys[39];
         const jump = downKeys[32];
+        const brake = downKeys[40];
 
         // Backflip/frontflip
         if (raiseWheel) this.momentum.rotation -= elapsed * Math.PI * 2;
@@ -55,7 +55,12 @@ class Bike extends PhysicsObject {
             this.jump();
         }
 
-        // TODO breaking while in the air = stomp
+        const airborne = !backWheelOnGround && !frontWheelOnGround;
+
+        // Stomping
+        if (brake && airborne) {
+            this.momentum.position.y += 500 * elapsed;
+        }
 
         // Rotation dampening
         if (!backWheelOnGround && !frontWheelOnGround && !raiseWheel && !lowerWheel) {
