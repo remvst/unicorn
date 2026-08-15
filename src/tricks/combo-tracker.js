@@ -51,7 +51,7 @@ class ComboTracker {
             tracker.reset();
         }
 
-        this.tricks = [];
+        this.tricks.length = 0;
         this.points = 0;
     }
 }
