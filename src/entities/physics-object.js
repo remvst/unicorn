@@ -141,7 +141,7 @@ class PhysicsObject extends Entity {
                     // must use a fixed coefficient too. Scaling by `elapsed` here would make the
                     // torque shrink with the substep size instead of the frame's real elapsed time
                     // (substep count depends on how close to a segment we are, not on gameplay).
-                    const ROTATION_TRANSFER = 0.016;
+                    const ROTATION_TRANSFER = 0.016 / 2;
                     this.momentum.rotation += na * (-linearProj) * ROTATION_TRANSFER;
                 }
             }
