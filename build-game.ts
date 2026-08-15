@@ -31,6 +31,9 @@ const JS_FILES = [
     'entities/hud.js',
     'entities/particle.js',
     'entities/interpolator.js',
+    'entities/unicorn.js',
+    'entities/item.js',
+    'entities/item-generator.js',
     'game.js',
     'index.js',
 ];

@@ -227,7 +227,7 @@ class PhysicsObject extends Entity {
 
     * segments() {
         for (const ground of this.world.category('ground')) {
-                yield* ground.getSegments()
+            yield* ground.getSegments(this);
         }
     }
 }

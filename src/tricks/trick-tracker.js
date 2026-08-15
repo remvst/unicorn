@@ -57,7 +57,7 @@ class ComboTracker {
 
         this.tricks = [];
 
-        this.bike.power += 0.5;
+        // this.bike.power += 0.5;
     }
 }
 

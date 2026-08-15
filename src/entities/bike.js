@@ -28,6 +28,8 @@ class Bike extends PhysicsObject {
         this.frontWheelOnGroundChange = new ValueChangeHelper();
 
         this.comboTracker = new ComboTracker(this);
+
+        this.usingPower = false;
     }
 
     get airborne() {
@@ -95,7 +97,7 @@ class Bike extends PhysicsObject {
 
         let forwardPush = 0;
         if (accelerate) {
-            forwardPush += interpolate(750, 1000, easeOutQuint(this.power)) * elapsed;
+            forwardPush += (this.power > 0 ? 1000 : 500) * elapsed;
         }
 
         if (forwardPush && backWheelOnGround) {

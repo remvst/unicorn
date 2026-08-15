@@ -22,15 +22,23 @@ class Ground extends Entity {
         }
         ctx.stroke();
 
-        for (const seg of this.getSegments()) {
+        for (const x of this.peaks(camera.position.x - CANVAS_WIDTH / 2, camera.position.x + CANVAS_WIDTH / 2)) {
+            ctx.fillStyle = '#f0f';
+            ctx.fillRect(x, this.curveAt(x) - 50, 2, 100);
+        }
+
+        for (const x of this.valleys(camera.position.x - CANVAS_WIDTH / 2, camera.position.x + CANVAS_WIDTH / 2)) {
+            ctx.fillStyle = '#ff0';
+            ctx.fillRect(x, this.curveAt(x) - 50, 2, 100);
+        }
+
+        const bike = firstItem(this.world.category('bike')) || firstItem(this.world.category('camera'));
+        for (const seg of this.getSegments(bike)) {
             seg.render();
         }
     }
 
-    getSegments() {
-        // TODO use the player as a ref
-        const bike = firstItem(this.world.category('bike')) || firstItem(this.world.category('camera'));
-
+    getSegments(bike) {
         const stepX = 20;
         const window = 400;
         const refX = floorToNearest(bike.position.x, stepX);
@@ -52,5 +60,27 @@ class Ground extends Entity {
 
     curveAt(x) {
         return this.curve.yFor(x);
+    }
+
+    * peaks(fromX, toX) {
+        yield* this.slopeChanges(fromX, toX, 1);
+    }
+
+    * valleys(fromX, toX) {
+        yield* this.slopeChanges(fromX, toX, -1);
+    }
+
+    * slopeChanges(fromX, toX, sign) {
+        const step = 5;
+        let slopeBefore = 0;
+        for (let x = fromX ; x < toX ; x += step) {
+            const slope = Math.sign(this.curveAt(x) - this.curveAt(x - step));
+
+            if (slope !== slopeBefore && slope === sign) {
+                yield x;
+            }
+
+            slopeBefore = slope;
+        }
     }
 }

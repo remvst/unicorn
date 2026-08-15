@@ -5,11 +5,13 @@ class World {
 
         this.add(new Camera());
         this.add(new HUD());
+        this.add(new Unicorn());
+        this.add(new ItemGenerator());
 
         const ground = this.add(new Ground());
 
-        const bike = this.add(new Bike());
-        bike.position.y = ground.curveAt(bike.position.x) - 50;
+        const player = this.add(new Bike());
+        player.position.y = ground.curveAt(player.position.x) - player.backWheel.radius;
     }
 
     add(entity) {

@@ -29,7 +29,7 @@ class HUD extends Entity {
         ctx.fillStyle = '#222';
         ctx.fillRect(0, 0, 200, 10);
 
-        ctx.fillStyle = '#fff';
+        ctx.fillStyle = player.usingPower ? '#f00' : '#fff';
         ctx.fillRect(0, 0, 200 * player.power, 10);
     }
 }
