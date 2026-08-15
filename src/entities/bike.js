@@ -19,11 +19,20 @@ class Bike extends PhysicsObject {
         this.safety = this.addHitbox();
         this.safety.position.y = 5;
         this.safety.radius = 3;
+
+        this.jumpChange = new ValueChangeHelper();
+    }
+
+    jump() {
+        console.log('jumpy');
+        this.momentum.position.y -= 200;
+        this.momentum.rotation -= Math.PI / 4;
     }
 
     cycleUnsafe(elapsed) {
         const raiseWheel = downKeys[37];
         const lowerWheel = downKeys[39];
+        const jump = downKeys[32];
 
         // Backflip/frontflip
         if (raiseWheel) this.momentum.rotation -= elapsed * Math.PI * 2;
@@ -37,6 +46,22 @@ class Bike extends PhysicsObject {
         // substeps this frame got split into.
         if (raiseWheel || lowerWheel) {
             this.momentum.rotation = momentumRotationBefore;
+        }
+
+        const [jumpBefore, jumpAfter] = this.jumpChange.change(jump);
+        const backWheelOnGround = this.age - this.backWheel.lastCollisionAge < 0.1;
+        const frontWheelOnGround = this.age - this.frontWheel.lastCollisionAge < 0.1;
+        if (jumpBefore && !jumpAfter && (backWheelOnGround || frontWheelOnGround)) {
+            this.jump();
+        }
+
+        // Rotation dampening
+        if (!backWheelOnGround && !frontWheelOnGround && !raiseWheel && !lowerWheel) {
+            this.momentum.rotation -= between(
+                -elapsed * Math.PI,
+                this.momentum.rotation,
+                elapsed * Math.PI,
+            );
         }
     }
 

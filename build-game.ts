@@ -17,6 +17,7 @@ const JS_FILES = [
     'utils/cache.js',
     'utils/easing.js',
     'utils/perlin-curve.js',
+    'utils/value-change-helper.js',
     'input/keyboard.js',
     'screens/screen.js',
     'screens/world-screen.js',
