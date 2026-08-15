@@ -12,13 +12,25 @@ class Item extends Entity {
     }
 
     cycle(elapsed) {
-        const bike = firstItem(this.world.category('bike'));
-        if (distance(this.position, bike.position) < 50) {
-            this.world.remove(this);
-            // bike.power = min(1, bike.power + 0.1);
+        for (const bike of this.world.category('bike')) {
+            if (distance(this.position, bike.position) < 50) {
+                this.world.remove(this);
+                // bike.power = min(1, bike.power + 0.1);
 
-            bike.momentum.position.x += Math.cos(bike.rotation) * 50;
-            bike.momentum.position.y += Math.sin(bike.rotation) * 50;
+                bike.momentum.position.x += Math.cos(bike.rotation) * 50;
+                bike.momentum.position.y += Math.sin(bike.rotation) * 50;
+
+                dustCloud({
+                    world: this.world,
+                    position: this.position,
+                    radius: 5,
+                    density: 1 / (5 * 5),
+                    duration: [0.25, 1],
+                    x: [-20, 20],
+                    y: [-20, 20],
+                    size: 10,
+                });
+            }
         }
     }
 }

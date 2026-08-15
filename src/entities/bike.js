@@ -131,43 +131,57 @@ class Bike extends PhysicsObject {
             elapsed * friction,
         );
 
+        // Death
+        if (this.hasCollision(this.head)) this.die();
+
         this.comboTracker.cycle(elapsed);
 
         const [backWheelBefore, backWheelAfter] = this.backWheelOnGroundChange.change(this.hasCollision(this.backWheel));
         const [frontWheelBefore, frontWheelAfter] = this.frontWheelOnGroundChange.change(this.hasCollision(this.frontWheel));
 
-        if (!backWheelBefore && backWheelAfter) {
-            for (let i = 0 ; i < 5 ; i ++) {
-                const p = new Particle();
-                p.position.x = this.backWheel.absolute.position.x;
-                p.position.y = this.backWheel.absolute.position.y + this.backWheel.radius;
-                p.rotation = random() * PI;
-                this.world.add(p);
+        const wheelClouds = [];
+        if (!backWheelBefore && backWheelAfter) wheelClouds.push(this.backWheel);
+        if (!frontWheelBefore && frontWheelAfter) wheelClouds.push(this.frontWheel);
 
-                p.animate(0.5, {
-                    x: rnd(-40, 0),
-                    y: -20 + Math.random() * 20,
-                    size: 10,
-                    alpha: -1,
-                });
-            }
+        for (const wheel of wheelClouds) {
+            dustCloud({
+                world: this.world,
+                position: {
+                    x: wheel.absolute.position.x,
+                    y: wheel.absolute.position.y + wheel.radius,
+                },
+                radius: 5,
+                density: 1 / (5 * 5),
+                duration: [0.25, 1],
+                x: [-40, 0],
+                y: [-20, 0],
+                size: 5,
+            });
         }
+    }
 
-        if (!frontWheelBefore && frontWheelAfter) {
-            for (let i = 0 ; i < 5 ; i ++) {
-                const p = new Particle();
-                p.position.x = this.frontWheel.absolute.position.x;
-                p.position.y = this.frontWheel.absolute.position.y + this.frontWheel.radius;
-                p.rotation = random() * PI;
-                this.world.add(p);
+    die() {
+        this.dead = true;
+        this.world.remove(this);
 
-                p.animate(0.5, {
-                    x: rnd(-40, 0),
-                    y: -20 + Math.random() * 20,
-                    size: 10,
-                    alpha: -1,
-                });
-            }
+        dustCloud({
+            world: this.world,
+            position: this.position,
+            radius: 20,
+            density: 1 / (5 * 5),
+            duration: [0.25, 1],
+            x: [-40, 40],
+            y: [-40, 40],
+            size: 10,
+        });
+
+        for (const wheel of [this.frontWheel, this.backWheel]) {
+            const gib = this.world.add(new PhysicsObject());
+            gib.position.x = wheel.absolute.position.x;
+            gib.position.y = wheel.absolute.position.y;
+
+            const hb = gib.addHitbox();
+            hb.radius = wheel.radius;
         }
     }
 }

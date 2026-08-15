@@ -22,19 +22,23 @@ class Ground extends Entity {
         }
         ctx.stroke();
 
-        for (const x of this.peaks(camera.position.x - CANVAS_WIDTH / 2, camera.position.x + CANVAS_WIDTH / 2)) {
-            ctx.fillStyle = '#f0f';
-            ctx.fillRect(x, this.curveAt(x) - 50, 2, 100);
-        }
+        if (DEBUG) {
+            for (const x of this.peaks(camera.position.x - CANVAS_WIDTH / 2, camera.position.x + CANVAS_WIDTH / 2)) {
+                ctx.fillStyle = '#f0f';
+                ctx.fillRect(x, this.curveAt(x) - 50, 2, 100);
+            }
 
-        for (const x of this.valleys(camera.position.x - CANVAS_WIDTH / 2, camera.position.x + CANVAS_WIDTH / 2)) {
-            ctx.fillStyle = '#ff0';
-            ctx.fillRect(x, this.curveAt(x) - 50, 2, 100);
-        }
+            for (const x of this.valleys(camera.position.x - CANVAS_WIDTH / 2, camera.position.x + CANVAS_WIDTH / 2)) {
+                ctx.fillStyle = '#ff0';
+                ctx.fillRect(x, this.curveAt(x) - 50, 2, 100);
+            }
 
-        const bike = firstItem(this.world.category('bike')) || firstItem(this.world.category('camera'));
-        for (const seg of this.getSegments(bike)) {
-            seg.render();
+            const bike = firstItem(this.world.category('bike'));
+            if (bike) {
+                for (const seg of this.getSegments(bike)) {
+                    seg.render();
+                }
+            }
         }
     }
 
