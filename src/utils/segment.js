@@ -20,18 +20,20 @@ class Segment {
         ctx.fillRect(this.p2.x - 2, this.p2.y - 2, 4, 4);
     }
 
-    collidesWith(hitbox) {
+    distanceTo(point) {
         const dx = this.p2.x - this.p1.x;
         const dy = this.p2.y - this.p1.y;
-        const fx = hitbox.position.x - this.p1.x;
-        const fy = hitbox.position.y - this.p1.y;
+        const fx = point.x - this.p1.x;
+        const fy = point.y - this.p1.y;
         const lenSq = dx * dx + dy * dy;
-        const t = lenSq > 0 ? Math.max(0, Math.min(1, (fx * dx + fy * dy) / lenSq)) : 0;
+        const t = lenSq > 0 ? max(0, min(1, (fx * dx + fy * dy) / lenSq)) : 0;
         const closestX = this.p1.x + t * dx;
         const closestY = this.p1.y + t * dy;
-        const distX = hitbox.position.x - closestX;
-        const distY = hitbox.position.y - closestY;
-        return distX * distX + distY * distY <= hitbox.radius * hitbox.radius;
+        return hypot(point.x - closestX, point.y - closestY);
+    }
+
+    collidesWith(hitbox) {
+        return this.distanceTo(hitbox.position) <= hitbox.radius;
     }
 
     readjust(hitbox, out) {

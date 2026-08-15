@@ -15,19 +15,34 @@ class Bike extends PhysicsObject {
         this.head = this.addHitbox();
         this.head.position.y = -20;
         this.head.radius = 5;
+
+        this.safety = this.addHitbox();
+        this.safety.position.y = 5;
+        this.safety.radius = 3;
     }
 
-    cycle(elapsed) {
+    cycleUnsafe(elapsed) {
         const raiseWheel = downKeys[37];
         const lowerWheel = downKeys[39];
-        const accelerate = downKeys[38];
-        const brake = downKeys[40];
 
         // Backflip/frontflip
         if (raiseWheel) this.momentum.rotation -= elapsed * Math.PI * 2;
         if (lowerWheel) this.momentum.rotation += elapsed * Math.PI * 2;
 
         const momentumRotationBefore = this.momentum.rotation;
+
+        super.cycleUnsafe(elapsed);
+
+        // Don't let ground contact damp out the player's input, no matter how many
+        // substeps this frame got split into.
+        if (raiseWheel || lowerWheel) {
+            this.momentum.rotation = momentumRotationBefore;
+        }
+    }
+
+    cycle(elapsed) {
+        const accelerate = downKeys[38];
+        const brake = downKeys[40];
 
         super.cycle(elapsed);
 
@@ -64,9 +79,5 @@ class Bike extends PhysicsObject {
             Math.abs(this.momentum.position.x),
             elapsed * friction,
         );
-
-        if (raiseWheel || lowerWheel) {
-            this.momentum.rotation = momentumRotationBefore;
-        }
     }
 }

@@ -52,9 +52,30 @@ class PhysicsObject extends Entity {
     cycle(elapsed) {
         super.cycle(elapsed);
 
+        // Find the closest point-to-segment distance, accounting for hitbox radius,
+        // across every hitbox and every segment in the world.
+        let distanceToClosestSegment = Infinity;
+        for (const hb of this.hitboxes) {
+            const absolute = this.absolute(hb, new Hitbox());
+            for (const segment of this.segments()) {
+                const dist = segment.distanceTo(absolute.position) - absolute.radius;
+                if (dist < distanceToClosestSegment) distanceToClosestSegment = dist;
+            }
+        }
+
+        const speed = pointDistance(0, 0, this.momentum.position.x, this.momentum.position.y);
+        const maxDist = distanceToClosestSegment / 2;
+
+        // Determine what the max step that can be used to run the physics simulation without any risk:
+        // cap substeps so the object can't travel further than maxDist (and therefore can't tunnel
+        // through the closest segment) within a single cycleUnsafe call. MIN_STEP guards against
+        // getting stuck when maxDist is already <= 0 (e.g. already overlapping a segment).
+        const MIN_STEP = 1 / 1000;
+        const step = (speed > 0 && isFinite(maxDist)) ? Math.max(maxDist / speed, MIN_STEP) : elapsed;
+
         let remaining = elapsed;
         while (remaining > 0) {
-            const rem = Math.min(remaining, 1 / 120);
+            const rem = Math.min(remaining, step);
             remaining -= rem;
             this.cycleUnsafe(rem);
         }
@@ -94,6 +115,24 @@ class PhysicsObject extends Entity {
 
         const avgAfter = this.gravityCenter(absolutes, { x: 0, y: 0 });
 
+        // Continuous gravity torque: an unsupported center of mass keeps generating a
+        // toppling torque every instant it isn't directly above the pivot(s) currently
+        // touching a segment, independent of any impact happening this instant. This is
+        // what makes a wheelie eventually fall back down even while resting motionless
+        // (the linearProj-based conversion below only fires when momentum is actively
+        // being cancelled, which is ~0 while at rest).
+        let pivotX = null;
+        let pivotCount = 0;
+        for (let i = 0 ; i < this.hitboxes.length ; i++) {
+            if (this.hitboxes[i].lastCollisionAge !== this.age) continue;
+            pivotX = (pivotX || 0) + absolutes[i].position.x;
+            pivotCount++;
+        }
+        if (pivotCount > 0) {
+            const GRAVITY_TORQUE = 0.08; // rad/s^2 per pixel of imbalance; tune to taste
+            this.momentum.rotation += (avgAfter.x - pivotX / pivotCount) * GRAVITY_TORQUE * elapsed;
+        }
+
         const avgAngleToCenterAfter = this.avgAngleToPoint(absolutes, avgBefore);
 
         // Apply readjustments
@@ -118,7 +157,14 @@ class PhysicsObject extends Entity {
                     const na = Math.sign(readjustmentAngle);
                     const rotProj = this.momentum.rotation * na;
                     if (rotProj < 0) this.momentum.rotation -= rotProj * na;
-                    this.momentum.rotation += na * (-linearProj) * 0.016 / 2;
+
+                    // linearProj is a velocity being cancelled outright this instant (see above:
+                    // it's subtracted with no elapsed scaling), so its conversion into rotation
+                    // must use a fixed coefficient too. Scaling by `elapsed` here would make the
+                    // torque shrink with the substep size instead of the frame's real elapsed time
+                    // (substep count depends on how close to a segment we are, not on gameplay).
+                    const ROTATION_TRANSFER = 0.016;
+                    this.momentum.rotation += na * (-linearProj) * ROTATION_TRANSFER;
                 }
             }
         }
