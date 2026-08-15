@@ -126,7 +126,9 @@ class PhysicsObject extends Entity {
         // Apply readjustments
         this.position.x += avgAfter.x - avgBefore.x;
         this.position.y += avgAfter.y - avgBefore.y;
-        this.rotation += normalizeAngle(avgAngleToCenterAfter - avgAngleToCenterBefore);
+
+        // Disable this line for now as it seems to make the physics less glitchy
+        // this.rotation += normalizeAngle(avgAngleToCenterAfter - avgAngleToCenterBefore);
 
         const readjustmentAngle = normalizeAngle(avgAngleToCenterAfter - avgAngleToCenterBefore);
 
