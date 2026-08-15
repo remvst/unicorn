@@ -89,10 +89,12 @@ class Wheelie extends TrickTracker {
     cycle(elapsed) {
         const back = this.bike.hasCollision(this.bike.backWheel);
         const front = this.bike.hasCollision(this.bike.frontWheel);
-        if (back && front) this.reset();
+        const changeX = changeDiff(this.changeX.change(this.bike.position.x));
 
-        if (back !== front) {
-            this.accX += changeDiff(this.changeX.change(this.bike.position.x))
+        if (back === front) {
+            this.reset(); // airborne or landed, not a wheelie
+        } else if (back !== front) {
+            this.accX += changeX;
             if (this.accX > 200) {
                 this.trick.points = max(0, this.accX * 50 / 100);
                 this.trick.label ||= back ? 'Wheelie' : 'Nosewheelie';

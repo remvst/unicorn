@@ -19,11 +19,12 @@ class ComboTracker {
     }
 
     addTrick(trick) {
-        if (trick.addedToCombo) return;
-        trick.addedToCombo = true;
-        this.tricks.push(trick);
+        if (!trick.addedToCombo) {
+            trick.addedToCombo = true;
+            this.tricks.push(trick);
 
-        this.comboPower = min(1, this.comboPower + 0.5);
+            this.comboPower = min(1, this.comboPower + 0.5);
+        }
 
         this.points = roundToNearest(this.tricks.reduce((acc, t) => acc + t.points, 0), 10);
     }
