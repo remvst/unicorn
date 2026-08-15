@@ -1,5 +1,10 @@
 class Game {
     constructor() {
+        if (DEBUG) {
+            this.lastFrameIndex = 0;
+            this.frameTimes = Array(60).fill(0);
+        }
+
         this.screens = [new WorldScreen()];
         this.frame();
     }

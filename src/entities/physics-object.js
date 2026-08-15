@@ -214,14 +214,6 @@ class PhysicsObject extends Entity {
 
             const angleAfter = Math.atan2(absolute.y, absolute.x);
             totalAddedAngle += angleAfter - angleBefore;
-
-            // ctx.save();
-            // ctx.translate(absolute.position.x, absolute.position.y);
-            // ctx.lineWidth = 2;
-            // ctx.beginPath();
-            // ctx.arc(0, 0, absolute.radius, 0, 2 * Math.PI);
-            // ctx.stroke();
-            // ctx.restore();
         }
     }
 

@@ -15,15 +15,20 @@ class HUD extends Entity {
         ctx.fillStyle = '#fff';
         ctx.font = '24pt Arial';
         ctx.textBaseline = 'top';
+        ctx.textAlign = 'center';
+
+        const trickString = player.comboTracker.tricks.map(t => t.label).join(' + ');
+
+
         let y = 10;
-        for (const trick of player.comboTracker.tricks) {
+        // for (const trick of player.comboTracker.tricks) {
             ctx.fillText(
-                trick.label,
-                10,
-                y,
+                trickString,
+                CANVAS_WIDTH / 2,
+                CANVAS_HEIGHT * 0.6,
             );
-            y += 20;
-        }
+            // y += 20;
+        // }
 
         // Power
         ctx.fillStyle = '#222';
