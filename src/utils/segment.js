@@ -59,6 +59,9 @@ class Segment {
             out.y = (-dx / len) * hitbox.radius;
         }
 
+        // Super cheat: always push upwards
+        out.y = -abs(out.y);
+
         return out;
     }
 }
