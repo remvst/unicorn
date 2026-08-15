@@ -14,6 +14,7 @@ class ComboTracker {
             new Wheelie(),
             new DistanceJump(),
             new TallJump(),
+            new PerfectLanding(),
         ];
         for (const tracker of this.tricksTrackers) {
             tracker.bind(this);
@@ -170,6 +171,45 @@ class TallJump extends TrickTracker {
             if (this.acc < -200) {
                 this.combo.addTrick(this.trick);
             }
+        }
+    }
+}
+
+class PerfectLanding extends TrickTracker { // TODO consider gutting
+
+    reset() {
+        this.landedTime = 0;
+        this.airTime = 0;
+        this.trick = new Trick();
+        this.trick.label = 'perfect landing';
+        this.airborneMomentum = 0;
+    }
+
+    cycle(elapsed) {
+        const back = this.bike.hasCollision(this.bike.backWheel);
+        const front = this.bike.hasCollision(this.bike.frontWheel);
+
+        const momentum = pointDistance(0, 0, this.bike.momentum.position.x, this.bike.momentum.position.y);
+
+        if (back || front) {
+            this.landedTime += elapsed;
+        } else {
+            this.airTime += elapsed;
+            this.landedTime = 0;
+            this.airborneMomentum = momentum;
+        }
+
+        if (back && front) {
+            const rating = momentum / this.airborneMomentum;
+            if (this.landedTime < 0.1 && this.airTime > 1 && rating > 0.95) {
+
+                this.trick.label = 'Landing ' + rating.toFixed(2);
+                this.combo.addTrick(this.trick);
+            }
+
+            this.airTime = 0;
+
+            this.reset();
         }
     }
 }
