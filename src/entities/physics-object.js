@@ -52,26 +52,22 @@ class PhysicsObject extends Entity {
     cycle(elapsed) {
         super.cycle(elapsed);
 
-        // Find the closest point-to-segment distance, accounting for hitbox radius,
-        // across every hitbox and every segment in the world.
-        let distanceToClosestSegment = Infinity;
-        for (const hb of this.hitboxes) {
-            const absolute = this.absolute(hb, new Hitbox());
-            for (const segment of this.segments()) {
-                const dist = segment.distanceTo(absolute.position) - absolute.radius;
-                if (dist < distanceToClosestSegment) distanceToClosestSegment = dist;
-            }
-        }
+        // Cap the substep duration so a fast-moving hitbox can't cross more than (roughly) its
+        // own radius in one physics step, which is what would let it tunnel through a segment.
+        // Using a fixed safety margin (the smallest hitbox radius) rather than the live distance
+        // to the nearest segment keeps the substep count a function of speed alone - resting on
+        // a segment (distance ~0) no longer explodes it, which is what made time-scaled momentum
+        // updates elsewhere in the class behave inconsistently.
+        const safeDist = Math.min(...this.hitboxes.map((hb) => hb.radius)) / 2;
 
-        const speed = pointDistance(0, 0, this.momentum.position.x, this.momentum.position.y);
-        const maxDist = distanceToClosestSegment / 2;
-
-        // Determine what the max step that can be used to run the physics simulation without any risk:
-        // cap substeps so the object can't travel further than maxDist (and therefore can't tunnel
-        // through the closest segment) within a single cycleUnsafe call. MIN_STEP guards against
-        // getting stuck when maxDist is already <= 0 (e.g. already overlapping a segment).
-        const MIN_STEP = 1 / 1000;
-        const step = (speed > 0 && isFinite(maxDist)) ? Math.max(maxDist / speed, MIN_STEP) : elapsed;
+        // A hitbox's actual speed through the world is its linear speed plus its tangential
+        // speed from rotation (omega * distance from origin). Ignoring the rotational part
+        // underestimates speed for hitboxes far from the origin (e.g. the back wheel) during
+        // fast spins (flips), letting them tunnel through segments despite the cap above.
+        const maxHitboxDist = Math.max(...this.hitboxes.map((hb) => pointDistance(0, 0, hb.position.x, hb.position.y)));
+        const speed = pointDistance(0, 0, this.momentum.position.x, this.momentum.position.y)
+            + Math.abs(this.momentum.rotation) * maxHitboxDist;
+        const step = speed > 0 ? safeDist / speed : elapsed;
 
         let remaining = elapsed;
         while (remaining > 0) {
@@ -114,24 +110,6 @@ class PhysicsObject extends Entity {
         }
 
         const avgAfter = this.gravityCenter(absolutes, { x: 0, y: 0 });
-
-        // Continuous gravity torque: an unsupported center of mass keeps generating a
-        // toppling torque every instant it isn't directly above the pivot(s) currently
-        // touching a segment, independent of any impact happening this instant. This is
-        // what makes a wheelie eventually fall back down even while resting motionless
-        // (the linearProj-based conversion below only fires when momentum is actively
-        // being cancelled, which is ~0 while at rest).
-        let pivotX = null;
-        let pivotCount = 0;
-        for (let i = 0 ; i < this.hitboxes.length ; i++) {
-            if (this.hitboxes[i].lastCollisionAge !== this.age) continue;
-            pivotX = (pivotX || 0) + absolutes[i].position.x;
-            pivotCount++;
-        }
-        if (pivotCount > 0) {
-            const GRAVITY_TORQUE = 0.08; // rad/s^2 per pixel of imbalance; tune to taste
-            this.momentum.rotation += (avgAfter.x - pivotX / pivotCount) * GRAVITY_TORQUE * elapsed;
-        }
 
         const avgAngleToCenterAfter = this.avgAngleToPoint(absolutes, avgBefore);
 
