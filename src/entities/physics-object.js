@@ -98,7 +98,7 @@ class PhysicsObject extends Entity {
         const avgBefore = this.gravityCenter(absolutes, { x: 0, y: 0 });
         const avgAngleToCenterBefore = this.avgAngleToPoint(absolutes, avgBefore);
 
-        const RESOLVE_PASSES = 3;
+        const RESOLVE_PASSES = 5;
         for (let pass = 0 ; pass < RESOLVE_PASSES ; pass++) {
             let anyCollision = false;
 
