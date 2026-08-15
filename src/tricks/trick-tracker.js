@@ -51,12 +51,13 @@ class ComboTracker {
     validateCombo() {
         if (!this.tricks.length) return;
 
-        console.log('combo validated')
         for (const tracker of this.tricksTrackers) {
             tracker.reset();
         }
 
         this.tricks = [];
+
+        this.bike.power += 0.5;
     }
 }
 

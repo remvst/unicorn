@@ -4,6 +4,8 @@ class Bike extends PhysicsObject {
 
         this.categories.push('bike');
 
+        this.power = 0;
+
         this.frontWheel = this.addHitbox();
         this.frontWheel.position.x = 20;
         this.frontWheel.radius = 10;
@@ -67,7 +69,7 @@ class Bike extends PhysicsObject {
 
         // Stomping
         if (brake && this.airborne) {
-            this.momentum.position.y += 500 * elapsed;
+            this.momentum.position.y += 1000 * elapsed;
         }
 
         // Rotation dampening
@@ -78,6 +80,8 @@ class Bike extends PhysicsObject {
                 elapsed * Math.PI,
             );
         }
+
+        this.power = max(0, this.power - elapsed / 8);
     }
 
     cycle(elapsed) {
@@ -89,7 +93,12 @@ class Bike extends PhysicsObject {
         const backWheelOnGround = this.age - this.backWheel.lastCollisionAge < 0.1;
         const frontWheelOnGround = this.age - this.frontWheel.lastCollisionAge < 0.1;
 
-        if (accelerate && backWheelOnGround) {
+        let forwardPush = 0;
+        if (accelerate) {
+            forwardPush += interpolate(750, 1000, easeOutQuint(this.power)) * elapsed;
+        }
+
+        if (forwardPush && backWheelOnGround) {
             // Base momentum off the curve
             let sdx = this.backWheel.lastCollisionSegment.p2.x - this.backWheel.lastCollisionSegment.p1.x;
             let sdy = this.backWheel.lastCollisionSegment.p2.y - this.backWheel.lastCollisionSegment.p1.y;
@@ -104,8 +113,8 @@ class Bike extends PhysicsObject {
                         - sdy * (backWheel.position.x - this.backWheel.lastCollisionSegment.p1.x);
             const sign = cross > 0 ? -1 : 1;
 
-            this.momentum.position.x += sign * sdx * elapsed * 1000;
-            this.momentum.position.y += sign * sdy * elapsed * 1000;
+            this.momentum.position.x += sign * sdx * forwardPush;
+            this.momentum.position.y += sign * sdy * forwardPush;
         }
 
         // Friction
