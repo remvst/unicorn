@@ -62,7 +62,7 @@ class PhysicsObject extends Entity {
         // to the nearest segment keeps the substep count a function of speed alone - resting on
         // a segment (distance ~0) no longer explodes it, which is what made time-scaled momentum
         // updates elsewhere in the class behave inconsistently.
-        const safeDist = Math.min(...this.hitboxes.map((hb) => hb.radius)) / 3;
+        const safeDist = Math.min(...this.hitboxes.map((hb) => hb.radius)) / 4;
 
         // A hitbox's actual speed through the world is its linear speed plus its tangential
         // speed from rotation (omega * distance from origin). Ignoring the rotational part
