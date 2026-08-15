@@ -1,8 +1,32 @@
 class Entity {
+
+    static pools = new Map();
+
+    static poolFor(entityClass) {
+        if (!this.pools.has(entityClass)) {
+            this.pools.set(entityClass, new Set());
+        }
+        return this.pools.get(entityClass);
+    }
+
+    static recycle(entityClass) {
+        const pool = this.poolFor(entityClass);
+        const entity = firstItem(pool) || new entityClass();
+        entity.pool = pool;
+        pool.delete(entity);
+        entity.reset();
+        return entity;
+    }
+
     constructor() {
+        this.position = {};
+        this.categories = [];
+        this.reset();
+    }
+
+    reset() {
         this.age = 0;
         this.position = {x: 0, y: 0};
-        this.categories = [];
     }
 
     cycle(elapsed) {
@@ -21,13 +45,15 @@ class Entity {
         interpDuration,
         easing = linear,
     ) {
-        return this.world.add(new Interpolator(
+        const interpolator = Entity.recycle(Interpolator)
+        interpolator.configure(
             owner,
             interpProperty,
             fromValue,
             toValue,
             interpDuration,
             easing,
-        )).awaitCompletion();
+        );
+        return this.world.add(interpolator).awaitCompletion();
     }
 }

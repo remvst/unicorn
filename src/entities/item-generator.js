@@ -20,7 +20,7 @@ class ItemGenerator extends Entity {
                 const ground = firstItem(this.world.category('ground'));
                 const valleyX = firstItem(ground.valleys(camera.position.x + CANVAS_WIDTH, camera.position.x + CANVAS_WIDTH + 20000));
                 for (let x = valleyX, i = 0 ; i < 5 ; x += 100, i++) {
-                    const item = this.world.add(new Item());
+                    const item = this.world.add(Entity.recycle(Item));
                     item.position.x = x;
                     item.position.y = ground.curveAt(x) - 20;
                 }

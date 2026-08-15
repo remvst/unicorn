@@ -1,8 +1,13 @@
 class Particle extends Entity {
 
-    alpha = 1;
-    size = 1;
-    rotation = 0;
+    static pool = new Set();
+
+    reset() {
+        super.reset();
+        this.alpha = 1;
+        this.size = 1;
+        this.rotation = 0;
+    }
 
     render() {
         ctx.globalAlpha = this.alpha;
@@ -13,7 +18,7 @@ class Particle extends Entity {
         ctx.fillRect(-this.size / 2, -this.size / 2, this.size, this.size);
     }
 
-    animate(duration, values) {
+    async animate(duration, values) {
         const interps = [];
         for (const [propertyKey, offset] of Object.entries(values)) {
             let owner = this;
@@ -23,8 +28,8 @@ class Particle extends Entity {
             }
             interps.push(this.interp(owner, propertyKey, owner[propertyKey], owner[propertyKey] + offset, duration));
         }
-        return Promise.all(interps)
-            .then(() => this.world.remove(this));
+        await Promise.all(interps);
+        this.world.remove(this);
     }
 }
 
@@ -48,7 +53,7 @@ dustCloud = ({
         const angle = random() * PI * 2;
         const dist = random() * radius;
 
-        const p = new Particle();
+        const p = Entity.recycle(Particle);
         p.position.x = position.x + cos(angle) * dist;
         p.position.y = position.y + sin(angle) * dist;
         p.rotation = random() * PI;

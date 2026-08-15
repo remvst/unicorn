@@ -1,6 +1,11 @@
 class Interpolator extends Entity {
 
-    constructor(
+    reset() {
+        super.reset();
+        this.resolve = null;
+    }
+
+    configure(
         object,
         property,
         fromValue,
@@ -8,7 +13,6 @@ class Interpolator extends Entity {
         duration,
         easing = linear,
     ) {
-        super();
         this.object = object;
         this.property = property;
         this.fromValue = fromValue;
@@ -30,9 +34,10 @@ class Interpolator extends Entity {
 
         this.object[this.property] = interpolate(this.fromValue, this.toValue, this.easing(progress));
 
+        const { resolve } = this;
         if (progress > 1) {
             this.world.remove(this);
-            this.resolve?.();
+            resolve?.();
         }
     }
 }

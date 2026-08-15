@@ -28,6 +28,9 @@ class World {
         for (const category of Object.values(this.categories)) {
             category.delete(entity);
         }
+
+        // Allow the entity to be reused
+        entity.pool?.add(entity);
     }
 
     category(id) {
