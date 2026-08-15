@@ -1,3 +1,5 @@
+reusablePoints = [];
+
 class PhysicsObject extends Entity {
     constructor() {
         super();
@@ -82,6 +84,16 @@ class PhysicsObject extends Entity {
     }
 
     cycleUnsafe(elapsed) {
+        // Sketchy util so we don't keep creating points in memory
+        let reusableIndex = 0;
+        function reusablePt() {
+            while (reusableIndex >= reusablePoints.length) reusablePoints.push({});
+            const pt = reusablePoints[reusableIndex++];
+            pt.x = 0;
+            pt.y = 0;
+            return pt;
+        }
+
         // Momentum
         this.position.x += this.momentum.position.x * elapsed;
         this.position.y += this.momentum.position.y * elapsed;
@@ -92,7 +104,7 @@ class PhysicsObject extends Entity {
 
         const absolutes = this.hitboxes.map((hb) => this.absolute(hb, (hb.absolute ??= new Hitbox())));
 
-        const avgBefore = this.gravityCenter(absolutes, { x: 0, y: 0 });
+        const avgBefore = this.gravityCenter(absolutes, reusablePt());
         const avgAngleToCenterBefore = this.avgAngleToPoint(absolutes, avgBefore);
 
         const RESOLVE_PASSES = 5;
@@ -107,7 +119,7 @@ class PhysicsObject extends Entity {
                     if (!segment.collidesWith(absolute)) continue;
                     anyCollision = true;
 
-                    const readjusted = segment.readjust(absolute, { x: 0, y: 0 });
+                    const readjusted = segment.readjust(absolute, reusablePt());
                     absolute.position.x += readjusted.x;
                     absolute.position.y += readjusted.y;
 
@@ -119,7 +131,7 @@ class PhysicsObject extends Entity {
             if (!anyCollision) break;
         }
 
-        const avgAfter = this.gravityCenter(absolutes, { x: 0, y: 0 });
+        const avgAfter = this.gravityCenter(absolutes, reusablePt());
 
         const avgAngleToCenterAfter = this.avgAngleToPoint(absolutes, avgBefore);
 
@@ -191,31 +203,6 @@ class PhysicsObject extends Entity {
             ctx.lineTo(this.position.x + Math.cos(this.rotation) * 50, this.position.y + Math.sin(this.rotation) * 50);
             ctx.stroke();
         });
-
-        const reusableHitbox = new Hitbox();
-
-        let totalAddedAngle = 0;
-
-        for (const hb of this.hitboxes) {
-            const absolute = this.absolute(hb, reusableHitbox);
-
-            const angleBefore = Math.atan2(absolute.y, absolute.x);
-
-            ctx.strokeStyle = '#0f0';
-
-            for (const seg of this.segments()) {
-                if (seg.collidesWith(absolute)) {
-                    ctx.strokeStyle = '#f00';
-
-                    const readjusted = seg.readjust(absolute, {x: 0, y: 0});
-                    absolute.position.x += readjusted.x;
-                    absolute.position.y += readjusted.y;
-                }
-            }
-
-            const angleAfter = Math.atan2(absolute.y, absolute.x);
-            totalAddedAngle += angleAfter - angleBefore;
-        }
     }
 
     * segments() {
