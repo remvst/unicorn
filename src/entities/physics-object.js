@@ -86,6 +86,7 @@ class PhysicsObject extends Entity {
         // Gravity
         this.momentum.position.y += elapsed * 500;
 
+        // TODO limit the number of Hitbox objects being created
         const reusableHitbox = new Hitbox();
 
         const absolutes = this.hitboxes.map((hb) => this.absolute(hb, new Hitbox()));

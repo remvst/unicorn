@@ -55,6 +55,8 @@ class Bike extends PhysicsObject {
             this.jump();
         }
 
+        // TODO breaking while in the air = stomp
+
         // Rotation dampening
         if (!backWheelOnGround && !frontWheelOnGround && !raiseWheel && !lowerWheel) {
             this.momentum.rotation -= between(
