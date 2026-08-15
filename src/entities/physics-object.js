@@ -183,6 +183,7 @@ class PhysicsObject extends Entity {
 
         // Orientation
         ctx.wrap(() => {
+            return;
             ctx.strokeStyle = '#ff0';
             ctx.lineWidth = 5;
             ctx.beginPath();
