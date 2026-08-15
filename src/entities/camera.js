@@ -7,28 +7,11 @@ class Camera extends Entity {
     cycle(elapsed) {
         super.cycle(elapsed);
 
-        // TODO follow player
-        // console.log('I follow player')
-
         const player = firstItem(this.world.category('bike'));
         if (!player) return;
 
         this.position.x = player.position.x + CANVAS_WIDTH * 0.3;
-        this.position.y = player.position.y
-        return;
-
-
-        let x = 0, y = 0;
-        if (downKeys[37]) x = -1;
-        if (downKeys[39]) x = 1;
-        if (downKeys[38]) y = -1;
-        if (downKeys[40]) y = 1;
-
-        if (x || y) {
-            const angle = Math.atan2(y, x);
-            this.position.x += cos(angle) * 100 * elapsed;
-            this.position.y += sin(angle) * 100 * elapsed;
-        }
+        this.position.y = player.position.y;
     }
 
     render(elapsed) {

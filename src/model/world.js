@@ -41,6 +41,7 @@ class World {
 
     render() {
         const camera = firstItem(this.category('camera'));
+        camera.cycle(0); // Cheat to force the camera to be locked
 
         ctx.fillStyle = '#111'
         ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
