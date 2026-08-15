@@ -1,6 +1,7 @@
 class Trick {
     constructor() {
         this.label = '';
+        this.points = 0;
     }
 }
 
@@ -10,24 +11,28 @@ class ComboTracker {
         this.bike = bike;
 
         this.tricksTrackers = [
-            new Backflip(),
+            new Flip(),
             new Wheelie(),
-            new DistanceJump(),
+            new LongJump(),
             new TallJump(),
-            new PerfectLanding(),
         ];
         for (const tracker of this.tricksTrackers) {
             tracker.bind(this);
         }
 
         this.tricks = [];
-
-        this.groundedAcc = 0;
+        this.comboPower = 0;
+        this.points = 0;
     }
 
     addTrick(trick) {
-        if (this.tricks.indexOf(trick) >= 0) return;
+        if (trick.addedToCombo) return;
+        trick.addedToCombo = true;
         this.tricks.push(trick);
+
+        this.comboPower = min(1, this.comboPower + 0.5);
+
+        this.points = roundToNearest(this.tricks.reduce((acc, t) => acc + t.points, 0), 10);
     }
 
     cycle(elapsed) {
@@ -38,13 +43,10 @@ class ComboTracker {
         const back = this.bike.hasCollision(this.bike.backWheel);
         const front = this.bike.hasCollision(this.bike.frontWheel);
 
-        if (!front || !back) {
-            this.groundedAcc = 0;
-        } else {
-            this.groundedAcc += elapsed;
-            if (this.groundedAcc > 0.1) {
-                this.validateCombo();
-            }
+        this.comboPower = max(0, this.comboPower - elapsed / 4);
+
+        if (this.comboPower <= 0 && (front || back)) {
+            this.validateCombo();
         }
     }
 
@@ -56,8 +58,7 @@ class ComboTracker {
         }
 
         this.tricks = [];
-
-        // this.bike.power += 0.5;
+        this.points = 0;
     }
 }
 
@@ -69,7 +70,11 @@ class TrickTracker {
     }
 
     reset() {
-
+        this.trick = !this.trick || this.trick.addedToCombo
+            ? new Trick()
+            : this.trick;
+        this.trick.label = '';
+        this.trick.points = 0;
     }
 
     cycle(elapsed) {
@@ -77,26 +82,58 @@ class TrickTracker {
     }
 }
 
-class Backflip extends TrickTracker {
+class JumpTracker extends TrickTracker {
+
+    constructor() {
+        super();
+        this.changeX = new ValueChangeHelper();
+        this.changeY = new ValueChangeHelper();
+        this.changeRotation = new ValueChangeHelper();
+        this.acc = {
+            position: {},
+            rotation: 0,
+        };
+    }
 
     reset() {
-        this.previousRotation = this.bike.rotation;
-        this.rotationAcc = 0;
-        this.trick = new Trick();
+        super.reset();
+        this.acc.position.x = 0;
+        this.acc.position.y = 0;
+        this.acc.rotation = 0;
     }
 
     cycle(elapsed) {
-        if (this.bike.airborne) {
-            this.rotationAcc += this.bike.rotation - this.previousRotation;
-            this.previousRotation = this.bike.rotation;
+        const landed = this.bike.hasCollision(this.bike.backWheel) || this.bike.hasCollision(this.bike.frontWheel);
+        if (landed) this.reset();
 
-            const flipCount = (abs(this.rotationAcc) + PI) / (PI * 2);
-            if (flipCount >= 1) {
-                this.combo.addTrick(this.trick);
-                this.trick.label = floor(flipCount) + 'x' + (this.rotationAcc < 0 ? 'backflip' : 'frontflip');
-            }
-        } else {
-            this.reset();
+        this.acc.position.x += changeDiff(this.changeX.change(this.bike.position.x));
+        this.acc.position.y += changeDiff(this.changeY.change(this.bike.position.y));
+        this.acc.rotation += normalizeAngle(changeDiff(this.changeRotation.change(normalizeAngle(this.bike.rotation))));
+    }
+}
+
+class Flip extends JumpTracker {
+
+    cycle(elapsed) {
+        super.cycle(elapsed);
+
+        const flipCount = floor((abs(this.acc.rotation) + PI) / (PI * 2));
+
+        if (flipCount >= 1) {
+            const qualifier = flipCount > 1 ? ([
+                '',
+                'double',
+                'triple',
+            ][flipCount - 1] || `${flipCount}x`) : '';
+            const trick = this.acc.rotation < 0 ? 'backflip' : 'frontflip';
+            this.trick.label = `${qualifier} ${trick}`;
+            this.trick.points =
+                200 * // base
+                (this.rotationAcc < 0 ? 1 : 2) * // increase base if frontflip
+                pow(2, flipCount - 1) // exponential as the number of flips increase
+                ;
+
+            this.combo.addTrick(this.trick);
         }
     }
 }
@@ -106,111 +143,55 @@ class Wheelie extends TrickTracker {
     reset() {
         this.acc = 0;
         this.trick = new Trick();
+        this.changeX = new ValueChangeHelper();
     }
 
     cycle(elapsed) {
         const back = this.bike.hasCollision(this.bike.backWheel);
         const front = this.bike.hasCollision(this.bike.frontWheel);
 
-        if (back && !front || front && !back) {
-            this.acc += elapsed;
-            if (this.acc > 0.5) {
+        const [xBefore, xAfter] = this.changeX.change(this.bike.position.x);
+
+        if (back !== front) {
+            this.trick.points += max(0, xAfter - xBefore) * 50 / 100;
+            if (this.trick.points > 100) {
                 this.trick.label ||= back ? 'Wheelie' : 'Nosewheelie';
                 this.combo.addTrick(this.trick);
             }
-        } else {
-            this.acc = 0;
+        }
+
+        if (back && front) this.reset();
+    }
+}
+
+class TallJump extends JumpTracker {
+
+    cycle(elapsed) {
+        super.cycle(elapsed);
+
+        this.trick.points = max(
+            this.trick.points,
+            -this.acc.position.y,
+        );
+        if (this.trick.points > 100) {
+            this.trick.label = 'Jump height';
+            this.combo.addTrick(this.trick);
         }
     }
 }
 
-class DistanceJump extends TrickTracker {
-
-    reset() {
-        this.acc = 0;
-        this.changeX = new ValueChangeHelper();
-        this.trick = new Trick();
-        this.trick.label = 'jump distance';
-    }
+class LongJump extends JumpTracker {
 
     cycle(elapsed) {
-        const [xBefore, xAfter] = this.changeX.change(this.bike.position.x);
+        super.cycle(elapsed);
 
-        const back = this.bike.hasCollision(this.bike.backWheel);
-        const front = this.bike.hasCollision(this.bike.frontWheel);
-
-        if (back || front) {
-            this.reset();
-        } else {
-            this.acc += (xAfter - xBefore) || 0;
-            if (this.acc > 1000) {
-                this.combo.addTrick(this.trick);
-            }
-        }
-    }
-}
-
-class TallJump extends TrickTracker {
-
-    reset() {
-        this.acc = 0;
-        this.changeY = new ValueChangeHelper();
-        this.trick = new Trick();
-        this.trick.label = 'jump height';
-    }
-
-    cycle(elapsed) {
-        const [yBefore, yAfter] = this.changeY.change(this.bike.position.y);
-
-        const back = this.bike.hasCollision(this.bike.backWheel);
-        const front = this.bike.hasCollision(this.bike.frontWheel);
-
-        if (back || front) {
-            this.reset();
-        } else {
-            this.acc += min(0, yAfter - yBefore || 0);
-            if (this.acc < -200) {
-                this.combo.addTrick(this.trick);
-            }
-        }
-    }
-}
-
-class PerfectLanding extends TrickTracker { // TODO consider gutting
-
-    reset() {
-        this.landedTime = 0;
-        this.airTime = 0;
-        this.trick = new Trick();
-        this.trick.label = 'perfect landing';
-        this.airborneMomentum = 0;
-    }
-
-    cycle(elapsed) {
-        const back = this.bike.hasCollision(this.bike.backWheel);
-        const front = this.bike.hasCollision(this.bike.frontWheel);
-
-        const momentum = pointDistance(0, 0, this.bike.momentum.position.x, this.bike.momentum.position.y);
-
-        if (back || front) {
-            this.landedTime += elapsed;
-        } else {
-            this.airTime += elapsed;
-            this.landedTime = 0;
-            this.airborneMomentum = momentum;
-        }
-
-        if (back && front) {
-            const rating = momentum / this.airborneMomentum;
-            if (this.landedTime < 0.1 && this.airTime > 1 && rating > 0.95) {
-
-                this.trick.label = 'Landing ' + rating.toFixed(2);
-                this.combo.addTrick(this.trick);
-            }
-
-            this.airTime = 0;
-
-            this.reset();
+        this.trick.points = max(
+            this.trick.points,
+            this.acc.position.x * 20 / 100,
+        );
+        if (this.trick.points > 100) {
+            this.trick.label = 'Jump distance';
+            this.combo.addTrick(this.trick);
         }
     }
 }

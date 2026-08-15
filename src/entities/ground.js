@@ -17,21 +17,21 @@ class Ground extends Entity {
 
         ctx.strokeStyle = 'red';
         ctx.beginPath();
-        for (let x = camera.position.x - CANVAS_WIDTH / 2 ; x < camera.position.x + CANVAS_WIDTH / 2 ; x += 5) {
+        for (let x = camera.position.x - CANVAS_WIDTH / 2 ; x < camera.position.x + CANVAS_WIDTH / 2 ; x += 10) {
             ctx.lineTo(x, this.curveAt(x));
         }
         ctx.stroke();
 
         if (DEBUG) {
-            for (const x of this.peaks(camera.position.x - CANVAS_WIDTH / 2, camera.position.x + CANVAS_WIDTH / 2)) {
-                ctx.fillStyle = '#f0f';
-                ctx.fillRect(x, this.curveAt(x) - 50, 2, 100);
-            }
+            // for (const x of this.peaks(camera.position.x - CANVAS_WIDTH / 2, camera.position.x + CANVAS_WIDTH / 2)) {
+            //     ctx.fillStyle = '#f0f';
+            //     ctx.fillRect(x, this.curveAt(x) - 50, 2, 100);
+            // }
 
-            for (const x of this.valleys(camera.position.x - CANVAS_WIDTH / 2, camera.position.x + CANVAS_WIDTH / 2)) {
-                ctx.fillStyle = '#ff0';
-                ctx.fillRect(x, this.curveAt(x) - 50, 2, 100);
-            }
+            // for (const x of this.valleys(camera.position.x - CANVAS_WIDTH / 2, camera.position.x + CANVAS_WIDTH / 2)) {
+            //     ctx.fillStyle = '#ff0';
+            //     ctx.fillRect(x, this.curveAt(x) - 50, 2, 100);
+            // }
 
             const bike = firstItem(this.world.category('bike'));
             if (bike) {

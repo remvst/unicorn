@@ -11,30 +11,38 @@ class HUD extends Entity {
 
         ctx.translate(camera.position.x - CANVAS_WIDTH / 2, camera.position.y - CANVAS_HEIGHT / 2);
 
-        // Tricks
-        ctx.fillStyle = '#fff';
-        ctx.font = '24pt Arial';
-        ctx.textBaseline = 'top';
-        ctx.textAlign = 'center';
+        const trickString = player.comboTracker.tricks.map(t => t.label + `(${t.points.toFixed(0)})`).join(' + ').toUpperCase();
+        if (trickString) {
+            ctx.wrap(() => {
+                ctx.translate(CANVAS_WIDTH / 2, CANVAS_HEIGHT * 0.6);
 
-        const trickString = player.comboTracker.tricks.map(t => t.label).join(' + ');
+                // Tricks
+                ctx.fillStyle = '#fff';
+                ctx.font = 'bold 18pt Arial';
+                ctx.textBaseline = 'top';
+                ctx.textAlign = 'center';
+                ctx.lineWidth = 1;
+                ctx.strokeStyle = '#000';
+                ctx.fillText(
+                    trickString,
+                    0,
+                    0,
+                );
+                ctx.strokeText(
+                    trickString,
+                    0,
+                    0,
+                );
 
+                const scoreLine = `${player.comboTracker.points} X${player.comboTracker.tricks.length}`;
+                ctx.fillText(scoreLine, 0, 50);
+                ctx.strokeText(scoreLine, 0, 50);
 
-        let y = 10;
-        // for (const trick of player.comboTracker.tricks) {
-            ctx.fillText(
-                trickString,
-                CANVAS_WIDTH / 2,
-                CANVAS_HEIGHT * 0.6,
-            );
-            // y += 20;
-        // }
-
-        // Power
-        ctx.fillStyle = '#222';
-        ctx.fillRect(0, 0, 200, 10);
-
-        ctx.fillStyle = player.usingPower ? '#f00' : '#fff';
-        ctx.fillRect(0, 0, 200 * player.power, 10);
+                // Combo timer
+                ctx.fillStyle = '#fff';
+                const w = player.comboTracker.comboPower * 200;
+                ctx.fillRect(-w / 2, 100, w, 10);
+            });
+        }
     }
 }

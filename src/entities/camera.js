@@ -16,8 +16,8 @@ class Camera extends Entity {
 
     render(elapsed) {
         if (DEBUG) {
-            ctx.fillStyle = '#fff';
-            ctx.fillRect(this.position.x, this.position.y, 10, 10);
+            // ctx.fillStyle = '#fff';
+            // ctx.fillRect(this.position.x, this.position.y, 10, 10);
         }
     }
 }
