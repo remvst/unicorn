@@ -74,27 +74,31 @@ class Flip extends JumpTracker {
 }
 
 class Wheelie extends TrickTracker {
-    reset() {
-        this.acc = 0;
+
+    constructor() {
+        super();
         this.trick = new Trick();
         this.changeX = new ValueChangeHelper();
+    }
+
+    reset() {
+        super.reset();
+        this.accX = 0;
     }
 
     cycle(elapsed) {
         const back = this.bike.hasCollision(this.bike.backWheel);
         const front = this.bike.hasCollision(this.bike.frontWheel);
-
-        const [xBefore, xAfter] = this.changeX.change(this.bike.position.x);
+        if (back && front) this.reset();
 
         if (back !== front) {
-            this.trick.points += max(0, xAfter - xBefore) * 50 / 100;
-            if (this.trick.points > 100) {
+            this.accX += changeDiff(this.changeX.change(this.bike.position.x))
+            if (this.accX > 200) {
+                this.trick.points = max(0, this.accX * 50 / 100);
                 this.trick.label ||= back ? 'Wheelie' : 'Nosewheelie';
                 this.combo.addTrick(this.trick);
             }
         }
-
-        if (back && front) this.reset();
     }
 }
 

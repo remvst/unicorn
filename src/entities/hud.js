@@ -34,7 +34,7 @@ class HUD extends Entity {
                     0,
                 );
 
-                const scoreLine = `${player.comboTracker.points} X${player.comboTracker.tricks.length}`;
+                const scoreLine = player.comboTracker.points.toFixed(0);
                 ctx.fillText(scoreLine, 0, 50);
                 ctx.strokeText(scoreLine, 0, 50);
 
