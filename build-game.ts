@@ -8,8 +8,10 @@ import yargs from 'yargs/yargs';
 
 const JS_FILES = [
     'globals.js',
+
     'graphics/wrap.js',
     'graphics/skeleton-renderable.js',
+
     'utils/math.js',
     'utils/resizer.js',
     'utils/first-item.js',
@@ -19,14 +21,19 @@ const JS_FILES = [
     'utils/easing.js',
     'utils/perlin-curve.js',
     'utils/value-change-helper.js',
+
     'tricks/trick.js',
     'tricks/trick-tracker.js',
     'tricks/combo-tracker.js',
+
     'input/keyboard.js',
+
     'screens/screen.js',
     'screens/world-screen.js',
+
     'model/entity.js',
     'model/world.js',
+
     'entities/camera.js',
     'entities/ground.js',
     'entities/physics-object.js',
@@ -38,10 +45,13 @@ const JS_FILES = [
     'entities/item.js',
     'entities/item-generator.js',
     'entities/level-outcome.js',
+
     'levels/level.js',
+
     'sound/sonantx.js',
     'sound/song.js',
     'sound/ZzFXMicro.js',
+
     'game.js',
     'index.js',
 ];
