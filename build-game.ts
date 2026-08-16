@@ -164,43 +164,6 @@ const argv = yargs(process.argv.slice(2)).options({
     html: { type: 'string', demandOption: true },
 }).parse();
 
-const minifyMatrix = (matrix: number[][]): string => {
-    return matrix.map(row => row.join('')).join('|');
-}
-
-const deminifyMatrix = (minified: string): number[][] => {
-    return minified.split('|').map(row => row.split('').map(x => parseInt(x)));
-}
-
-const minifyLevel = (levelJson: any[]): string => {
-    let js = '[';
-    for (const entity of levelJson) {
-        js += '{';
-        for (const propertyKey in entity) {
-            const propertyValue = entity[propertyKey];
-
-            let value: any;
-            if (propertyKey === "matrix") {
-                value = 'deminifyMatrix(`' + minifyMatrix(propertyValue) + '`)';
-            } else if (propertyValue === 0) {
-                continue;
-            } else if (propertyKey === "angle") {
-                const inDegrees = Math.round(propertyValue * 180 / Math.PI);
-                value = (inDegrees / 180) + ' * PI';
-            } else if (propertyKey === "text") {
-                value = 'nomangle(' + JSON.stringify(propertyValue) + ')';
-            } else {
-                value = JSON.stringify(propertyValue);
-            }
-
-            js += `${JSON.stringify(propertyKey)}: ${value},`;
-        }
-        js += '},';
-    }
-    js += ']';
-    return js;
-}
-
 (async () => {
     const constants: Record<string, string | number | boolean> = {
         DEBUG: argv.debug,
@@ -233,8 +196,6 @@ const minifyLevel = (levelJson: any[]): string => {
     let js = (await Promise.all(
         jsFiles.map(path => fs.readFile('src/' + path, 'utf-8')))
     ).join('\n');
-
-    js += 'deminifyMatrix = ' + deminifyMatrix.toString() + ';\n\n';
 
     js = hardcodeConstants(js, constants);
     js = macro(js, NOMANGLE);
