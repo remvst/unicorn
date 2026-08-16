@@ -48,9 +48,11 @@ const JS_FILES = [
     'entities/level-outcome.js',
     'entities/background.js',
     'entities/objective.js',
+    'entities/waiter.js',
 
     'levels/level.js',
     'levels/tutorial-flat.js',
+    'levels/tutorial-backflip.js',
 
     'sound/sonantx.js',
     'sound/song.js',

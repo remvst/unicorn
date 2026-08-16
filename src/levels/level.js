@@ -31,4 +31,29 @@ class Level {
     }) {
         // override in subclasses
     }
+
+    flattenGround(ground) {
+        let x = firstItem(this.world.category('camera')).position.x;
+        ground.curve = ground.curve.faded(
+            x += CANVAS_WIDTH / 2,
+            x += CANVAS_WIDTH / 2,
+            x => 1 - linear(x),
+        );
+        return x;
+    }
+
+    transitionIntoCurve(ground, curve) {
+        let x = firstItem(this.world.category('camera')).position.x;
+        ground.curve = new PerlinCurve({
+            plus: [
+                ground.curve,
+                curve.faded(
+                    x += CANVAS_WIDTH / 2,
+                    x += CANVAS_WIDTH / 2,
+                    linear,
+                ),
+            ]
+        });
+        return x;
+    }
 }
