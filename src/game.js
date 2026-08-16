@@ -5,7 +5,10 @@ class Game {
             this.frameTimes = Array(60).fill(0);
         }
 
-        this.screens = [new WorldScreen(new (ALL_LEVELS[0])())];
+        this.screens = [
+            new WorldScreen(new (ALL_LEVELS[0])()),
+            new MainMenu(),
+        ];
         this.frame();
     }
 

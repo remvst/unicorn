@@ -30,6 +30,7 @@ const JS_FILES = [
 
     'screens/screen.js',
     'screens/world-screen.js',
+    'screens/main-menu.js',
 
     'model/entity.js',
     'model/world.js',
@@ -54,6 +55,7 @@ const JS_FILES = [
 
     'levels/level.js',
     'levels/test-level.js',
+    'levels/intro-level.js',
     'levels/tutorial-flat.js',
     'levels/tutorial-backflip.js',
     'levels/all-levels.js',

@@ -1,5 +1,6 @@
 ALL_LEVELS = [
-    TestLevel,
+    // TestLevel,
+    IntroLevel,
     TutorialFlat,
     TutorialBackflip,
 ];
