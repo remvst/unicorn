@@ -16,10 +16,10 @@ class SkeletonRenderable {
     }
 }
 
-lineRenderable = (from, to, thickness = 2) => () => {
+lineRenderable = (from, to, thickness = 2, cap = 'round') => () => {
     ctx.lineWidth = thickness;
     ctx.strokeStyle = '#fff';
-    ctx.lineCap = 'round';
+    ctx.lineCap = cap;
     ctx.beginPath();
     ctx.moveTo(from.x, from.y);
     ctx.lineTo(to.x, to.y);
