@@ -21,6 +21,7 @@ class Level {
             world: this.world,
             ground: firstItem(this.world.category('ground')),
             player: firstItem(this.world.category('player')),
+            camera: firstItem(this.world.category('camera')),
         })
     }
 

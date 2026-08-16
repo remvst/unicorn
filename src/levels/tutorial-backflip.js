@@ -2,7 +2,8 @@ class TutorialBackflip extends Level {
     setup({
         world,
         player,
-        ground
+        ground,
+        camera,
     }) {
         (async () => {
             const previousLevelEndX = this.flattenGround(ground);
@@ -13,16 +14,20 @@ class TutorialBackflip extends Level {
             uc.facing = -1;
 
             // Wait for the player to reach the unicorn
-            await waitFor(world, () => player.position.x > uc.position.x);
-            // TODO disable controls
+            await waitFor(world, () => player.position.x > uc.position.x - 400);
+            player.controlsOverride = {brake: true};
+            camera.interp(camera, 'zoom', camera.zoom, 2, 0.3);
 
             // Make the unicorn go away
+            console.log('blah blah blah');
+            await uc.interp(uc.position, 'bs', 0, 0, 2);
             uc.facing = 1;
             uc.walking = true;
-            await uc.interp(uc.position, 'x', uc.position.x, uc.position.x + CANVAS_WIDTH, 5);
+            await uc.interp(uc.position, 'x', uc.position.x, uc.position.x + CANVAS_WIDTH / 2, 2);
             uc.world.remove(uc);
 
-            // TODO enable controls
+            player.controlsOverride = null;
+            camera.interp(camera, 'zoom', camera.zoom, 1, 0.3);
 
             const levelStartX = this.transitionIntoCurve(ground, new PerlinCurve({ step: 500, amplitude: 200 }));
 

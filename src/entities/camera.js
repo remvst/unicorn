@@ -11,7 +11,7 @@ class Camera extends Entity {
         const player = firstItem(this.world.category('bike'));
         if (!player) return;
 
-        this.position.x = player.position.x + CANVAS_WIDTH * 0.3;
+        this.position.x = player.position.x + CANVAS_WIDTH * 0.3 / this.zoom;
         this.position.y = player.position.y;
     }
 

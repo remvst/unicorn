@@ -33,6 +33,14 @@ class Bike extends PhysicsObject {
 
         this.bikeRenderable = new BikeRenderable(this);
         this.riderRenderable = new RiderRenderable(this.bikeRenderable);
+
+        this.controls = {
+            // raiseWheel: false,
+            // lowerWheel: false,
+            // accelerate: false,
+            // brake: false,
+            // jump: false,
+        }
     }
 
     get airborne() {
@@ -46,10 +54,12 @@ class Bike extends PhysicsObject {
     }
 
     cycleUnsafe(elapsed) {
-        const raiseWheel = downKeys[37];
-        const lowerWheel = downKeys[39];
-        const jump = downKeys[32];
-        const brake = downKeys[40];
+        const {
+            raiseWheel,
+            lowerWheel,
+            jump,
+            brake,
+        } = this.controls;
 
         // Backflip/frontflip
         if (raiseWheel) this.momentum.rotation -= elapsed * Math.PI * 2;
@@ -90,10 +100,13 @@ class Bike extends PhysicsObject {
     }
 
     cycle(elapsed) {
-        const accelerate = downKeys[38];
-        const brake = downKeys[40];
-        const raiseWheel = downKeys[37];
-        const lowerWheel = downKeys[39];
+        const {
+            raiseWheel,
+            lowerWheel,
+            jump,
+            brake,
+            accelerate,
+        } = this.controls;
 
         super.cycle(elapsed);
 
