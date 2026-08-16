@@ -37,6 +37,7 @@ const JS_FILES = [
     'entities/unicorn.js',
     'entities/item.js',
     'entities/item-generator.js',
+    'entities/level-outcome.js',
     'levels/level.js',
     'sound/sonantx.js',
     'sound/song.js',

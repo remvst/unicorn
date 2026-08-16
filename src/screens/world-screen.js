@@ -1,6 +1,7 @@
 class WorldScreen extends Screen {
     constructor() {
         super();
+
         this.level = new Level(); // TODO inject this
 
         if (DEBUG) {
@@ -21,9 +22,17 @@ class WorldScreen extends Screen {
 
     cycle(elapsed) {
         this.level.world.cycle(elapsed);
+        this.onOutcome(firstItem(this.level.world.category('outcome')));
     }
 
     render() {
         this.level.world.render();
+    }
+
+    onOutcome(outcome) {
+        if (this.outcome || !outcome) return;
+        this.outcome = outcome;
+
+        console.log('success?', outcome.success);
     }
 }
