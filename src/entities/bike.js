@@ -143,7 +143,7 @@ class Bike extends PhysicsObject {
         // Friction
         let friction = 0;
         if (backWheelOnGround || frontWheelOnGround) {
-            if (accelerate) friction = 0;
+            if (accelerate || jump) friction = 0;
             else if (brake) friction = 1000;
             else friction = 200;
         }
