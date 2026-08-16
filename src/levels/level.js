@@ -16,19 +16,19 @@ class Level {
             this.world.add(new HUD());
         }
 
-        this.setup({
+        this.setup()
+    }
+
+    basics() {
+        return {
             world: this.world,
             ground: firstItem(this.world.category('ground')),
             player: firstItem(this.world.category('player')),
             camera: firstItem(this.world.category('camera')),
-        })
+        };
     }
 
-    setup({
-        world,
-        ground,
-        player
-    }) {
+    setup() {
         // override in subclasses
     }
 
@@ -55,5 +55,53 @@ class Level {
             ]
         });
         return x;
+    }
+
+    async levelTransition({
+        dialog,
+    }) {
+        const { ground, player, camera } = this.basics();
+
+        const previousLevelEndX = this.flattenGround(ground);
+
+        // Add a unicorn at the beginning
+        const uc = this.world.add(new Unicorn());
+        uc.position.x = previousLevelEndX + CANVAS_WIDTH / 2;
+        uc.facing = -1;
+
+        // Wait for the player to reach the unicorn
+        await waitFor(this.world, () => player.position.x > uc.position.x - 400);
+        player.controlsOverride = {brake: true};
+
+        // Force the player to land
+        camera.interp(camera, 'zoom', camera.zoom, 2, 0.3);
+        await waitFor(this.world, (elapsed) => {
+            player.rotation += between(-elapsed * PI / 4, -player.rotation, elapsed * PI / 4);
+            return player.rotation === 0;
+        });
+
+        // Give instructions
+        // TODO render on screen
+        for (const l of dialog) {
+            console.log(l);
+        }
+        await uc.interp(uc.position, 'bs', 0, 0, 2);
+
+        // Make the unicorn go away
+        uc.facing = 1;
+        uc.walking = true;
+        await uc.interp(uc.position, 'x', uc.position.x, uc.position.x + CANVAS_WIDTH / 2, 2);
+        uc.world.remove(uc);
+
+        // Restore player control
+        player.controlsOverride = null;
+        camera.interp(camera, 'zoom', camera.zoom, 1, 0.3);
+
+        return this.transitionIntoCurve(ground, new PerlinCurve({ step: 500, amplitude: 200 }));
+    }
+
+    async runObjectives({ objectives }) {
+        for (const obj of objectives) this.world.add(obj);
+        await Promise.all(objectives.map(obj => waitFor(this.world, () => obj.completed)));
     }
 }
