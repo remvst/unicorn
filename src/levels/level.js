@@ -11,7 +11,17 @@ class Level {
 
         const uc = this.world.add(new Unicorn());
         uc.position.x = 300;
-        uc.position.y = ground.curveAt(uc.position.x) - 20;
+
+        (async () => {
+            uc.facing = -1;
+            await uc.interp(uc.position, 'bs', 0, 0, 2);
+
+            uc.facing = 1;
+            uc.walking = true;
+            await uc.interp(uc.position, 'x', uc.position.x, uc.position.x + CANVAS_WIDTH, 5);
+
+            uc.world.remove(uc);
+        })();
 
         this.player = this.world.add(new Bike());
         this.player.position.y = ground.curveAt(this.player.position.x) -

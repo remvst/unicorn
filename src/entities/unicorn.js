@@ -3,6 +3,8 @@ class Unicorn extends Entity {
     constructor() {
         super();
         this.renderable = new UnicornRenderable();
+        this.facing = 1;
+        this.walking = false;
     }
 
     render() {
@@ -10,20 +12,22 @@ class Unicorn extends Entity {
         ctx.fillStyle = '#f00';
         ctx.fillRect(-10, -10, 20, 20);
 
-        // ctx.fillRect();
+        ctx.scale(this.facing, 1);
 
+        this.renderable.age = this.walking ? this.age : 0;
         this.renderable.render();
-
-
     }
 
     cycle(elapsed) {
+        super.cycle(elapsed);
+
         const camera = firstItem(this.world.category('camera'));
         if (this.position.x < camera.position.x - CANVAS_WIDTH) {
-            const ground = firstItem(this.world.category('ground'));
             this.position.x = camera.position.x + CANVAS_WIDTH + random(500, 1000);
-            this.position.y = ground.curveAt(this.position.x) - 20;
         }
+
+        const ground = firstItem(this.world.category('ground'));
+        this.position.y = ground.curveAt(this.position.x) - 30;
     }
 }
 
@@ -90,6 +94,12 @@ class UnicornRenderable extends SkeletonRenderable {
 
         this.leftBackFoot.x = this.backLegAttach.x;
         this.leftBackFoot.y = this.shoulders.y + 42;
+
+        const footSine = sin(this.age * PI * 2 * 2) * 10;
+        this.leftBackFoot.x += footSine;
+        this.rightBackFoot.x -= footSine;
+        this.leftFrontFoot.x += footSine;
+        this.rightFrontFoot.x -= footSine;
 
         // Tail
         this.tailBase.x = this.butt.x + 3;
