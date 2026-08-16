@@ -35,31 +35,11 @@ class Ground extends Entity {
 
             const bike = firstItem(this.world.category('bike'));
             if (bike) {
-                for (const seg of this.getSegments(bike)) {
-                    seg.render();
-                }
+                // for (const seg of this.getSegments(bike)) {
+                //     seg.render();
+                // }
             }
         }
-    }
-
-    getSegments(bike) {
-        const stepX = 20;
-        const window = 400;
-        const refX = floorToNearest(bike.position.x, stepX);
-
-        return this.segments.getOrCreate(
-            floorToNearest(refX, window / 4),
-            () => {
-                const segments = [];
-                for (let x = refX - window / 2 ; x < refX + window / 2 ; x += stepX) {
-                    segments.push(new Segment(
-                        { x: x, y : this.curveAt(x) },
-                        { x: x- stepX, y : this.curveAt(x- stepX) },
-                    ))
-                }
-                return segments;
-            }
-        );
     }
 
     curveAt(x) {

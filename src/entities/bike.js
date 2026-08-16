@@ -10,19 +10,17 @@ class Bike extends PhysicsObject {
 
         this.frontWheel = this.addHitbox();
         this.frontWheel.position.x = 20;
+        this.frontWheel.position.y = 20;
         this.frontWheel.radius = 10;
 
         this.backWheel = this.addHitbox();
         this.backWheel.position.x = -20;
+        this.backWheel.position.y = 20;
         this.backWheel.radius = 10;
 
         this.head = this.addHitbox();
-        this.head.position.y = -20;
-        this.head.radius = 5;
-
-        this.safety = this.addHitbox();
-        this.safety.position.y = 5;
-        this.safety.radius = 3;
+        this.head.position.y = -10;
+        this.head.radius = 10;
 
         this.jumpChange = new ValueChangeHelper();
 
@@ -190,8 +188,6 @@ class Bike extends PhysicsObject {
     }
 
     render() {
-        super.render();
-
         ctx.wrap(() => {
             ctx.translate(this.position.x, this.position.y);
             ctx.rotate(this.rotation);
@@ -201,6 +197,8 @@ class Bike extends PhysicsObject {
             this.riderRenderable.pedalAge = this.pedalAge;
             this.riderRenderable.render();
         });
+
+        super.render();
     }
 
     die() {

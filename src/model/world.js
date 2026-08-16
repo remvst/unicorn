@@ -11,7 +11,7 @@ class World {
         const ground = this.add(new Ground());
 
         const player = this.add(new Bike());
-        player.position.y = ground.curveAt(player.position.x) - player.backWheel.radius;
+        player.position.y = ground.curveAt(player.position.x) - player.backWheel.position.y - player.backWheel.radius; // TODO eventually hardcode this?
     }
 
     add(entity) {
@@ -53,7 +53,7 @@ class World {
 
         ctx.wrap(() => {
             ctx.translate(CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2);
-            ctx.scale(1.5, 1.5);
+            // ctx.scale(1.5, 1.5);
             ctx.translate(-camera.position.x, -camera.position.y);
 
             for (const entity of this.entities) {

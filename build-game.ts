@@ -52,6 +52,7 @@ const CONSTANTS = {
     "INPUT_MODE_TOUCH": 1,
 
     "DEBUG_INFO": 1,
+    "DEBUG_COLLISIONS": 1,
 };
 
 const MANGLE_PARAMS = {

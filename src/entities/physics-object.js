@@ -173,15 +173,16 @@ class PhysicsObject extends Entity {
     }
 
     render() {
+        if (!DEBUG_COLLISIONS) return;
+
         // Hitboxes
         ctx.wrap(() => {
-            return;
             ctx.translate(this.position.x, this.position.y);
             ctx.rotate(this.rotation);
             ctx.fillStyle = '#f00';
-            ctx.fillRect(-5, -5, 10, 10);
+            ctx.fillRect(-1, -1, 2, 2);
 
-            let color = ['#f00', '#00f']
+            let color = ['#f00', '#00f', '#ff0']
             for (const hb of this.hitboxes) {
                 ctx.save();
                 ctx.translate(hb.position.x, hb.position.y);
@@ -191,6 +192,12 @@ class PhysicsObject extends Entity {
                 ctx.arc(0, 0, hb.radius, 0, 2 * Math.PI);
                 ctx.stroke();
                 ctx.restore();
+            }
+        });
+
+        ctx.wrap(() => {
+            for (const seg of this.segments()) {
+                seg.render();
             }
         });
 
@@ -207,8 +214,26 @@ class PhysicsObject extends Entity {
     }
 
     * segments() {
+        this.segmentsCache ||= new Cache();
+
         for (const ground of this.world.category('ground')) {
-            yield* ground.getSegments(this);
+            const stepX = 20;
+            const window = 400;
+            const refX = floorToNearest(this.position.x, stepX);
+
+            yield* this.segmentsCache.getOrCreate(
+                floorToNearest(refX, window / 4),
+                () => {
+                    const segments = [];
+                    for (let x = refX - window / 2 ; x < refX + window / 2 ; x += stepX) {
+                        segments.push(new Segment(
+                            { x: x, y: ground.curveAt(x) },
+                            { x: x - stepX, y: ground.curveAt(x- stepX) },
+                        ))
+                    }
+                    return segments;
+                }
+            );
         }
     }
 }
