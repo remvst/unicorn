@@ -77,7 +77,8 @@ const CONSTANTS = {
     "INPUT_MODE_TOUCH": 1,
 
     "DEBUG_INFO": 1,
-    "DEBUG_COLLISIONS": 1,
+    "DEBUG_COLLISIONS": 0,
+    "DEBUG_TRICKS": 0,
 
     "GROUND_CURVE_STEP": 10,
 

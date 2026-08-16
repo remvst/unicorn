@@ -43,9 +43,9 @@ class Bike extends PhysicsObject {
         }
     }
 
-    get airborne() {
-        return !this.hasCollision(this.backWheel, 0.2) &&
-            !this.hasCollision(this.frontWheel, 0.2);
+    airborne(coyoteTime) {
+        return !this.hasCollision(this.backWheel, coyoteTime) &&
+            !this.hasCollision(this.frontWheel, coyoteTime);
     }
 
     jump() {
@@ -76,9 +76,7 @@ class Bike extends PhysicsObject {
         }
 
         const [jumpBefore, jumpAfter] = this.jumpChange.change(jump);
-        const backWheelOnGround = this.hasCollision(this.backWheel, 0.1);
-        const frontWheelOnGround = this.hasCollision(this.frontWheel, 0.1);
-        if (jumpBefore && !jumpAfter && !this.airborne) {
+        if (jumpBefore && !jumpAfter && !this.airborne(0.1)) {
             this.jump();
         }
 
@@ -88,7 +86,7 @@ class Bike extends PhysicsObject {
         }
 
         // Rotation dampening
-        if (this.airborne && !raiseWheel && !lowerWheel) {
+        if (this.airborne(0.1) && !raiseWheel && !lowerWheel) {
             this.momentum.rotation -= between(
                 -elapsed * Math.PI,
                 this.momentum.rotation,
@@ -181,7 +179,7 @@ class Bike extends PhysicsObject {
         }
 
         // Animations
-        if (this.airborne) {
+        if (this.airborne(0.3)) {
             this.riderRenderable.landAge = 0;
         } else {
             this.riderRenderable.landAge += elapsed;

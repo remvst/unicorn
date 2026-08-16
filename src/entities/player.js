@@ -5,6 +5,33 @@ class Player extends Bike {
         this.controllable = true;
     }
 
+    render() {
+        super.render();
+
+        if (DEBUG_TRICKS) ctx.wrap(() => {
+            // const momentumAngle = 0;
+            const momentumAngle = atan2(this.momentum.position.y, this.momentum.position.x);
+
+            ctx.lineWidth = 10;
+            ctx.strokeStyle = '#ff0';
+            ctx.beginPath();
+            ctx.moveTo(this.position.x, this.position.y);
+            ctx.lineTo(this.position.x + cos(momentumAngle) * 100, this.position.y + sin(momentumAngle) * 100)
+            ctx.stroke();
+
+            const ground = firstItem(this.world.category('ground'));
+            const slope = ground.curve.slopeFor(this.backWheel.absolute.position.x);
+            const idealAngle = atan2(slope, 1);
+
+            ctx.lineWidth = 10;
+            ctx.strokeStyle = '#f00';
+            ctx.beginPath();
+            ctx.moveTo(this.position.x, this.position.y);
+            ctx.lineTo(this.position.x + cos(idealAngle) * 100, this.position.y + sin(idealAngle) * 100)
+            ctx.stroke();
+        });
+    }
+
     cycle(elapsed) {
         super.cycle(elapsed);
 
