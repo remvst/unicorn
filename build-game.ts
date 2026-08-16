@@ -50,6 +50,7 @@ const JS_FILES = [
     'entities/objective.js',
     'entities/waiter.js',
     'entities/rainbow.js',
+    'entities/gibs.js',
 
     'levels/level.js',
     'levels/test-level.js',

@@ -235,19 +235,14 @@ class Bike extends PhysicsObject {
             size: 10,
         });
 
-        for (const wheel of [this.frontWheel, this.backWheel]) {
-            const gib = this.world.add(new PhysicsObject());
-            gib.position.x = wheel.absolute.position.x;
-            gib.position.y = wheel.absolute.position.y;
-
-            const hb = gib.addHitbox();
-            hb.radius = wheel.radius;
-        }
+        this.world.add(new WheelGib(this, this.backWheel));
+        this.world.add(new WheelGib(this, this.frontWheel));
+        this.world.add(new BikeGib(this));
     }
 }
 
 class BikeRenderable extends SkeletonRenderable {
-    constructor(bike) {
+    constructor(bike, body = 1, wheels = 1) {
         super();
 
         const backWheel = bike.backWheel.position;
@@ -296,6 +291,7 @@ class BikeRenderable extends SkeletonRenderable {
             y: this.seatBase.y - 5,
         }
 
+        // Body
         this
             .add(lineRenderable(backWheel, this.seatBase))
             .add(lineRenderable(backWheel, this.pedalsCenter))
@@ -305,9 +301,13 @@ class BikeRenderable extends SkeletonRenderable {
             .add(lineRenderable(frontWheel, this.handlebarsConnection))
             .add(lineRenderable(this.handlebarsBottom, this.handlebarsConnection))
             .add(lineRenderable(this.handlebarsBottom, this.handlebarsTop))
-            .add(circleRenderable(backWheel, bike.backWheel.radius, 4))
-            .add(circleRenderable(frontWheel, bike.frontWheel.radius, 4))
             .add(circleRenderable(this.pedalsCenter, 3))
+
+        if (wheels) {
+            this
+                .add(circleRenderable(backWheel, bike.backWheel.radius, 4))
+                .add(circleRenderable(frontWheel, bike.frontWheel.radius, 4));
+        }
     }
 }
 
