@@ -38,8 +38,8 @@ class Bike extends PhysicsObject {
     }
 
     get airborne() {
-        return !this.hasCollision(this.backWheel, 0.1) &&
-            !this.hasCollision(this.frontWheel, 0.1);
+        return !this.hasCollision(this.backWheel, 0.2) &&
+            !this.hasCollision(this.frontWheel, 0.2);
     }
 
     jump() {
@@ -94,6 +94,8 @@ class Bike extends PhysicsObject {
     cycle(elapsed) {
         const accelerate = downKeys[38];
         const brake = downKeys[40];
+        const raiseWheel = downKeys[37];
+        const lowerWheel = downKeys[39];
 
         super.cycle(elapsed);
 
@@ -166,6 +168,25 @@ class Bike extends PhysicsObject {
                 size: 5,
             });
         }
+
+        // Animations
+        if (this.airborne) {
+            this.riderRenderable.landAge = 0;
+        } else {
+            this.riderRenderable.landAge += elapsed;
+        }
+
+        const targetBalance = raiseWheel
+            ? -1
+            : lowerWheel
+            ? 1
+            : 0;
+
+        this.riderRenderable.balance += between(
+            -elapsed * 2,
+            targetBalance - this.riderRenderable.balance,
+            elapsed * 2,
+        );
     }
 
     render() {
@@ -277,6 +298,10 @@ class RiderRenderable extends SkeletonRenderable {
     constructor(bikeRenderable) {
         super();
 
+        this.balance = 0;
+        this.landAge = 0;
+        this.pedalAge = 0;
+
         this.bikeRenderable = bikeRenderable;
 
         this.butt = {};
@@ -344,8 +369,17 @@ class RiderRenderable extends SkeletonRenderable {
         this.leftHand.x = this.bikeRenderable.handlebarsTop.x;
         this.leftHand.y = this.bikeRenderable.handlebarsTop.y;
 
-        this.shoulders.x = interpolate(this.butt.x, this.leftHand.x, 0.3);
-        this.shoulders.y = interpolateUnbounded(this.butt.y, this.leftHand.y, 1.5);
+        this.shoulders.x =
+            interpolate(this.butt.x, this.leftHand.x, 0.3) + // Base position
+            this.balance * 10 + // Pull/push bike
+            interpolate(0, 5, pyramid(this.landAge / 0.3)) + // Landing animation
+            cos(this.pedalAge * 9 + PI) * 2 + // Rotate shoulders while pedaling
+            0;
+
+        this.shoulders.y =
+            interpolateUnbounded(this.butt.y, this.leftHand.y, 1.5) + // Base position
+            interpolate(0, 5, pyramid(this.landAge / 0.3)) // Landing animation
+            ;
 
         this.head.x = interpolateUnbounded(this.butt.x, this.shoulders.x, 1.3) + 2;
         this.head.y = interpolateUnbounded(this.butt.y, this.shoulders.y, 1.3);
@@ -356,3 +390,5 @@ class RiderRenderable extends SkeletonRenderable {
         super.render();
     }
 }
+
+pyramid = (x) => 1 - abs((x - 0.5) * 2);
