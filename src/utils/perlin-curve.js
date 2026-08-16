@@ -11,6 +11,9 @@ class PerlinCurve {
     }
 
     yFor(x) {
+        // const multiplier = this.multiplier(x);
+        // if (!multiplier) return 0;
+
         const plus = this.plus.reduce((acc, plus) => acc + plus.yFor(x), 0);
 
         const index = floor(x / this.step);
@@ -27,5 +30,19 @@ class PerlinCurve {
             gradientAfter * this.amplitude,
             smoothstep(ratio),
         )) * this.multiplier(x);
+    }
+
+    faded(
+        startX,
+        endX,
+        easing = linear,
+    ) {
+        return new PerlinCurve({
+            plus: [this],
+            multiplier: x => {
+                const ratio = (x - startX) / (endX - startX);
+                return between(0, easing(ratio), 1);
+            }
+        });
     }
 }
