@@ -71,14 +71,12 @@ class Level {
 
         // Wait for the player to reach the unicorn
         await waitFor(this.world, () => player.position.x > uc.position.x - 400);
-        player.controlsOverride = {brake: true};
 
-        // Force the player to land
+        // Force the player to stop and land
+        player.controlsOverride = {brake: true};
+        player.momentum.rotation = 0;
+        player.rotation = 0;
         camera.interp(camera, 'zoom', camera.zoom, 2, 0.3);
-        await waitFor(this.world, (elapsed) => {
-            player.rotation += between(-elapsed * PI / 4, -player.rotation, elapsed * PI / 4);
-            return player.rotation === 0;
-        });
 
         // Give instructions
         // TODO render on screen
