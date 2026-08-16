@@ -20,7 +20,10 @@ class Background extends Entity {
 
             for (let sampleX = fromSampleX ; sampleX < toSampleX ; sampleX += BACKGROUND_CURVE_STEP) {
                 const drawX = sampleX + camera.position.x * (1 - parallaxFactor);
-                const drawY = this.curve.yFor(sampleX) + camera.position.y * (1 - parallaxFactor);
+                const drawY = this.curve.yFor(
+                    sampleX +
+                        i * CANVAS_WIDTH // Add an offset so the curves don't line up
+                ) + camera.position.y * (1 - parallaxFactor);
 
                 ctx.lineTo(drawX, drawY);
             }
