@@ -2,26 +2,25 @@ class Background extends Entity {
 
     constructor() {
         super();
-        this.curves = [
-            new PerlinCurve({ step: 1000, amplitude: 400 }),
-            new PerlinCurve({ step: 1000, amplitude: 400 }),
-        ];
+        this.curve = new PerlinCurve({ step: 1000, amplitude: 400 });
     }
 
     render() {
         const camera = firstItem(this.world.category('camera'));
 
-        for (let i = 0 ; i < this.curves.length ; i++) {
-            const curve = this.curves[0];
-            const parallaxFactor = interpolate(0.5, 0.75, i / (this.curves.length - 1));
+        for (let i = 0 ; i < BACKGROUND_CURVE_COUNT ; i++) {
+            const parallaxFactor = interpolate(0.5, 0.75, i / (BACKGROUND_CURVE_COUNT - 1));
 
             ctx.fillStyle = colorAsString(multiplyColor(0xff0000, parallaxFactor));
-            // ctx.globalAlpha = parallaxFactor;
             ctx.beginPath();
-            for (let s = -CANVAS_WIDTH / 2 ; s < CANVAS_WIDTH / 2 ; s += 10) {
-                const drawX = camera.position.x + s;
-                const sampleX = camera.position.x * parallaxFactor + s;
-                const drawY = curve.yFor(sampleX) + camera.position.y * (1 - parallaxFactor);
+
+            const layerCameraX = camera.position.x * parallaxFactor;
+            const fromSampleX = floorToNearest(layerCameraX - CANVAS_WIDTH / 2, BACKGROUND_CURVE_STEP);
+            const toSampleX = layerCameraX + CANVAS_WIDTH / 2 + BACKGROUND_CURVE_STEP;
+
+            for (let sampleX = fromSampleX ; sampleX < toSampleX ; sampleX += BACKGROUND_CURVE_STEP) {
+                const drawX = sampleX + camera.position.x * (1 - parallaxFactor);
+                const drawY = this.curve.yFor(sampleX) + camera.position.y * (1 - parallaxFactor);
 
                 ctx.lineTo(drawX, drawY);
             }
