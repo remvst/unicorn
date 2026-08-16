@@ -45,6 +45,7 @@ const JS_FILES = [
     'entities/item.js',
     'entities/item-generator.js',
     'entities/level-outcome.js',
+    'entities/background.js',
 
     'levels/level.js',
 

@@ -2,7 +2,7 @@ class Camera extends Entity {
     constructor() {
         super();
         this.categories.push('camera');
-        this.zoom = 1.5;
+        this.zoom = 1;
     }
 
     cycle(elapsed) {

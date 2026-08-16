@@ -43,7 +43,7 @@ class World {
 
         ctx.wrap(() => {
             ctx.translate(CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2);
-            ctx.scale(camera.zoom, camera.zoom);
+            // ctx.scale(camera.zoom, camera.zoom);
             ctx.translate(-camera.position.x, -camera.position.y);
 
             for (const entity of this.entities) {

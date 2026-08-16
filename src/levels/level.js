@@ -2,8 +2,8 @@ class Level {
     constructor() {
         this.world = new World();
 
+        this.world.add(new Background());
         this.world.add(new Camera());
-        this.world.add(new HUD());
 
         this.world.add(new ItemGenerator());
 
@@ -26,5 +26,7 @@ class Level {
         this.player = this.world.add(new Bike());
         this.player.position.y = ground.curveAt(this.player.position.x) -
             this.player.backWheel.position.y - this.player.backWheel.radius; // TODO eventually hardcode this?
+
+        this.world.add(new HUD());
     }
 }

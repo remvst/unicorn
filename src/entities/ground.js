@@ -15,12 +15,14 @@ class Ground extends Entity {
     render() {
         const camera = firstItem(this.world.category('camera'));
 
-        ctx.strokeStyle = 'red';
+        ctx.fillStyle = 'red';
         ctx.beginPath();
         for (let x = camera.position.x - CANVAS_WIDTH / 2 ; x < camera.position.x + CANVAS_WIDTH / 2 ; x += 10) {
             ctx.lineTo(x, this.curveAt(x));
         }
-        ctx.stroke();
+        ctx.lineTo(camera.position.x + CANVAS_WIDTH / 2, camera.position.y + CANVAS_HEIGHT / 2);
+        ctx.lineTo(camera.position.x - CANVAS_WIDTH / 2, camera.position.y + CANVAS_HEIGHT / 2);
+        ctx.fill();
 
         if (DEBUG) {
             // for (const x of this.peaks(camera.position.x - CANVAS_WIDTH / 2, camera.position.x + CANVAS_WIDTH / 2)) {
@@ -32,13 +34,6 @@ class Ground extends Entity {
             //     ctx.fillStyle = '#ff0';
             //     ctx.fillRect(x, this.curveAt(x) - 50, 2, 100);
             // }
-
-            const bike = firstItem(this.world.category('bike'));
-            if (bike) {
-                // for (const seg of this.getSegments(bike)) {
-                //     seg.render();
-                // }
-            }
         }
     }
 
