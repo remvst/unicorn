@@ -54,5 +54,7 @@ class ComboTracker {
 
         this.tricks.length = 0;
         this.points = 0;
+
+        spawnRainbows(this.bike);
     }
 }

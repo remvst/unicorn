@@ -49,6 +49,7 @@ const JS_FILES = [
     'entities/background.js',
     'entities/objective.js',
     'entities/waiter.js',
+    'entities/rainbow.js',
 
     'levels/level.js',
     'levels/test-level.js',
@@ -200,24 +201,6 @@ const argv = yargs(process.argv.slice(2)).options({
         DEBUG: argv.debug,
         ...CONSTANTS,
     };
-
-    let z = 0;
-    for (const constant of [
-        "Z_LABEL",
-        "Z_MEOW",
-        "Z_SPIKES",
-        "Z_CAT",
-        "Z_BULLET",
-        "Z_PARTICLE",
-        "Z_WATER",
-        "Z_STRUCTURE",
-        "Z_HUMAN",
-        "Z_FLASH",
-        "Z_HUD",
-        "Z_CLAW",
-    ]) {
-        constants[constant] = z++;
-    }
 
     let html = await fs.readFile('src/index.html', 'utf-8');
     let css = await fs.readFile('src/style.css', 'utf-8');

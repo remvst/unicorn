@@ -1,7 +1,25 @@
+getLayer = (entity) => {
+    let i = 0;
+    for (const entityClass of [
+        Background,
+        Rainbow,
+        PhysicsObject,
+        Unicorn,
+        Ground,
+        Particle,
+        Entity
+    ]) {
+        if (entity instanceof entityClass) return i;
+        i++;
+    }
+
+}
+
 class World {
     constructor() {
         this.entities = new Set();
         this.categories = {};
+        this.layers = [];
     }
 
     add(entity) {
@@ -10,6 +28,10 @@ class World {
         for (const category of entity.categories) {
             this.category(category).add(entity);
         }
+
+        entity.layer ||= getLayer(entity);
+
+        (this.layers[entity.layer] ||= new Set()).add(entity);
         return entity;
     }
 
@@ -18,14 +40,16 @@ class World {
         for (const category of Object.values(this.categories)) {
             category.delete(entity);
         }
+        for (const layer of Object.values(this.layers)) {
+            layer.delete(entity);
+        }
 
         // Allow the entity to be reused
         entity.pool?.add(entity);
     }
 
     category(id) {
-        this.categories[id] = this.categories[id] || new Set();
-        return this.categories[id];
+        return (this.categories[id] ||= new Set());
     }
 
     cycle(elapsed) {
@@ -46,8 +70,11 @@ class World {
             ctx.scale(camera.zoom, camera.zoom);
             ctx.translate(-camera.position.x, -camera.position.y);
 
-            for (const entity of this.entities) {
-                ctx.wrap(() => entity.render());
+            for (const layer of this.layers) {
+                if (!layer) continue;
+                for (const entity of layer) {
+                    ctx.wrap(() => entity.render());
+                }
             }
         });
     }
