@@ -37,6 +37,9 @@ const JS_FILES = [
     'entities/unicorn.js',
     'entities/item.js',
     'entities/item-generator.js',
+    'sound/sonantx.js',
+    'sound/song.js',
+    'sound/ZzFXMicro.js',
     'game.js',
     'index.js',
 ];
@@ -47,6 +50,8 @@ const CONSTANTS = {
     "const": "let",
     "null": 0,
     "Infinity": 999,
+
+    "SONG_VOLUME": 0.5,
 
     "INPUT_MODE_KEYBOARD": 0,
     "INPUT_MODE_TOUCH": 1,

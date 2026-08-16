@@ -15,6 +15,7 @@ ALT_KEYS = {
 document.onkeydown = (evt) => {
     inputMode = INPUT_MODE_KEYBOARD;
     downKeys[ALT_KEYS[evt.keyCode] || evt.keyCode] = true;
+    playSong();
 };
 document.onkeyup = (evt) => downKeys[ALT_KEYS[evt.keyCode] || evt.keyCode] = false;
 onblur = () => downKeys = {};
