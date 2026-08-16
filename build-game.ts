@@ -51,6 +51,7 @@ const JS_FILES = [
     'entities/waiter.js',
 
     'levels/level.js',
+    'levels/test-level.js',
     'levels/tutorial-flat.js',
     'levels/tutorial-backflip.js',
     'levels/all-levels.js',
