@@ -16,16 +16,25 @@ class TutorialBackflip extends Level {
             // Wait for the player to reach the unicorn
             await waitFor(world, () => player.position.x > uc.position.x - 400);
             player.controlsOverride = {brake: true};
-            camera.interp(camera, 'zoom', camera.zoom, 2, 0.3);
 
-            // Make the unicorn go away
+            // Force the player to land
+            camera.interp(camera, 'zoom', camera.zoom, 2, 0.3);
+            await waitFor(world, (elapsed) => {
+                player.rotation += between(-elapsed * PI / 4, -player.rotation, elapsed * PI / 4);
+                return player.rotation === 0;
+            });
+
+            // Give instructions
             console.log('blah blah blah');
             await uc.interp(uc.position, 'bs', 0, 0, 2);
+
+            // Make the unicorn go away
             uc.facing = 1;
             uc.walking = true;
             await uc.interp(uc.position, 'x', uc.position.x, uc.position.x + CANVAS_WIDTH / 2, 2);
             uc.world.remove(uc);
 
+            // Restore player control
             player.controlsOverride = null;
             camera.interp(camera, 'zoom', camera.zoom, 1, 0.3);
 

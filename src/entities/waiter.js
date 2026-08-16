@@ -6,7 +6,7 @@ class Waiter extends Entity {
 
     cycle(elapsed) {
         super.cycle(elapsed);
-        if (this.predicate()) {
+        if (this.predicate(elapsed)) {
             this.world.remove(this);
             this.resolve();
         }
