@@ -110,8 +110,8 @@ class Bike extends PhysicsObject {
 
         super.cycle(elapsed);
 
-        const backWheelOnGround = this.age - this.backWheel.lastCollisionAge < 0.1;
-        const frontWheelOnGround = this.age - this.frontWheel.lastCollisionAge < 0.1;
+        const backWheelOnGround = this.hasCollision(this.backWheel);
+        const frontWheelOnGround = this.hasCollision(this.frontWheel);
 
         let forwardPush = 0;
         if (accelerate) {
