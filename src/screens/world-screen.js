@@ -1,8 +1,9 @@
 class WorldScreen extends Screen {
-    constructor() {
+    constructor(level) {
         super();
 
-        this.level = new Level(); // TODO inject this
+        this.level = level;
+        this.level.initialize();
 
         if (DEBUG) {
             this.debugValues = () => {

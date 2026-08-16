@@ -202,7 +202,6 @@ class Bike extends PhysicsObject {
     }
 
     die() {
-        this.world.add(new LevelOutcome(false));
         this.world.remove(this);
 
         dustCloud({

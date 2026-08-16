@@ -38,6 +38,7 @@ const JS_FILES = [
     'entities/ground.js',
     'entities/physics-object.js',
     'entities/bike.js',
+    'entities/player.js',
     'entities/hud.js',
     'entities/particle.js',
     'entities/interpolator.js',
@@ -46,8 +47,10 @@ const JS_FILES = [
     'entities/item-generator.js',
     'entities/level-outcome.js',
     'entities/background.js',
+    'entities/objective.js',
 
     'levels/level.js',
+    'levels/tutorial-flat.js',
 
     'sound/sonantx.js',
     'sound/song.js',
