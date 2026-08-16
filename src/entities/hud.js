@@ -1,9 +1,4 @@
 class HUD extends Entity {
-
-    constructor() {
-        super();
-    }
-
     render() {
         const player = firstItem(this.world.category('bike'));
         const camera = firstItem(this.world.category('camera'));

@@ -27,8 +27,6 @@ class Bike extends PhysicsObject {
         this.backWheelOnGroundChange = new ValueChangeHelper();
         this.frontWheelOnGroundChange = new ValueChangeHelper();
 
-        this.comboTracker = new ComboTracker(this);
-
         this.usingPower = false;
 
         this.bikeRenderable = new BikeRenderable(this);
@@ -152,8 +150,6 @@ class Bike extends PhysicsObject {
 
         // Death
         if (this.hasCollision(this.head)) this.die();
-
-        this.comboTracker.cycle(elapsed);
 
         const [backWheelBefore, backWheelAfter] = this.backWheelOnGroundChange.change(this.hasCollision(this.backWheel, 0.2));
         const [frontWheelBefore, frontWheelAfter] = this.frontWheelOnGroundChange.change(this.hasCollision(this.frontWheel, 0.2));
