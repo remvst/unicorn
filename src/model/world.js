@@ -2,16 +2,6 @@ class World {
     constructor() {
         this.entities = new Set();
         this.categories = {};
-
-        this.add(new Camera());
-        this.add(new HUD());
-        this.add(new Unicorn());
-        this.add(new ItemGenerator());
-
-        const ground = this.add(new Ground());
-
-        const player = this.add(new Bike());
-        player.position.y = ground.curveAt(player.position.x) - player.backWheel.position.y - player.backWheel.radius; // TODO eventually hardcode this?
     }
 
     add(entity) {
