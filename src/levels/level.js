@@ -32,7 +32,8 @@ class Level {
         // override in subclasses
     }
 
-    flattenGround(ground) {
+    flattenGround() {
+        const { ground } = this.basics();
         let x = firstItem(this.world.category('camera')).position.x;
         ground.curve = ground.curve.faded(
             x += CANVAS_WIDTH / 2,
@@ -42,7 +43,8 @@ class Level {
         return x;
     }
 
-    transitionIntoCurve(ground, curve) {
+    transitionIntoCurve(curve) {
+        const { ground } = this.basics();
         let x = firstItem(this.world.category('camera')).position.x;
         ground.curve = new PerlinCurve({
             plus: [
@@ -62,7 +64,7 @@ class Level {
     }) {
         const { ground, player, camera } = this.basics();
 
-        const previousLevelEndX = this.flattenGround(ground);
+        const previousLevelEndX = this.flattenGround();
 
         // Add a unicorn at the beginning
         const uc = this.world.add(new Unicorn());
@@ -95,7 +97,7 @@ class Level {
         player.controlsOverride = null;
         camera.interp(camera, 'zoom', camera.zoom, 1, 0.3);
 
-        return this.transitionIntoCurve(ground, new PerlinCurve({ step: 500, amplitude: 200 }));
+        return this.transitionIntoCurve(new PerlinCurve({ step: 500, amplitude: 200 }));
     }
 
     async runObjectives({ objectives }) {
