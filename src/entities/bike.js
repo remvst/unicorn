@@ -76,14 +76,14 @@ class Bike extends PhysicsObject {
         }
 
         const [jumpBefore, jumpAfter] = this.jumpChange.change(jump);
-        const backWheelOnGround = this.age - this.backWheel.lastCollisionAge < 0.1;
-        const frontWheelOnGround = this.age - this.frontWheel.lastCollisionAge < 0.1;
-        if (jumpBefore && !jumpAfter && (backWheelOnGround || frontWheelOnGround)) {
+        const backWheelOnGround = this.hasCollision(this.backWheel, 0.1);
+        const frontWheelOnGround = this.hasCollision(this.frontWheel, 0.1);
+        if (jumpBefore && !jumpAfter && !this.airborne) {
             this.jump();
         }
 
         // Stomping
-        if (brake && this.airborne) {
+        if (jump && this.airborne) {
             this.momentum.position.y += 1000 * elapsed;
         }
 
