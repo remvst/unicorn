@@ -6,11 +6,8 @@ class Unicorn extends Entity {
     }
 
     cycle(elapsed) {
-        return;
         const camera = firstItem(this.world.category('camera'));
         if (this.position.x < camera.position.x - CANVAS_WIDTH) {
-            console.log('reposition');
-
             const ground = firstItem(this.world.category('ground'));
             this.position.x = camera.position.x + CANVAS_WIDTH + random(500, 1000);
             this.position.y = ground.curveAt(this.position.x);
