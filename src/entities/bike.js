@@ -144,8 +144,8 @@ class Bike extends PhysicsObject {
 
         this.comboTracker.cycle(elapsed);
 
-        const [backWheelBefore, backWheelAfter] = this.backWheelOnGroundChange.change(this.hasCollision(this.backWheel));
-        const [frontWheelBefore, frontWheelAfter] = this.frontWheelOnGroundChange.change(this.hasCollision(this.frontWheel));
+        const [backWheelBefore, backWheelAfter] = this.backWheelOnGroundChange.change(this.hasCollision(this.backWheel, 0.2));
+        const [frontWheelBefore, frontWheelAfter] = this.frontWheelOnGroundChange.change(this.hasCollision(this.frontWheel, 0.2));
 
         const wheelClouds = [];
         if (!backWheelBefore && backWheelAfter) wheelClouds.push(this.backWheel);
