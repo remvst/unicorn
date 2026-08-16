@@ -52,7 +52,9 @@ class World {
         ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 
         ctx.wrap(() => {
-            ctx.translate(-camera.position.x + CANVAS_WIDTH / 2, -camera.position.y + CANVAS_HEIGHT / 2);
+            ctx.translate(-camera.position.x, -camera.position.y);
+            ctx.scale(1.5, 1.5);
+            ctx.translate(CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2);
 
             for (const entity of this.entities) {
                 ctx.wrap(() => entity.render());

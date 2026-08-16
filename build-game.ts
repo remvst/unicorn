@@ -9,6 +9,7 @@ import yargs from 'yargs/yargs';
 const JS_FILES = [
     'globals.js',
     'graphics/wrap.js',
+    'graphics/skeleton-renderable.js',
     'utils/math.js',
     'utils/resizer.js',
     'utils/first-item.js',

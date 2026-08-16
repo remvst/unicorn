@@ -175,6 +175,7 @@ class PhysicsObject extends Entity {
     render() {
         // Hitboxes
         ctx.wrap(() => {
+            return;
             ctx.translate(this.position.x, this.position.y);
             ctx.rotate(this.rotation);
             ctx.fillStyle = '#f00';

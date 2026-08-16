@@ -28,7 +28,11 @@ ceilToNearest = (x, precision) => {
 }
 
 interpolate = (a, b, t) => {
-    return a + (b - a) * between(0, t, 1);
+    return interpolateUnbounded(a, b, between(0, t, 1));
+}
+
+interpolateUnbounded = (a, b, t) => {
+    return a + (b - a) * t;
 }
 
 distance = (a, b) => {

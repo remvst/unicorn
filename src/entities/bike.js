@@ -6,6 +6,8 @@ class Bike extends PhysicsObject {
 
         this.power = 0;
 
+        this.pedalAge = 0;
+
         this.frontWheel = this.addHitbox();
         this.frontWheel.position.x = 20;
         this.frontWheel.radius = 10;
@@ -32,6 +34,7 @@ class Bike extends PhysicsObject {
         this.usingPower = false;
 
         this.bikeRenderable = new BikeRenderable(this);
+        this.riderRenderable = new RiderRenderable(this.bikeRenderable);
     }
 
     get airborne() {
@@ -100,6 +103,9 @@ class Bike extends PhysicsObject {
         let forwardPush = 0;
         if (accelerate) {
             forwardPush += (this.power > 0 ? 1000 : 500) * elapsed;
+
+            const momentum = pointDistance(0, 0, this.momentum.position.x, this.momentum.position.y);
+            this.pedalAge += elapsed * interpolate(0, 1, momentum / 500);
         }
 
         if (forwardPush && backWheelOnGround) {
@@ -170,6 +176,9 @@ class Bike extends PhysicsObject {
             ctx.rotate(this.rotation);
 
             this.bikeRenderable.render();
+
+            this.riderRenderable.pedalAge = this.pedalAge;
+            this.riderRenderable.render();
         });
     }
 
@@ -199,87 +208,151 @@ class Bike extends PhysicsObject {
     }
 }
 
-class LineRenderable {
-
-    constructor() {
-        this.lines = [];
-    }
-
-    addLine(from, to) {
-        this.lines.push([from, to]);
-        return this;
-    }
-
-    render() {
-        for (const [from, to] of this.lines) {
-            ctx.lineWidth = 2;
-            ctx.strokeStyle = '#fff';
-            ctx.beginPath();
-            ctx.moveTo(from.x, from.y);
-            ctx.lineTo(to.x, to.y);
-            ctx.stroke();
-        }
-    }
-}
-
-class BikeRenderable extends LineRenderable {
+class BikeRenderable extends SkeletonRenderable {
     constructor(bike) {
         super();
 
         const backWheel = bike.backWheel.position;
         const frontWheel = bike.frontWheel.position;
 
-        const pedalsCenter = {
-            x: interpolate(
-                backWheel.x,
-                frontWheel.x,
-                0.5,
-            ),
-            y: backWheel.y,
-        }
-
-        const forkLink = {
-            x: frontWheel.x - 5,
-            y: frontWheel.y - 15,
-        }
-
-        const handlebarsConnection = {
-            x: frontWheel.x - 5,
-            y: forkLink.y - 5,
-        }
-
-        const handlebarsBottom = {
-            x: handlebarsConnection.x + 5,
-            y: handlebarsConnection.y,
-        }
-
-        const handlebarsTop = {
-            x: handlebarsConnection.x + 5,
-            y: handlebarsConnection.y - 10,
-        }
-
-        const seatBase = {
+        this.pedalsCenter = {
             x: interpolate(
                 backWheel.x,
                 frontWheel.x,
                 0.4,
             ),
-            y: interpolate(backWheel.y, handlebarsConnection.y, 0.5),
+            y: backWheel.y,
         }
 
-        const seatCenter = {
-            x: seatBase.x,
-            y: seatBase.y - 5,
+        this.forkLink = {
+            x: frontWheel.x - 5,
+            y: frontWheel.y - 15,
+        }
+
+        this.handlebarsConnection = {
+            x: frontWheel.x - 5,
+            y: this.forkLink.y - 5,
+        }
+
+        this.handlebarsBottom = {
+            x: this.handlebarsConnection.x + 3,
+            y: this.handlebarsConnection.y - 2,
+        }
+
+        this.handlebarsTop = {
+            x: this.handlebarsConnection.x + 3,
+            y: this.handlebarsConnection.y - 10,
+        }
+
+        this.seatBase = {
+            x: interpolate(
+                backWheel.x,
+                frontWheel.x,
+                0.3,
+            ),
+            y: interpolate(backWheel.y, this.handlebarsConnection.y, 0.5),
+        }
+
+        this.seatCenter = {
+            x: this.seatBase.x,
+            y: this.seatBase.y - 5,
         }
 
         this
-            .addLine(backWheel, seatBase)
-            .addLine(backWheel, pedalsCenter)
-            .addLine(pedalsCenter, seatCenter)
-            .addLine(seatBase, forkLink)
-            .addLine(pedalsCenter, forkLink)
-            .addLine(frontWheel, handlebarsConnection)
-            .addLine(handlebarsBottom, handlebarsConnection)
-            .addLine(handlebarsBottom, handlebarsTop)
+            .add(lineRenderable(backWheel, this.seatBase))
+            .add(lineRenderable(backWheel, this.pedalsCenter))
+            .add(lineRenderable(this.pedalsCenter, this.seatCenter))
+            .add(lineRenderable(this.seatBase, this.forkLink))
+            .add(lineRenderable(this.pedalsCenter, this.forkLink))
+            .add(lineRenderable(frontWheel, this.handlebarsConnection))
+            .add(lineRenderable(this.handlebarsBottom, this.handlebarsConnection))
+            .add(lineRenderable(this.handlebarsBottom, this.handlebarsTop))
+            .add(circleRenderable(backWheel, bike.backWheel.radius, 4))
+            .add(circleRenderable(frontWheel, bike.frontWheel.radius, 4))
+            .add(circleRenderable(this.pedalsCenter, 3))
+    }
+}
+
+class RiderRenderable extends SkeletonRenderable {
+    constructor(bikeRenderable) {
+        super();
+
+        this.bikeRenderable = bikeRenderable;
+
+        this.butt = {};
+
+        this.leftFoot = {};
+        this.leftKnee = {};
+
+        this.rightFoot = {};
+        this.rightKnee = {};
+
+        this.butt = {};
+        this.shoulders = {};
+        this.head = {};
+        this.leftHand = {};
+        this.leftElbow = {};
+
+        this
+            .add(lineRenderable(this.leftFoot, this.leftKnee, 4))
+            .add(lineRenderable(this.rightFoot, this.rightKnee, 4))
+            .add(lineRenderable(this.leftKnee, this.butt, 4))
+            .add(lineRenderable(this.rightKnee, this.butt, 4))
+            .add(lineRenderable(this.shoulders, this.butt, 4))
+            .add(lineRenderable(this.shoulders, this.leftElbow, 4))
+            .add(lineRenderable(this.shoulders, this.leftElbow, 4))
+            .add(lineRenderable(this.leftElbow, this.leftHand, 4))
+            .add(circleRenderable(this.head, 6, 0))
+            .add(circleRenderable(this.leftHand, 3, 0))
+            .add(circleRenderable(this.leftFoot, 1))
+    }
+
+    render() {
+        this.leftFoot.x = this.bikeRenderable.pedalsCenter.x + cos(this.pedalAge * 9) * 5;
+        this.leftFoot.y = this.bikeRenderable.pedalsCenter.y + sin(this.pedalAge * 9) * 5;
+
+        this.rightFoot.x = this.bikeRenderable.pedalsCenter.x + cos(this.pedalAge * 9 + PI) * 5;
+        this.rightFoot.y = this.bikeRenderable.pedalsCenter.y + sin(this.pedalAge * 9 + PI) * 5;
+
+        this.butt.x = this.bikeRenderable.seatCenter.x;
+        this.butt.y = this.bikeRenderable.seatCenter.y - 2;
+
+        this.leftKnee.x = interpolate(
+            this.leftFoot.x,
+            this.butt.x,
+            0.5,
+        ) + 10;
+
+        this.leftKnee.y = interpolate(
+            this.leftFoot.y,
+            this.butt.y,
+            0.5,
+        );
+
+        this.rightKnee.x = interpolate(
+            this.rightFoot.x,
+            this.butt.x,
+            0.5,
+        ) + 10;
+
+        this.rightKnee.y = interpolate(
+            this.rightFoot.y,
+            this.butt.y,
+            0.5,
+        );
+
+        this.leftHand.x = this.bikeRenderable.handlebarsTop.x;
+        this.leftHand.y = this.bikeRenderable.handlebarsTop.y;
+
+        this.shoulders.x = interpolate(this.butt.x, this.leftHand.x, 0.3);
+        this.shoulders.y = interpolateUnbounded(this.butt.y, this.leftHand.y, 1.5);
+
+        this.head.x = interpolateUnbounded(this.butt.x, this.shoulders.x, 1.3) + 2;
+        this.head.y = interpolateUnbounded(this.butt.y, this.shoulders.y, 1.3);
+
+        this.leftElbow.x = interpolate(this.shoulders.x, this.leftHand.x, 0.4);
+        this.leftElbow.y = interpolateUnbounded(this.shoulders.y, this.leftHand.y, 1.2);
+
+        super.render();
     }
 }
