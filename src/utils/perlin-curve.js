@@ -10,9 +10,13 @@ class PerlinCurve {
         }
     }
 
+    slopeFor(x) {
+        return this.yFor(x) - this.yFor(x - 1);
+    }
+
     yFor(x) {
-        // const multiplier = this.multiplier(x);
-        // if (!multiplier) return 0;
+        const multiplier = this.multiplier(x);
+        if (!multiplier) return 0;
 
         const plus = this.plus.reduce((acc, plus) => acc + plus.yFor(x), 0);
 
@@ -30,6 +34,28 @@ class PerlinCurve {
             gradientAfter * this.amplitude,
             smoothstep(ratio),
         )) * this.multiplier(x);
+    }
+
+    * peaks(fromX, toX) {
+        yield* this.slopeChanges(fromX, toX, 1);
+    }
+
+    * valleys(fromX, toX) {
+        yield* this.slopeChanges(fromX, toX, -1);
+    }
+
+    * slopeChanges(fromX, toX, sign) {
+        const step = 5;
+        let slopeBefore = 0;
+        for (let x = fromX ; x < toX ; x += step) {
+            const slope = Math.sign(this.slopeFor(x));
+
+            if (slope !== slopeBefore && slope === sign) {
+                yield x;
+            }
+
+            slopeBefore = slope;
+        }
     }
 
     faded(

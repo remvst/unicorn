@@ -31,12 +31,12 @@ class Ground extends Entity {
         ctx.fill();
 
         if (DEBUG) {
-            // for (const x of this.peaks(camera.position.x - CANVAS_WIDTH / 2, camera.position.x + CANVAS_WIDTH / 2)) {
+            // for (const x of this.curve.peaks(camera.position.x - CANVAS_WIDTH / 2, camera.position.x + CANVAS_WIDTH / 2)) {
             //     ctx.fillStyle = '#f0f';
             //     ctx.fillRect(x, this.curveAt(x) - 50, 2, 100);
             // }
 
-            // for (const x of this.valleys(camera.position.x - CANVAS_WIDTH / 2, camera.position.x + CANVAS_WIDTH / 2)) {
+            // for (const x of this.curve.valleys(camera.position.x - CANVAS_WIDTH / 2, camera.position.x + CANVAS_WIDTH / 2)) {
             //     ctx.fillStyle = '#ff0';
             //     ctx.fillRect(x, this.curveAt(x) - 50, 2, 100);
             // }
@@ -45,27 +45,5 @@ class Ground extends Entity {
 
     curveAt(x) {
         return this.curve.yFor(x);
-    }
-
-    * peaks(fromX, toX) {
-        yield* this.slopeChanges(fromX, toX, 1);
-    }
-
-    * valleys(fromX, toX) {
-        yield* this.slopeChanges(fromX, toX, -1);
-    }
-
-    * slopeChanges(fromX, toX, sign) {
-        const step = 5;
-        let slopeBefore = 0;
-        for (let x = fromX ; x < toX ; x += step) {
-            const slope = Math.sign(this.curveAt(x) - this.curveAt(x - step));
-
-            if (slope !== slopeBefore && slope === sign) {
-                yield x;
-            }
-
-            slopeBefore = slope;
-        }
     }
 }
