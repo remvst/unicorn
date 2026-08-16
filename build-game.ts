@@ -53,6 +53,7 @@ const JS_FILES = [
     'levels/level.js',
     'levels/tutorial-flat.js',
     'levels/tutorial-backflip.js',
+    'levels/all-levels.js',
 
     'sound/sonantx.js',
     'sound/song.js',

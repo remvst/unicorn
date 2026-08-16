@@ -5,7 +5,7 @@ class Game {
             this.frameTimes = Array(60).fill(0);
         }
 
-        this.screens = [new WorldScreen(new TutorialBackflip())];
+        this.screens = [new WorldScreen(new TutorialFlat())];
         this.frame();
     }
 

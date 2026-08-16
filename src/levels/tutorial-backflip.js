@@ -25,7 +25,9 @@ class TutorialBackflip extends Level {
             });
 
             // Give instructions
-            console.log('blah blah blah');
+            console.log('Wow, you\'re really good at it!');
+            console.log('(in case you couldn\'t tell, that was sarcasm)');
+            console.log('Anyway do you think you can backflip over those hills?');
             await uc.interp(uc.position, 'bs', 0, 0, 2);
 
             // Make the unicorn go away

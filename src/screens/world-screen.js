@@ -34,6 +34,22 @@ class WorldScreen extends Screen {
         if (this.outcome || !outcome) return;
         this.outcome = outcome;
 
-        console.log('success?', outcome.success);
+        const index = ALL_LEVELS.indexOf(this.level.constructor);
+        console.log('success?', index, outcome.success);
+
+        if (outcome.success) {
+            const nextLevel = ALL_LEVELS[index + 1];
+            if (!nextLevel) {
+                // TODO end of the game
+            } else {
+                const { world } = this.level;
+                this.level = new nextLevel();
+                this.level.world = world;
+                this.level.initialize();
+            }
+        } else {
+            // TODO reset level
+        }
+
     }
 }
