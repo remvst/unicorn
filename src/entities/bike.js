@@ -198,6 +198,15 @@ class Bike extends PhysicsObject {
             targetBalance - this.riderRenderable.balance,
             elapsed * 2,
         );
+
+        const targetJumpPrep = jump
+            ? 1
+            : 0;
+        this.riderRenderable.jumpPrep += between(
+            -elapsed * 10,
+            targetJumpPrep - this.riderRenderable.jumpPrep,
+            elapsed * 2,
+        );
     }
 
     render() {
@@ -311,6 +320,7 @@ class RiderRenderable extends SkeletonRenderable {
         this.balance = 0;
         this.landAge = 0;
         this.pedalAge = 0;
+        this.jumpPrep = 0;
 
         this.bikeRenderable = bikeRenderable;
 
@@ -384,12 +394,14 @@ class RiderRenderable extends SkeletonRenderable {
             this.balance * 10 + // Pull/push bike
             interpolate(0, 5, pyramid(this.landAge / 0.3)) + // Landing animation
             cos(this.pedalAge * 9 + PI) * 2 + // Rotate shoulders while pedaling
+            interpolate(0, 5, this.jumpPrep) +
             0;
 
         this.shoulders.y =
             interpolateUnbounded(this.butt.y, this.leftHand.y, 1.5) + // Base position
-            interpolate(0, 5, pyramid(this.landAge / 0.3)) // Landing animation
-            ;
+            interpolate(0, 5, pyramid(this.landAge / 0.3)) + // Landing animation
+            interpolate(0, 5, this.jumpPrep)
+            0;
 
         this.head.x = interpolateUnbounded(this.butt.x, this.shoulders.x, 1.3) + 2;
         this.head.y = interpolateUnbounded(this.butt.y, this.shoulders.y, 1.3);
