@@ -19,8 +19,8 @@ class TestLevel extends Level {
                     t => t.label.includes('backflip'),
                     t => t.label.includes('backflip'),
                 ])),
-                new Objective('10,000 SCORE'.toUpperCase(), 1, () => 0),
-                new Objective('WHEELIE IN FRONT OF UNICORNS'.toUpperCase(), 1, () => 0),
+                new Objective('10,000 SCORE'.toUpperCase(), 1, () => new Promise(() => {})),
+                new Objective('WHEELIE IN FRONT OF UNICORNS'.toUpperCase(), 1, () => new Promise(() => {})),
             ]
         })
 

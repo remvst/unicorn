@@ -80,8 +80,6 @@ class ComboTracker {
         this.landedTricks.clear();
         this.points = 0;
 
-        spawnRainbows(this.bike);
-
         this.comboId++;
     }
 

@@ -21,6 +21,9 @@ class Objective extends Entity {
         while (this.doneCount < this.requiredCount) {
             await this.promiseFactory();
             this.doneCount++;
+
+            console.log('go rainbows');
+            spawnRainbows(firstItem(this.world.category('player')));
         }
     }
 }
