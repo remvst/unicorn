@@ -1,6 +1,6 @@
 class HUD extends Entity {
     render() {
-        const player = firstItem(this.world.category('bike'));
+        const player = firstItem(this.world.category('player'));
         const camera = firstItem(this.world.category('camera'));
         if (!player) return;
 

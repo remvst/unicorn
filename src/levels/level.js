@@ -4,16 +4,16 @@ class Level {
             this.world = new World();
             this.world.add(new Background());
             this.world.add(new Camera());
+            this.world.add(new HUD());
 
             this.world.add(new ItemGenerator()); // TODO could be a problem across levels
 
             const ground = this.world.add(new Ground());
 
-            this.player = this.world.add(new Player());
-            this.player.position.y = ground.curveAt(this.player.position.x) -
-                this.player.backWheel.position.y - this.player.backWheel.radius; // TODO eventually hardcode this?
+            const player = this.world.add(new Player());
+            player.position.y = ground.curveAt(player.position.x) -
+                player.backWheel.position.y - player.backWheel.radius; // TODO eventually hardcode this?
 
-            this.world.add(new HUD());
         }
 
         this.setup()
