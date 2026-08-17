@@ -34,6 +34,7 @@ class Item extends Entity {
             const radius = i % 2 ? 8: 15;
             ctx.lineTo(cos(angle) * radius, sin(angle) * radius);
         }
+        ctx.closePath();
         ctx.fill();
         ctx.stroke();
     }
