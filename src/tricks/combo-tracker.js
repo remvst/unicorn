@@ -3,6 +3,8 @@ class ComboTracker {
     constructor(bike) {
         this.bike = bike;
 
+        this.comboId = 0;
+
         this.tricksTrackers = [
             new Flip(),
             new Wheelie(),
@@ -79,6 +81,8 @@ class ComboTracker {
         this.points = 0;
 
         spawnRainbows(this.bike);
+
+        this.comboId++;
     }
 
     hasLandedTrick(predicate) {

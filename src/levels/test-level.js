@@ -11,6 +11,14 @@ class TestLevel extends Level {
         await this.runObjectives({
             objectives: [
                 new Objective('DO A BACKFLIP'.toUpperCase(), 3, () => awaitTrick(this.world, t => t.label.includes('backflip'))),
+                new Objective('COMBO BACKFLIP + FRONTFLIP'.toUpperCase(), 3, () => awaitCombo(this.world, [
+                    t => t.label.includes('backflip'),
+                    t => t.label.includes('frontflip'),
+                ])),
+                new Objective('2 BACKFLIPS SAME COMBO'.toUpperCase(), 3, () => awaitCombo(this.world, [
+                    t => t.label.includes('backflip'),
+                    t => t.label.includes('backflip'),
+                ])),
                 new Objective('10,000 SCORE'.toUpperCase(), 1, () => 0),
                 new Objective('WHEELIE IN FRONT OF UNICORNS'.toUpperCase(), 1, () => 0),
             ]

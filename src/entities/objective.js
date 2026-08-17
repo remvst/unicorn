@@ -41,3 +41,35 @@ awaitTrick = async (world, predicate) => {
         }
     });
 }
+
+awaitChange = async (world, valueGetter) => {
+    const value = valueGetter();
+    await waitFor(world, () => valueGetter() !== value);
+}
+
+awaitCombo = async (world, predicates) => {
+    await awaitChange(world, () => firstItem(world.category('player'))?.comboTracker.startedTricks.length === 0);
+
+    const matchingTricks = new Set();
+
+    await waitFor(world, () => {
+        const player = firstItem(world.category('player'));
+        if (!player) return;
+
+        matchingTricks.clear();
+
+        predicateLoop: for (const predicate of predicates) {
+            for (const trick of player.comboTracker.landedTricks) {
+                if (!matchingTricks.has(trick) && predicate(trick)) {
+                    matchingTricks.add(trick);
+                    continue predicateLoop;
+                }
+            }
+
+            return; // predicate didn't match
+        }
+
+        // All predicates match, success!
+        return true;
+    });
+}
