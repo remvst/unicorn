@@ -6,7 +6,7 @@ class HUD extends Entity {
 
         ctx.translate(camera.position.x - CANVAS_WIDTH / 2, camera.position.y - CANVAS_HEIGHT / 2);
 
-        const trickString = player.comboTracker.tricks.map(t => t.label + `(${t.points.toFixed(0)})`).join(' + ').toUpperCase();
+        const trickString = player.comboTracker.startedTricks.map(t => t.label + `(${t.points.toFixed(0)})`).join(' + ').toUpperCase();
         if (trickString) {
             ctx.wrap(() => {
                 ctx.translate(CANVAS_WIDTH / 2, CANVAS_HEIGHT * 0.6);
@@ -18,16 +18,7 @@ class HUD extends Entity {
                 ctx.textAlign = 'center';
                 ctx.lineWidth = 1;
                 ctx.strokeStyle = '#000';
-                ctx.fillText(
-                    trickString,
-                    0,
-                    0,
-                );
-                // ctx.strokeText(
-                //     trickString,
-                //     0,
-                //     0,
-                // );
+                ctx.fillText(trickString, 0, 0);
 
                 const scoreLine = player.comboTracker.points.toFixed(0);
                 ctx.fillText(scoreLine, 0, 50);

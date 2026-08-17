@@ -2,13 +2,15 @@ class TrickTracker {
     bind(combo) {
         this.combo = combo;
         this.bike = this.combo.bike;
+        this.trick = new Trick();
         this.reset();
     }
 
     reset() {
-        this.trick = !this.trick || this.trick.addedToCombo
-            ? new Trick()
-            : this.trick;
+        if (this.trick.started) {
+            this.combo.lockTrick(this.trick);
+            this.trick = new Trick();
+        }
         this.trick.label = '';
         this.trick.points = 0;
     }

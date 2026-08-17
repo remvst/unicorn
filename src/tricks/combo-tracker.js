@@ -14,20 +14,30 @@ class ComboTracker {
             tracker.bind(this);
         }
 
-        this.tricks = [];
+        this.startedTricks = []; // tricks that will start showing in the combo
+        this.lockedTricks = new Set(); // tricks that are finished but not landed yet
+        this.landedTricks = new Set(); // tricks that have been fully landed
         this.comboPower = 0;
         this.points = 0;
+
+        this.lastChange = false;
     }
 
     addTrick(trick) {
-        if (!trick.addedToCombo) {
-            trick.addedToCombo = true;
-            this.tricks.push(trick);
+        if (!trick.started) {
+            trick.started = true;
+            this.startedTricks.push(trick);
 
             this.comboPower = min(1, this.comboPower + 0.5);
         }
 
-        this.points = roundToNearest(this.tricks.reduce((acc, t) => acc + t.points, 0), 10);
+        this.lastChange = this.bike.age;
+
+        this.points = roundToNearest(this.startedTricks.reduce((acc, t) => acc + t.points, 0), 10);
+    }
+
+    lockTrick(trick) {
+        this.lockedTricks.add(trick);
     }
 
     cycle(elapsed) {
@@ -38,7 +48,18 @@ class ComboTracker {
         const back = this.bike.hasCollision(this.bike.backWheel);
         const front = this.bike.hasCollision(this.bike.frontWheel);
 
-        this.comboPower = max(0, this.comboPower - elapsed / 4);
+        if (this.bike.age - this.lastChange > 0.2) {
+            this.comboPower = max(0, this.comboPower - elapsed / 4);
+        }
+
+        // Both wheels down, mark tricks as landed
+        if (front && back) {
+            for (const trick of this.lockedTricks) {
+                console.log('landed', trick.label)
+                this.landedTricks.add(trick);
+            }
+            this.lockedTricks.clear();
+        }
 
         if (this.comboPower <= 0 && (front || back)) {
             this.validateCombo();
@@ -46,20 +67,22 @@ class ComboTracker {
     }
 
     validateCombo() {
-        if (!this.tricks.length) return;
+        if (!this.startedTricks.length) return;
 
         for (const tracker of this.tricksTrackers) {
             tracker.reset();
         }
 
-        this.tricks.length = 0;
+        this.startedTricks.length = 0;
+        this.lockedTricks.clear();
+        this.landedTricks.clear();
         this.points = 0;
 
         spawnRainbows(this.bike);
     }
 
-    hasTrick(predicate) {
-        for (const trick of this.tricks) {
+    hasLandedTrick(predicate) {
+        for (const trick of this.landedTricks) {
             if (predicate(trick)) return true;
         }
     }

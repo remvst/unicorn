@@ -3,7 +3,7 @@ class TestLevel extends Level {
         this.transitionIntoCurve(new PerlinCurve({ plus: [
             new PerlinCurve({ step: 2000, amplitude: 800 }),
             new PerlinCurve({ step: 500, amplitude: 200 }),
-            new PerlinCurve({ step: 200, amplitude: 80, multiplier: x => abs(sin(x / 2000)) }),
+            // new PerlinCurve({ step: 200, amplitude: 80, multiplier: x => abs(sin(x / 2000)) }),
         ] }));
 
         spawnRainbows(this.basics().player);
@@ -11,7 +11,7 @@ class TestLevel extends Level {
         await this.runObjectives({
             objectives: [
                 new Objective('DO A BACKFLIP'.toUpperCase(), 3, (p) => {
-                    return p.comboTracker.hasTrick(t => {
+                    return p.comboTracker.hasLandedTrick(t => {
                         if (t.label === 'backflip') {
                             return true;
                         }
