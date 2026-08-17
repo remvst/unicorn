@@ -3,15 +3,44 @@ class Item extends Entity {
     constructor() {
         super();
         this.categories.push('item');
+
+        this.gradient = ctx.createLinearGradient(-50, 0, 50, 0);
+        this.gradient.addColorStop(0, 'rgba(255,255,255,0)');
+        this.gradient.addColorStop(0.5, 'rgba(255,255,255,0.3)');
+        this.gradient.addColorStop(1, 'rgba(255,255,255,0)');
     }
 
     render() {
         ctx.translate(this.position.x, this.position.y);
-        ctx.fillStyle = '#fff';
-        ctx.fillRect(-10, -10, 20, 20);
+
+        for (const speed of [PI, -PI / 2]) {
+            ctx.wrap(() => {
+                ctx.rotate(this.age * speed);
+                ctx.fillStyle = this.gradient;
+                ctx.fillRect(-50, -10, 100, 20);
+            });
+        }
+
+        const s = 1 + sin(this.age * PI * 2) * 0.1;
+        ctx.scale(s, s);
+
+        ctx.lineWidth = 2;
+        ctx.fillStyle = '#ff0';
+        ctx.strokeStyle = '#fff';
+
+        ctx.beginPath();
+        for (let i = 0 ; i < 10 ; i++) {
+            const angle = (i / 10) * PI * 2 - PI / 2;
+            const radius = i % 2 ? 8: 15;
+            ctx.lineTo(cos(angle) * radius, sin(angle) * radius);
+        }
+        ctx.fill();
+        ctx.stroke();
     }
 
     cycle(elapsed) {
+        super.cycle(elapsed);
+
         for (const bike of this.world.category('bike')) {
             if (distance(this.position, bike.position) < 50) {
                 this.world.remove(this);
@@ -24,12 +53,13 @@ class Item extends Entity {
                 dustCloud({
                     world: this.world,
                     position: this.position,
-                    radius: 5,
+                    radius: 10,
                     density: 1 / (5 * 5),
                     duration: [0.25, 1],
-                    x: [-20, 20],
-                    y: [-20, 20],
+                    x: [-40, 40],
+                    y: [-40, 40],
                     size: 10,
+                    color: '#ff0',
                 });
             }
         }

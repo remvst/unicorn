@@ -7,14 +7,14 @@ class Particle extends Entity {
         this.alpha = 1;
         this.size = 1;
         this.rotation = 0;
+        this.color = '#fff';
     }
 
     render() {
-        ctx.globalAlpha = this.alpha;
         ctx.translate(this.position.x, this.position.y);
         ctx.rotate(this.rotation);
-        ctx.fillStyle = '#fff';
-        ctx.lineWidth = 1;
+        ctx.fillStyle = this.color;
+        ctx.globalAlpha = this.alpha;
         ctx.fillRect(-this.size / 2, -this.size / 2, this.size, this.size);
     }
 
@@ -43,6 +43,7 @@ dustCloud = ({
     y,
     size,
     alpha,
+    color,
 }) => {
     const getValue = (x) => x.length ? rnd(x[0], x[1]) : x;
 
@@ -58,6 +59,7 @@ dustCloud = ({
         p.position.y = position.y + sin(angle) * dist;
         p.rotation = random() * PI;
         p.size = size;
+        p.color = color || '#fff';
         world.add(p);
 
         p.animate(getValue(duration), {

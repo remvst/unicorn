@@ -50,7 +50,7 @@ class AudienceUnicorn extends Unicorn {
     }
 
     render() {
-        if (DEBUG) ctx.wrap(() => {
+        if (DEBUG_COLLISIONS) ctx.wrap(() => {
             ctx.strokeStyle = '#fff';
             ctx.lineWidth = 5;
             ctx.translate(this.position.x, this.position.y);
