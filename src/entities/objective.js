@@ -1,15 +1,11 @@
 class Objective extends Entity {
-    constructor(label, requiredCount, detect) {
+    constructor(label, requiredCount, promiseFactory) {
         super();
         this.categories.push('objective');
 
         this.label = label;
-        this.detect = detect;
-
         this.requiredCount = requiredCount;
-        this.doneCount = 0;
-
-        this.predicateChange = new ValueChangeHelper();
+        this.promiseFactory = promiseFactory;
     }
 
     get completed() {
@@ -20,15 +16,28 @@ class Objective extends Entity {
         return this.requiredCount > 1 ? `${this.doneCount}/${this.requiredCount}` : '';
     }
 
-    cycle(elapsed) {
-        super.cycle(elapsed);
-
-        const player = firstItem(this.world.category('player'));
-        if (!player) return;
-
-        const [before, after] = this.predicateChange.change(this.detect(player));
-        if (!before && after) {
+    async start() {
+        this.doneCount = 0;
+        while (this.doneCount < this.requiredCount) {
+            await this.promiseFactory();
             this.doneCount++;
         }
     }
+}
+
+awaitTrick = async (world, predicate) => {
+    const player = firstItem(world.category('player'));
+    const exludeTricks = new Set(player?.comboTracker.landedTricks || []);
+
+    await waitFor(world, () => {
+        const player = firstItem(world.category('player'));
+        if (!player) return;
+
+        for (const trick of player.comboTracker.landedTricks) {
+            if (predicate(trick) && !exludeTricks.has(trick)) {
+                exludeTricks.add(trick);
+                return true;
+            }
+        }
+    });
 }

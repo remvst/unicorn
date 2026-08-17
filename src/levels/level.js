@@ -102,6 +102,6 @@ class Level {
 
     async runObjectives({ objectives }) {
         for (const obj of objectives) this.world.add(obj);
-        await Promise.all(objectives.map(obj => waitFor(this.world, () => obj.completed)));
+        await Promise.all(objectives.map(obj => obj.start()));
     }
 }
