@@ -10,8 +10,8 @@ class PerlinCurve {
         }
     }
 
-    slopeFor(x) {
-        return this.yFor(x) - this.yFor(x - 1);
+    slopeFor(x, radius = 1) {
+        return (this.yFor(x + radius) - this.yFor(x - radius)) / (radius * 2);
     }
 
     yFor(x) {

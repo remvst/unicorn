@@ -8,8 +8,18 @@ class TestLevel extends Level {
 
         spawnRainbows(this.basics().player);
 
-        const uc = this.world.add(new AudienceUnicorn());
-        uc.position.x = 200;
+        {
+            const uc = this.world.add(new AudienceUnicorn());
+            uc.position.x = 200;
+        }
+        {
+            const uc = this.world.add(new AudienceUnicorn());
+            uc.position.x = 300;
+        }
+        {
+            const uc = this.world.add(new AudienceUnicorn());
+            uc.position.x = 400;
+        }
 
         await this.runObjectives({
             objectives: [

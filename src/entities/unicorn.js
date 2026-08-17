@@ -9,8 +9,9 @@ class Unicorn extends Entity {
 
     render() {
         ctx.translate(this.position.x, this.position.y);
-        ctx.fillStyle = '#f00';
-        ctx.fillRect(-10, -10, 20, 20);
+
+        const ground = firstItem(this.world.category('ground'));
+        ctx.rotate(atan2(ground.curve.slopeFor(this.position.x), 1));
 
         ctx.scale(this.facing, 1);
 
@@ -22,11 +23,16 @@ class Unicorn extends Entity {
         super.cycle(elapsed);
 
         const ground = firstItem(this.world.category('ground'));
-        this.position.y = ground.curveAt(this.position.x) - 30;
+        this.position.y = ground.curveAt(this.position.x) - 40;
     }
 }
 
 class AudienceUnicorn extends Unicorn {
+    constructor() {
+        super();
+        this.facing = random() > 0.5 ? 1 : -1;
+    }
+
     cycle(elapsed) {
         super.cycle(elapsed);
 
