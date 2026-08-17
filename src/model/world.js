@@ -12,7 +12,6 @@ getLayer = (entity) => {
         if (entity instanceof entityClass) return i;
         i++;
     }
-
 }
 
 class World {
@@ -20,6 +19,7 @@ class World {
         this.entities = new Set();
         this.categories = {};
         this.layers = [];
+        this.age = 0;
     }
 
     add(entity) {
@@ -53,6 +53,7 @@ class World {
     }
 
     cycle(elapsed) {
+        this.age += elapsed;
         for (const entity of [...this.entities]) {
             entity.cycle(elapsed);
         }
@@ -77,5 +78,10 @@ class World {
                 }
             }
         });
+    }
+
+    wait(duration) {
+        const { age } = this;
+        return waitFor(this, () => this.age > age + duration);
     }
 }

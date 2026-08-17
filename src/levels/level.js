@@ -5,18 +5,31 @@ class Level {
             this.world.add(new Background());
             this.world.add(new Camera());
             this.world.add(new HUD());
-
             this.world.add(new ItemGenerator()); // TODO could be a problem across levels
+            this.world.add(new Ground());
 
-            const ground = this.world.add(new Ground());
-
-            const player = this.world.add(new Player());
-            player.position.y = ground.curveAt(player.position.x) -
-                player.backWheel.position.y - player.backWheel.radius; // TODO eventually hardcode this?
-
+            this.autoRespawn();
         }
 
         this.setup()
+    }
+
+    spawnPlayer(x = 0) {
+        const ground = firstItem(this.world.category('ground'));
+
+        const player = this.world.add(new Player());
+        player.position.x = x;
+        player.position.y = ground.curveAt(x) -
+            player.backWheel.position.y - player.backWheel.radius; // TODO eventually hardcode this?
+    }
+
+    async autoRespawn() {
+        while (true) {
+            const oldPlayer = firstItem(this.world.category('player'));
+            await waitFor(this.world, () => !firstItem(this.world.category('player')));
+            if (oldPlayer) await this.world.wait(2);
+            this.spawnPlayer(oldPlayer?.position.x || 0);
+        }
     }
 
     basics() {
