@@ -23,11 +23,11 @@ class HUD extends Entity {
                     0,
                     0,
                 );
-                ctx.strokeText(
-                    trickString,
-                    0,
-                    0,
-                );
+                // ctx.strokeText(
+                //     trickString,
+                //     0,
+                //     0,
+                // );
 
                 const scoreLine = player.comboTracker.points.toFixed(0);
                 ctx.fillText(scoreLine, 0, 50);
@@ -38,6 +38,47 @@ class HUD extends Entity {
                 const w = player.comboTracker.comboPower * 200;
                 ctx.fillRect(-w / 2, 100, w, 10);
             });
+        }
+
+
+
+        ctx.font = 'bold 18pt Arial';
+
+        const padding = 10;
+
+        const objectives = [...this.world.category('objective')];
+        const longest = 500;
+
+        const metrics = ctx.measureText('1');
+        const boxHeight = metrics.actualBoundingBoxAscent + metrics.actualBoundingBoxDescent + padding * 2;
+
+        const x = CANVAS_WIDTH - longest - padding;
+        let y = padding;
+
+        // console.log(height);
+
+        for (const objective of objectives) {
+            ctx.fillStyle = 'rgba(0,0,0,0.5)';
+            ctx.fillRect(x, y, longest, boxHeight);
+
+            ctx.fillStyle = '#fff';
+            ctx.textBaseline = 'middle';
+
+            ctx.textAlign = 'left';
+            ctx.fillText(
+                objective.label,
+                x + padding,
+                y + boxHeight / 2,
+            );
+
+            ctx.textAlign = 'right';
+            ctx.fillText(
+                objective.detail,
+                x + longest - padding,
+                y + boxHeight / 2,
+            );
+
+            y += boxHeight + padding;
         }
     }
 }

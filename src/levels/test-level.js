@@ -8,6 +8,20 @@ class TestLevel extends Level {
 
         spawnRainbows(this.basics().player);
 
+        await this.runObjectives({
+            objectives: [
+                new Objective('DO A BACKFLIP'.toUpperCase(), 3, (p) => {
+                    return p.comboTracker.hasTrick(t => {
+                        if (t.label === 'backflip') {
+                            return true;
+                        }
+                });
+                }),
+                new Objective('10,000 SCORE'.toUpperCase(), 1, () => 0),
+                new Objective('WHEELIE IN FRONT OF UNICORNS'.toUpperCase(), 1, () => 0),
+            ]
+        })
+
         await new Promise((r) => {});
     }
 }

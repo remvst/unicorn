@@ -57,4 +57,10 @@ class ComboTracker {
 
         spawnRainbows(this.bike);
     }
+
+    hasTrick(predicate) {
+        for (const trick of this.tricks) {
+            if (predicate(trick)) return true;
+        }
+    }
 }

@@ -55,13 +55,12 @@ class Flip extends JumpTracker {
         const flipCount = floor((abs(this.acc.rotation) + PI) / (PI * 2));
 
         if (flipCount >= 1) {
-            const qualifier = flipCount > 1 ? ([
-                '',
-                'double',
+            const prefix = flipCount > 1 ? ([
+                'double ',
                 'triple',
-            ][flipCount - 1] || `${flipCount}x`) : '';
+            ][flipCount - 2] || `${flipCount}x`) : '';
             const trick = this.acc.rotation < 0 ? 'backflip' : 'frontflip';
-            this.trick.label = `${qualifier} ${trick}`;
+            this.trick.label = prefix + trick;
             this.trick.points =
                 200 * // base
                 (this.rotationAcc < 0 ? 1 : 2) * // increase base if frontflip

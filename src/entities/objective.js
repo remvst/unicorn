@@ -1,9 +1,23 @@
 class Objective extends Entity {
-    constructor(label, detect) {
+    constructor(label, requiredCount, detect) {
         super();
         this.categories.push('objective');
+
         this.label = label;
         this.detect = detect;
+
+        this.requiredCount = requiredCount;
+        this.doneCount = 0;
+
+        this.predicateChange = new ValueChangeHelper();
+    }
+
+    get completed() {
+        return this.doneCount >= this.requiredCount;
+    }
+
+    get detail() {
+        return this.requiredCount > 1 ? `${this.doneCount}/${this.requiredCount}` : '';
     }
 
     cycle(elapsed) {
@@ -12,12 +26,9 @@ class Objective extends Entity {
         const player = firstItem(this.world.category('player'));
         if (!player) return;
 
-        if (!this.completed && this.detect(player)) {
-            this.completed = true;
-
-            // Check level completion
-            const hasMoreObjectives = [...this.world.category('objective')].filter(x => !x.completed).length;
-            if (!hasMoreObjectives) this.world.add(new LevelOutcome(true));
+        const [before, after] = this.predicateChange.change(this.detect(player));
+        if (!before && after) {
+            this.doneCount++;
         }
     }
 }

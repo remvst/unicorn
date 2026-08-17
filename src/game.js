@@ -9,6 +9,10 @@ class Game {
             new WorldScreen(new (ALL_LEVELS[0])()),
             new MainMenu(),
         ];
+
+        this.screens = [
+            new WorldScreen(new TestLevel()),
+        ];
         this.frame();
     }
 
