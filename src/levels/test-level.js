@@ -8,6 +8,9 @@ class TestLevel extends Level {
 
         spawnRainbows(this.basics().player);
 
+        const uc = this.world.add(new AudienceUnicorn());
+        uc.position.x = 200;
+
         await this.runObjectives({
             objectives: [
                 new Objective('DO A BACKFLIP'.toUpperCase(), 3, () => awaitTrick(this.world, t => t.label.includes('backflip'))),

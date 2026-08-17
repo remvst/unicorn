@@ -25,6 +25,13 @@ class ComboTracker {
         this.lastChange = false;
     }
 
+    * unfinishedTricks() {
+        for (const trick of this.startedTricks) {
+            if (this.lockedTricks.has(trick) || this.landedTricks.has(trick)) continue;
+            yield trick;
+        }
+    }
+
     addTrick(trick) {
         if (!trick.started) {
             trick.started = true;
@@ -39,6 +46,7 @@ class ComboTracker {
     }
 
     lockTrick(trick) {
+        trick.locked = true;
         this.lockedTricks.add(trick);
     }
 

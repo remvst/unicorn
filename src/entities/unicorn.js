@@ -21,13 +21,39 @@ class Unicorn extends Entity {
     cycle(elapsed) {
         super.cycle(elapsed);
 
+        const ground = firstItem(this.world.category('ground'));
+        this.position.y = ground.curveAt(this.position.x) - 30;
+    }
+}
+
+class AudienceUnicorn extends Unicorn {
+    cycle(elapsed) {
+        super.cycle(elapsed);
+
         const camera = firstItem(this.world.category('camera'));
         if (this.position.x < camera.position.x - CANVAS_WIDTH) {
             this.position.x = camera.position.x + CANVAS_WIDTH + random(500, 1000);
         }
 
-        const ground = firstItem(this.world.category('ground'));
-        this.position.y = ground.curveAt(this.position.x) - 30;
+        for (const player of this.world.category('player')) {
+            if (distance(player.position, this.position) > AUDIENCE_RADIUS) continue;
+            for (const trick of player.comboTracker.unfinishedTricks()) {
+                trick.inFrontOfAudience = true;
+            }
+        }
+    }
+
+    render() {
+        if (DEBUG) ctx.wrap(() => {
+            ctx.strokeStyle = '#fff';
+            ctx.lineWidth = 5;
+            ctx.translate(this.position.x, this.position.y);
+            ctx.beginPath();
+            ctx.arc(0, 0, AUDIENCE_RADIUS, 0, PI * 2);
+            ctx.stroke();
+        });
+
+        super.render();
     }
 }
 
