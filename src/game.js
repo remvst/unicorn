@@ -10,9 +10,9 @@ class Game {
             new MainMenu(),
         ];
 
-        // this.screens = [
-        //     new WorldScreen(new TestLevel()),
-        // ];
+        this.screens = [
+            new WorldScreen(new TestLevel()),
+        ];
         this.frame();
     }
 
