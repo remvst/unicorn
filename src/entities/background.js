@@ -25,21 +25,17 @@ class Background extends Entity {
             ctx.fillStyle = colorAsString(multiplyColor(0xbab6f3, parallaxFactor));
             ctx.beginPath();
 
-            // Sweep in the layer's own (slower-moving) coordinate space so sample
-            // points stay grid-aligned instead of drifting with the real camera,
-            // then translate back to screen space when drawing.
-            const layerCameraX = camera.position.x * parallaxFactor;
-            const toScreenX = sampleX => sampleX + camera.position.x * (1 - parallaxFactor);
+            const { centerX: layerCameraX, toScreenX, toScreenY } = parallaxLayer(camera, parallaxFactor);
 
             xSweep(
                 this.world,
                 BACKGROUND_CURVE_STEP,
                 ({ x: sampleX }) => ctx.lineTo(
                     toScreenX(sampleX),
-                    this.curve.yFor(
+                    toScreenY(this.curve.yFor(
                         sampleX +
                             i * CANVAS_WIDTH // Add an offset so the curves don't line up
-                    ) + camera.position.y * (1 - parallaxFactor),
+                    )),
                 ),
                 ({ x: sampleX }) => ctx.lineTo(toScreenX(sampleX), camera.position.y + CANVAS_HEIGHT / 2),
                 layerCameraX,
@@ -49,6 +45,12 @@ class Background extends Entity {
         }
     }
 }
+
+parallaxLayer = (camera, factor) => ({
+    centerX: camera.position.x * factor,
+    toScreenX: x => x + camera.position.x * (1 - factor),
+    toScreenY: y => y + camera.position.y * (1 - factor),
+});
 
 xSweep = (
     world,
