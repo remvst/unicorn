@@ -27,14 +27,7 @@ class Item extends Entity {
         ctx.lineWidth = 2;
         ctx.fillStyle = '#ff0';
         ctx.strokeStyle = '#fff';
-
-        ctx.beginPath();
-        for (let i = 0 ; i < 10 ; i++) {
-            const angle = (i / 10) * PI * 2 - PI / 2;
-            const radius = i % 2 ? 8: 15;
-            ctx.lineTo(cos(angle) * radius, sin(angle) * radius);
-        }
-        ctx.closePath();
+        starShape(5, 15, 8);
         ctx.fill();
         ctx.stroke();
     }
