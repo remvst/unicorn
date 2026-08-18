@@ -48,7 +48,10 @@ class WheelGib extends Gib {
         hb.radius = wheel.radius;
 
         this.renderable = new SkeletonRenderable()
-            .add(setThickness(4))
-            .add(circleRenderable(hb.position, hb.radius));
+            .add(
+                setColor('#000'),
+                setThickness(4),
+                circleRenderable(hb.position, hb.radius),
+            );
     }
 }

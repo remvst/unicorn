@@ -4,8 +4,13 @@ class SkeletonRenderable {
         this.pieces = [];
     }
 
-    add(renderer) {
-        this.pieces.push(renderer);
+    prepend(...pieces) {
+        this.pieces.unshift(...pieces);
+        return this;
+    }
+
+    add(...pieces) {
+        this.pieces.push(...pieces);
         return this;
     }
 

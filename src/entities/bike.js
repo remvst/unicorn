@@ -293,18 +293,20 @@ class BikeRenderable extends SkeletonRenderable {
         }
 
         // Body
-        this
-            .add(setColor('#444'))
-            .add(setThickness(2))
-            .add(lineRenderable(backWheel, this.seatBase))
-            .add(lineRenderable(backWheel, this.pedalsCenter))
-            .add(lineRenderable(this.pedalsCenter, this.seatCenter))
-            .add(lineRenderable(this.seatBase, this.forkLink))
-            .add(lineRenderable(this.pedalsCenter, this.forkLink))
-            .add(lineRenderable(frontWheel, this.handlebarsConnection))
-            .add(lineRenderable(this.handlebarsBottom, this.handlebarsConnection))
-            .add(lineRenderable(this.handlebarsBottom, this.handlebarsTop))
-            .add(circleRenderable(this.pedalsCenter, 3))
+        this.add(
+            setLineCap('round'),
+            setColor('#444'),
+            setThickness(2),
+            lineRenderable(backWheel, this.seatBase),
+            lineRenderable(backWheel, this.pedalsCenter),
+            lineRenderable(this.pedalsCenter, this.seatCenter),
+            lineRenderable(this.seatBase, this.forkLink),
+            lineRenderable(this.pedalsCenter, this.forkLink),
+            lineRenderable(frontWheel, this.handlebarsConnection),
+            lineRenderable(this.handlebarsBottom, this.handlebarsConnection),
+            lineRenderable(this.handlebarsBottom, this.handlebarsTop),
+            circleRenderable(this.pedalsCenter, 3),
+        );
     }
 }
 
@@ -330,29 +332,34 @@ class BikeAndRiderRenderable extends BikeRenderable {
         this.leftHand = {};
         this.leftElbow = {};
 
-        // Right leg, rendered behind the bike
-        this.backPieces = new SkeletonRenderable()
-            .add(setThickness(4))
-            .add(setColor('#fff'))
-            .add(lineRenderable(this.rightFoot, this.rightKnee, 4))
-            .add(lineRenderable(this.rightKnee, this.butt, 4))
-            ;
+        this
+            // Right leg, rendered behind the bike
+            // (yes I know it's technically the left leg but whatever, why are you even reading this)
+            .prepend(
+                setThickness(4),
+                setColor('#fff'),
+                setLineCap('round'),
+                lineRenderable(this.rightFoot, this.rightKnee),
+                lineRenderable(this.rightKnee, this.butt),
+            )
 
-        // Rest of the rider, rendered in front of the bike
-        this.frontPieces = new SkeletonRenderable()
-            .add(setColor('#fff'))
-            .add(setThickness(4))
-            .add(lineRenderable(this.leftFoot, this.leftKnee, 4))
-            .add(lineRenderable(this.leftKnee, this.butt, 4))
+            // Rest of the rider, rendered in front of the bike
+            .add(
+                setColor('#fff'),
+                setThickness(4),
+                setLineCap('round'),
+                lineRenderable(this.leftFoot, this.leftKnee),
+                lineRenderable(this.leftKnee, this.butt),
 
-            .add(setThickness(6))
-            .add(lineRenderable(this.shoulders, this.butt, 4))
+                setThickness(6),
+                lineRenderable(this.shoulders, this.butt),
 
-            .add(setThickness(4))
-            .add(lineRenderable(this.shoulders, this.leftElbow, 4))
-            .add(lineRenderable(this.leftElbow, this.leftHand, 4))
-            .add(circleRenderable(this.head, 6, true))
-            .add(circleRenderable(this.leftHand, true))
+                setThickness(4),
+                lineRenderable(this.shoulders, this.leftElbow),
+                lineRenderable(this.leftElbow, this.leftHand),
+                circleRenderable(this.head, 6, true),
+                circleRenderable(this.leftHand, true),
+            )
             ;
     }
 
@@ -413,9 +420,9 @@ class BikeAndRiderRenderable extends BikeRenderable {
         this.leftElbow.x = interpolate(this.shoulders.x, this.leftHand.x, 0.4);
         this.leftElbow.y = interpolateUnbounded(this.shoulders.y, this.leftHand.y, 1.2);
 
-        this.backPieces.render();
+        // this.backPieces.render();
         super.render();
-        this.frontPieces.render();
+        // this.frontPieces.render();
     }
 }
 
