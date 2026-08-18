@@ -150,7 +150,7 @@ xSweep = (
     }
     for (
         let x = ceilToNearest(centerX + CANVAS_WIDTH / 2, step) ;
-        x > centerX - CANVAS_WIDTH / 2 - step ;
+        backward && x > centerX - CANVAS_WIDTH / 2 - step ;
         x -= step
     ) {
         opts.x = x;

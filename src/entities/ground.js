@@ -23,9 +23,11 @@ class Ground extends Entity {
 
         ctx.fillStyle = '#88ca9f';
         ctx.beginPath();
-        for (let x = camera.position.x - CANVAS_WIDTH / 2 ; x < camera.position.x + CANVAS_WIDTH / 2 + GROUND_CURVE_STEP ; x += GROUND_CURVE_STEP) {
-            ctx.lineTo(x, this.curveAt(x));
-        }
+        xSweep(
+            this.world,
+            GROUND_CURVE_STEP,
+            ({ x, groundY }) => ctx.lineTo(x, groundY),
+        );
         ctx.lineTo(camera.position.x + CANVAS_WIDTH / 2, camera.position.y + CANVAS_HEIGHT / 2);
         ctx.lineTo(camera.position.x - CANVAS_WIDTH / 2, camera.position.y + CANVAS_HEIGHT / 2);
         ctx.fill();
