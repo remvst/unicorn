@@ -284,9 +284,16 @@ class BikeRenderable extends SkeletonRenderable {
             y: this.seatBase.y - 5,
         }
 
+        if (wheels) {
+            this
+                .add(setColor('#000'))
+                .add(circleRenderable(backWheel, bike.backWheel.radius, 4))
+                .add(circleRenderable(frontWheel, bike.frontWheel.radius, 4));
+        }
+
         // Body
         this
-            .add(setColor('#000'))
+            .add(setColor('#444'))
             .add(lineRenderable(backWheel, this.seatBase))
             .add(lineRenderable(backWheel, this.pedalsCenter))
             .add(lineRenderable(this.pedalsCenter, this.seatCenter))
@@ -296,12 +303,6 @@ class BikeRenderable extends SkeletonRenderable {
             .add(lineRenderable(this.handlebarsBottom, this.handlebarsConnection))
             .add(lineRenderable(this.handlebarsBottom, this.handlebarsTop))
             .add(circleRenderable(this.pedalsCenter, 3))
-
-        if (wheels) {
-            this
-                .add(circleRenderable(backWheel, bike.backWheel.radius, 4))
-                .add(circleRenderable(frontWheel, bike.frontWheel.radius, 4));
-        }
     }
 }
 
