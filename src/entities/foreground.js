@@ -59,27 +59,34 @@ class Foreground extends Entity {
         // Grass
         const { rng } = this;
 
-        for (let i = 0 ; i < 200 ; i++) {
-            ctx.globalAlpha = 1;
-            const x = rng.floating() * CANVAS_WIDTH; // TODO update so
-            const y = ground.curve.yFor(x) + rng.floating() * CANVAS_HEIGHT;
+        const fromTileX = floorToNearest(camera.position.x - CANVAS_WIDTH / 2, CANVAS_WIDTH);
+        const toTileX = camera.position.x + CANVAS_WIDTH / 2;
 
-            for (let i = 0 ; i < interpolate(5, 10, rng.floating()) ; i++) {
-                ctx.wrap(() => {
-                    ctx.fillStyle = rng.pick(GRASS_COLORS);
-                    ctx.translate(
-                        x + rng.floating() * 30,
-                        y + i * 5,
-                    );
-                    ctx.rotate(sin((this.age + rng.floating()) * PI * 2) * (rng.floating() * PI / 8));
+        for (let tileX = fromTileX ; tileX < toTileX ; tileX += CANVAS_WIDTH) {
+            rng.reset();
 
-                    ctx.fillRect(-2, 0, 4, -10);
+            for (let i = 0 ; i < 200 ; i++) {
+                ctx.globalAlpha = 1;
+                const x = tileX + rng.floating() * CANVAS_WIDTH;
+                const y = ground.curve.yFor(x) + rng.floating() * CANVAS_HEIGHT;
 
-                    if (rng.floating() < 0.1) {
-                        ctx.fillStyle = rng.pick(['#fff', '#ff0', '#08f']);
-                        ctx.fillRect(-2, -10, 4, 4);
-                    }
-                });
+                for (let i = 0 ; i < interpolate(5, 10, rng.floating()) ; i++) {
+                    ctx.wrap(() => {
+                        ctx.fillStyle = rng.pick(GRASS_COLORS);
+                        ctx.translate(
+                            x + rng.floating() * 30,
+                            y + i * 5,
+                        );
+                        ctx.rotate(sin((this.age + rng.floating()) * PI * 2) * (rng.floating() * PI / 8));
+
+                        ctx.fillRect(-2, 0, 4, -10);
+
+                        if (rng.floating() < 0.1) {
+                            ctx.fillStyle = rng.pick(['#fff', '#ff0', '#08f']);
+                            ctx.fillRect(-2, -10, 4, 4);
+                        }
+                    });
+                }
             }
         }
     }
