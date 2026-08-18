@@ -3,8 +3,8 @@ getLayer = (entity) => {
     for (const entityClass of [
         Background,
         Rainbow,
-        PhysicsObject,
         Unicorn,
+        PhysicsObject,
         Ground,
         Foreground,
         Particle,
