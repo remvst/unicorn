@@ -23,9 +23,10 @@ class Rainbow extends Entity {
 
         const thickness = 10;
 
+        ctx.globalAlpha = 0.5;
+
         let { radius } = this;
         for (const color of RAINBOW_COLORS) {
-
             ctx.lineWidth = thickness;
             ctx.strokeStyle = color;
             ctx.beginPath();
