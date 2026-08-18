@@ -286,14 +286,16 @@ class BikeRenderable extends SkeletonRenderable {
 
         if (wheels) {
             this
+                .add(setThickness(4))
                 .add(setColor('#000'))
-                .add(circleRenderable(backWheel, bike.backWheel.radius, 4))
-                .add(circleRenderable(frontWheel, bike.frontWheel.radius, 4));
+                .add(circleRenderable(backWheel, bike.backWheel.radius))
+                .add(circleRenderable(frontWheel, bike.frontWheel.radius));
         }
 
         // Body
         this
             .add(setColor('#444'))
+            .add(setThickness(2))
             .add(lineRenderable(backWheel, this.seatBase))
             .add(lineRenderable(backWheel, this.pedalsCenter))
             .add(lineRenderable(this.pedalsCenter, this.seatCenter))
@@ -330,21 +332,28 @@ class BikeAndRiderRenderable extends BikeRenderable {
 
         // Right leg, rendered behind the bike
         this.backPieces = new SkeletonRenderable()
+            .add(setThickness(4))
             .add(setColor('#fff'))
             .add(lineRenderable(this.rightFoot, this.rightKnee, 4))
-            .add(lineRenderable(this.rightKnee, this.butt, 4));
+            .add(lineRenderable(this.rightKnee, this.butt, 4))
+            ;
 
         // Rest of the rider, rendered in front of the bike
         this.frontPieces = new SkeletonRenderable()
             .add(setColor('#fff'))
+            .add(setThickness(4))
             .add(lineRenderable(this.leftFoot, this.leftKnee, 4))
             .add(lineRenderable(this.leftKnee, this.butt, 4))
+
+            .add(setThickness(6))
             .add(lineRenderable(this.shoulders, this.butt, 4))
+
+            .add(setThickness(4))
             .add(lineRenderable(this.shoulders, this.leftElbow, 4))
             .add(lineRenderable(this.leftElbow, this.leftHand, 4))
-            .add(circleRenderable(this.head, 6, 0))
-            .add(circleRenderable(this.leftHand, 3, 0))
-            .add(circleRenderable(this.leftFoot, 1));
+            .add(circleRenderable(this.head, 6, true))
+            .add(circleRenderable(this.leftHand, true))
+            ;
     }
 
     render() {

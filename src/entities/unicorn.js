@@ -88,15 +88,23 @@ class UnicornRenderable extends SkeletonRenderable {
 
         this
             .add(setColor('#fff'))
-            .add(lineRenderable(this.backLegAttach, this.rightBackFoot, 6, 'butt'))
-            .add(lineRenderable(this.frontLegAttach, this.rightFrontFoot, 6, 'butt'))
-            .add(lineRenderable(this.backLegAttach, this.leftBackFoot, 6, 'butt'))
-            .add(lineRenderable(this.frontLegAttach, this.leftFrontFoot, 6, 'butt'))
-            .add(lineRenderable(this.tailBase, this.tailTip, 5, 'butt'))
-            .add(lineRenderable(this.neckBase, this.head, 15, 'butt'))
-            .add(lineRenderable(this.head, this.nose, 12, 'square'))
-            .add(lineRenderable(this.head, this.hornTip, 2, 'butt'))
-            .add(lineRenderable(this.butt, this.shoulders, 25, 'butt'))
+            .add(setLineCap('butt'))
+            .add(setThickness(6))
+            .add(lineRenderable(this.backLegAttach, this.rightBackFoot))
+            .add(lineRenderable(this.frontLegAttach, this.rightFrontFoot))
+            .add(lineRenderable(this.backLegAttach, this.leftBackFoot))
+            .add(lineRenderable(this.frontLegAttach, this.leftFrontFoot))
+            .add(setThickness(5))
+            .add(lineRenderable(this.tailBase, this.tailTip))
+            .add(setThickness(15))
+            .add(lineRenderable(this.neckBase, this.head))
+            .add(setThickness(2))
+            .add(lineRenderable(this.head, this.hornTip))
+            .add(setThickness(25))
+            .add(lineRenderable(this.butt, this.shoulders))
+            .add(setLineCap('square'))
+            .add(setThickness(12))
+            .add(lineRenderable(this.head, this.nose))
             ;
     }
 
