@@ -13,12 +13,40 @@ class Background extends Entity {
     render() {
         const camera = firstItem(this.world.category('camera'));
 
+        // Background color
         ctx.fillStyle = this.gradient;
         ctx.wrap(() => {
             ctx.translate(camera.position.x - CANVAS_WIDTH / 2, camera.position.y - CANVAS_HEIGHT / 2)
             ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
         });
 
+        const { rng } = this;
+
+        const {
+            centerX: layerCameraX,
+            centerY: layerCameraY,
+            toScreenX,
+            toScreenY,
+        } = parallaxLayer(camera, 0.5);
+
+        surfaceSweep(
+            this.world,
+            this.rng,
+            50,
+            ({ x, y }) => {
+                ctx.globalAlpha = rng.floating() * 0.5;
+                ctx.fillStyle = '#fff';
+                ctx.translate(toScreenX(x), toScreenY(y));
+                // ctx.fillRect(-20, -20, 40, 40);
+
+                starShape(4, 20, 2);
+                ctx.fill();
+            },
+            layerCameraX,
+            layerCameraY,
+        );
+
+        // Background parallaxes
         for (let i = 0 ; i < BACKGROUND_CURVE_COUNT ; i++) {
             const parallaxFactor = interpolate(0.5, 0.75, i / (BACKGROUND_CURVE_COUNT - 1));
 
@@ -48,9 +76,49 @@ class Background extends Entity {
 
 parallaxLayer = (camera, factor) => ({
     centerX: camera.position.x * factor,
+    centerY: camera.position.y * factor,
     toScreenX: x => x + camera.position.x * (1 - factor),
     toScreenY: y => y + camera.position.y * (1 - factor),
 });
+
+// NOTE: opts.x/opts.y/opts.groundY are in the sweep's own space (centerX/centerY),
+// *before* any parallax offset. A populate() drawing at a parallaxed screen position
+// (e.g. via parallaxLayer's toScreenX/toScreenY) should re-sample groundY at that
+// screen x itself if it needs to line up with the real ground, rather than trust
+// opts.groundY (which is only accurate for factor=1, un-parallaxed callers).
+surfaceSweep = (
+    world,
+    rng,
+    density,
+    populate,
+    centerX,
+    centerY,
+) => {
+    const ground = firstItem(world.category('ground'));
+    const camera = firstItem(world.category('camera'));
+    const opts = { ground, camera };
+
+    centerX ??= camera.position.x;
+    centerY ??= camera.position.y;
+
+    const fromTileX = floorToNearest(centerX - CANVAS_WIDTH / 2, CANVAS_WIDTH);
+    const fromTileY = floorToNearest(centerY - CANVAS_HEIGHT / 2, CANVAS_HEIGHT);
+    const toTileX = centerX + CANVAS_WIDTH / 2;
+    const toTileY = centerY + CANVAS_HEIGHT / 2;
+
+    for (let tileX = fromTileX ; tileX < toTileX ; tileX += CANVAS_WIDTH) {
+        for (let tileY = fromTileY ; tileY < toTileY ; tileY += CANVAS_HEIGHT) {
+            rng.reset();
+
+            for (let i = 0 ; i < density ; i++) {
+                opts.x = tileX + rng.floating() * CANVAS_WIDTH;
+                opts.y = tileY + rng.floating() * CANVAS_HEIGHT;
+                opts.groundY = ground.curveAt(opts.x);
+                ctx.wrap(() => populate(opts));
+            }
+        }
+    }
+}
 
 xSweep = (
     world,
