@@ -16,9 +16,13 @@ class SkeletonRenderable {
     }
 }
 
+setColor = (color) => () => {
+    ctx.strokeStyle = ctx.fillStyle = color;
+    ctx.strokeStyle = color;
+}
+
 lineRenderable = (from, to, thickness = 2, cap = 'round') => () => {
     ctx.lineWidth = thickness;
-    ctx.strokeStyle = '#fff';
     ctx.lineCap = cap;
     ctx.beginPath();
     ctx.moveTo(from.x, from.y);
@@ -28,7 +32,6 @@ lineRenderable = (from, to, thickness = 2, cap = 'round') => () => {
 
 circleRenderable = (center, radius, thickness = 2) => () => {
     ctx.lineWidth = thickness;
-    ctx.strokeStyle = ctx.fillStyle = '#fff';
     ctx.beginPath();
     ctx.arc(center.x, center.y, radius, 0, PI * 2);
     if (thickness) ctx.stroke(); else ctx.fill();

@@ -30,7 +30,8 @@ class Bike extends PhysicsObject {
         this.usingPower = false;
 
         this.bikeRenderable = new BikeRenderable(this);
-        this.riderRenderable = new RiderRenderable(this.bikeRenderable);
+        this.riderRenderableBack = new RiderRenderable(this.bikeRenderable);
+        this.riderRenderableFront = new RiderRenderable(this.bikeRenderable, true);
 
         this.controls = {
             // raiseWheel: false,
@@ -175,10 +176,11 @@ class Bike extends PhysicsObject {
         }
 
         // Animations
+        // Intentionally not updating the back since we know it's unaffected
         if (this.airborne(0.3)) {
-            this.riderRenderable.landAge = 0;
+            this.riderRenderableFront.landAge = 0;
         } else {
-            this.riderRenderable.landAge += elapsed;
+            this.riderRenderableFront.landAge += elapsed;
         }
 
         const targetBalance = raiseWheel
@@ -187,18 +189,18 @@ class Bike extends PhysicsObject {
             ? 1
             : 0;
 
-        this.riderRenderable.balance += between(
+        this.riderRenderableFront.balance += between(
             -elapsed * 2,
-            targetBalance - this.riderRenderable.balance,
+            targetBalance - this.riderRenderableFront.balance,
             elapsed * 2,
         );
 
         const targetJumpPrep = jump
             ? 1
             : 0;
-        this.riderRenderable.jumpPrep += between(
+        this.riderRenderableFront.jumpPrep += between(
             -elapsed * 10,
-            targetJumpPrep - this.riderRenderable.jumpPrep,
+            targetJumpPrep - this.riderRenderableFront.jumpPrep,
             elapsed * 2,
         );
     }
@@ -208,10 +210,10 @@ class Bike extends PhysicsObject {
             ctx.translate(this.position.x, this.position.y);
             ctx.rotate(this.rotation);
 
+            this.riderRenderableFront.pedalAge = this.riderRenderableBack.pedalAge = this.pedalAge;
+            this.riderRenderableBack.render();
             this.bikeRenderable.render();
-
-            this.riderRenderable.pedalAge = this.pedalAge;
-            this.riderRenderable.render();
+            this.riderRenderableFront.render();
         });
 
         super.render();
@@ -289,6 +291,7 @@ class BikeRenderable extends SkeletonRenderable {
 
         // Body
         this
+            .add(setColor('#000'))
             .add(lineRenderable(backWheel, this.seatBase))
             .add(lineRenderable(backWheel, this.pedalsCenter))
             .add(lineRenderable(this.pedalsCenter, this.seatCenter))
@@ -308,7 +311,7 @@ class BikeRenderable extends SkeletonRenderable {
 }
 
 class RiderRenderable extends SkeletonRenderable {
-    constructor(bikeRenderable) {
+    constructor(bikeRenderable, front) {
         super();
 
         this.balance = 0;
@@ -332,18 +335,24 @@ class RiderRenderable extends SkeletonRenderable {
         this.leftHand = {};
         this.leftElbow = {};
 
-        this
-            .add(lineRenderable(this.leftFoot, this.leftKnee, 4))
-            .add(lineRenderable(this.rightFoot, this.rightKnee, 4))
-            .add(lineRenderable(this.leftKnee, this.butt, 4))
-            .add(lineRenderable(this.rightKnee, this.butt, 4))
-            .add(lineRenderable(this.shoulders, this.butt, 4))
-            .add(lineRenderable(this.shoulders, this.leftElbow, 4))
-            .add(lineRenderable(this.shoulders, this.leftElbow, 4))
-            .add(lineRenderable(this.leftElbow, this.leftHand, 4))
-            .add(circleRenderable(this.head, 6, 0))
-            .add(circleRenderable(this.leftHand, 3, 0))
-            .add(circleRenderable(this.leftFoot, 1))
+        this.add(setColor('#fff'));
+
+        if (front) {
+            this
+                .add(lineRenderable(this.leftFoot, this.leftKnee, 4))
+                .add(lineRenderable(this.leftKnee, this.butt, 4))
+                .add(lineRenderable(this.shoulders, this.butt, 4))
+                .add(lineRenderable(this.shoulders, this.leftElbow, 4))
+                .add(lineRenderable(this.shoulders, this.leftElbow, 4))
+                .add(lineRenderable(this.leftElbow, this.leftHand, 4))
+                .add(circleRenderable(this.head, 6, 0))
+                .add(circleRenderable(this.leftHand, 3, 0))
+                .add(circleRenderable(this.leftFoot, 1))
+        } else {
+            this
+                .add(lineRenderable(this.rightFoot, this.rightKnee, 4))
+                .add(lineRenderable(this.rightKnee, this.butt, 4));
+        }
     }
 
     render() {

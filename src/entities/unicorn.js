@@ -87,6 +87,7 @@ class UnicornRenderable extends SkeletonRenderable {
         this.hornTip = {};
 
         this
+            .add(setColor('#fff'))
             .add(lineRenderable(this.backLegAttach, this.rightBackFoot, 6, 'butt'))
             .add(lineRenderable(this.frontLegAttach, this.rightFrontFoot, 6, 'butt'))
             .add(lineRenderable(this.backLegAttach, this.leftBackFoot, 6, 'butt'))
