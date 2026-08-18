@@ -25,21 +25,26 @@ class Background extends Entity {
             ctx.fillStyle = colorAsString(multiplyColor(0xbab6f3, parallaxFactor));
             ctx.beginPath();
 
+            // Sweep in the layer's own (slower-moving) coordinate space so sample
+            // points stay grid-aligned instead of drifting with the real camera,
+            // then translate back to screen space when drawing.
             const layerCameraX = camera.position.x * parallaxFactor;
-            const fromSampleX = floorToNearest(layerCameraX - CANVAS_WIDTH / 2, BACKGROUND_CURVE_STEP);
-            const toSampleX = layerCameraX + CANVAS_WIDTH / 2 + BACKGROUND_CURVE_STEP;
+            const toScreenX = sampleX => sampleX + camera.position.x * (1 - parallaxFactor);
 
-            for (let sampleX = fromSampleX ; sampleX < toSampleX ; sampleX += BACKGROUND_CURVE_STEP) {
-                const drawX = sampleX + camera.position.x * (1 - parallaxFactor);
-                const drawY = this.curve.yFor(
-                    sampleX +
-                        i * CANVAS_WIDTH // Add an offset so the curves don't line up
-                ) + camera.position.y * (1 - parallaxFactor);
+            xSweep(
+                this.world,
+                BACKGROUND_CURVE_STEP,
+                ({ x: sampleX }) => ctx.lineTo(
+                    toScreenX(sampleX),
+                    this.curve.yFor(
+                        sampleX +
+                            i * CANVAS_WIDTH // Add an offset so the curves don't line up
+                    ) + camera.position.y * (1 - parallaxFactor),
+                ),
+                ({ x: sampleX }) => ctx.lineTo(toScreenX(sampleX), camera.position.y + CANVAS_HEIGHT / 2),
+                layerCameraX,
+            );
 
-                ctx.lineTo(drawX, drawY);
-            }
-            ctx.lineTo(camera.position.x + CANVAS_WIDTH / 2, camera.position.y + CANVAS_HEIGHT / 2);
-            ctx.lineTo(camera.position.x - CANVAS_WIDTH / 2, camera.position.y + CANVAS_HEIGHT / 2);
             ctx.fill();
         }
     }
@@ -50,14 +55,17 @@ xSweep = (
     step,
     forward,
     backward,
+    centerX, // Sweep is grid-aligned around this x instead of the camera, e.g. for parallax layers
 ) => {
     const ground = firstItem(world.category('ground'));
     const camera = firstItem(world.category('camera'));
     const opts = { ground, camera };
 
+    centerX ??= camera.position.x;
+
     for (
-        let x = floorToNearest(camera.position.x - CANVAS_WIDTH / 2, step) ;
-        x < camera.position.x + CANVAS_WIDTH / 2 + step ;
+        let x = floorToNearest(centerX - CANVAS_WIDTH / 2, step) ;
+        x < centerX + CANVAS_WIDTH / 2 + step ;
         x += step
     ) {
         opts.x = x;
@@ -65,8 +73,8 @@ xSweep = (
         forward(opts);
     }
     for (
-        let x = ceilToNearest(camera.position.x + CANVAS_WIDTH / 2, step) ;
-        x > camera.position.x - CANVAS_WIDTH / 2 - step ;
+        let x = ceilToNearest(centerX + CANVAS_WIDTH / 2, step) ;
+        x > centerX - CANVAS_WIDTH / 2 - step ;
         x -= step
     ) {
         opts.x = x;
