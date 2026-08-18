@@ -6,6 +6,7 @@ getLayer = (entity) => {
         PhysicsObject,
         Unicorn,
         Ground,
+        Foreground,
         Particle,
         Entity
     ]) {
@@ -62,9 +63,6 @@ class World {
     render() {
         const camera = firstItem(this.category('camera'));
         camera.cycle(0); // Cheat to force the camera to be locked
-
-        ctx.fillStyle = '#111'
-        ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 
         ctx.wrap(() => {
             ctx.translate(CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2);

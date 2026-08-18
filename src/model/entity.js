@@ -27,10 +27,12 @@ class Entity {
     reset() {
         this.age = 0;
         this.position = {x: 0, y: 0};
+        this.rng = createNumberGenerator((random() * 0xffffff));
     }
 
     cycle(elapsed) {
         this.age += elapsed;
+        this.rng.reset();
     }
 
     render() {

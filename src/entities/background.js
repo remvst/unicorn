@@ -2,16 +2,27 @@ class Background extends Entity {
 
     constructor() {
         super();
-        this.curve = new PerlinCurve({ step: 1000, amplitude: 400 });
+        this.curve = new PerlinCurve({ step: 400, amplitude: 400 });
+
+        this.gradient = ctx.createLinearGradient(0, CANVAS_HEIGHT, CANVAS_WIDTH, 0);
+        this.gradient.addColorStop(0, '#aba3da');
+        this.gradient.addColorStop(0.5, '#d862a9');
+        this.gradient.addColorStop(1, '#da88cc');
     }
 
     render() {
         const camera = firstItem(this.world.category('camera'));
 
+        ctx.fillStyle = this.gradient;
+        ctx.wrap(() => {
+            ctx.translate(camera.position.x - CANVAS_WIDTH / 2, camera.position.y - CANVAS_HEIGHT / 2)
+            ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+        });
+
         for (let i = 0 ; i < BACKGROUND_CURVE_COUNT ; i++) {
             const parallaxFactor = interpolate(0.5, 0.75, i / (BACKGROUND_CURVE_COUNT - 1));
 
-            ctx.fillStyle = colorAsString(multiplyColor(0xff0000, parallaxFactor));
+            ctx.fillStyle = colorAsString(multiplyColor(0xbab6f3, parallaxFactor));
             ctx.beginPath();
 
             const layerCameraX = camera.position.x * parallaxFactor;
@@ -31,6 +42,36 @@ class Background extends Entity {
             ctx.lineTo(camera.position.x - CANVAS_WIDTH / 2, camera.position.y + CANVAS_HEIGHT / 2);
             ctx.fill();
         }
+    }
+}
+
+xSweep = (
+    world,
+    step,
+    forward,
+    backward,
+) => {
+    const ground = firstItem(world.category('ground'));
+    const camera = firstItem(world.category('camera'));
+    const opts = { ground, camera };
+
+    for (
+        let x = floorToNearest(camera.position.x - CANVAS_WIDTH / 2, step) ;
+        x < camera.position.x + CANVAS_WIDTH / 2 + step ;
+        x += step
+    ) {
+        opts.x = x;
+        opts.groundY = ground.curveAt(x);
+        forward(opts);
+    }
+    for (
+        let x = ceilToNearest(camera.position.x + CANVAS_WIDTH / 2, step) ;
+        x > camera.position.x - CANVAS_WIDTH / 2 - step ;
+        x -= step
+    ) {
+        opts.x = x;
+        opts.groundY = ground.curveAt(x);
+        backward(opts);
     }
 }
 

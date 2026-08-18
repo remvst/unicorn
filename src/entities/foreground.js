@@ -1,0 +1,86 @@
+GRASS_COLORS = [
+    0.8,
+    0.7,
+    0.6,
+].map(r => colorAsString(multiplyColor(0x88ca9f, r)));
+
+class Foreground extends Entity {
+
+    constructor() {
+        super();
+
+        // TODO can probably avoid creating multiple perlin curves honestly
+        this.curve = new PerlinCurve({ step: 1000, amplitude: 400 });
+        this.pathCurve = new PerlinCurve({ step: 500, amplitude: 400 });
+    }
+
+    render() {
+        const camera = firstItem(this.world.category('camera'));
+
+        const ground = firstItem(this.world.category('ground'));
+        const { curve } = ground;
+
+        // Path
+        ctx.fillStyle = '#d0c090';
+        ctx.beginPath();
+        xSweep(
+            this.world,
+            20,
+            ({ x, groundY }) => ctx.lineTo(x, max(this.pathCurve.yFor(x), groundY)),
+            ({ x, groundY }) => ctx.lineTo(x, max(this.pathCurve.yFor(x) + 20, groundY)),
+        );
+        ctx.fill();
+        ctx.beginPath();
+
+        // Shade over the hills
+        for (const ratio of [1, 2, 3]) {
+            ctx.fillStyle = '#fff';
+            ctx.globalAlpha = 0.05;
+            ctx.beginPath();
+            xSweep(
+                this.world,
+                GROUND_CURVE_STEP,
+                ({ x, groundY }) => ctx.lineTo(x, groundY),
+                ({ x, groundY }) => {
+                    const shadowX = max(curve.yFor(x), curve.yFor(x) + this.curve.yFor(x))
+                    return ctx.lineTo(
+                        x,
+                        interpolateUnbounded(
+                            groundY,
+                            max(this.curve.yFor(x), groundY),
+                            ratio,
+                        ),
+                    );
+                },
+            );
+            ctx.fill();
+        }
+
+        // Grass
+        const { rng } = this;
+
+        for (let i = 0 ; i < 200 ; i++) {
+            ctx.globalAlpha = 1;
+            const x = rng.floating() * CANVAS_WIDTH; // TODO update so
+            const y = ground.curve.yFor(x) + rng.floating() * CANVAS_HEIGHT;
+
+            for (let i = 0 ; i < interpolate(5, 10, rng.floating()) ; i++) {
+                ctx.wrap(() => {
+                    ctx.fillStyle = rng.pick(GRASS_COLORS);
+                    ctx.translate(
+                        x + rng.floating() * 30,
+                        y + i * 5,
+                    );
+                    ctx.rotate(sin((this.age + rng.floating()) * PI * 2) * (rng.floating() * PI / 8));
+
+                    ctx.fillRect(-2, 0, 4, -10);
+
+                    if (rng.floating() < 0.1) {
+                        ctx.fillStyle = rng.pick(['#fff', '#ff0', '#08f']);
+                        ctx.fillRect(-2, -10, 4, 4);
+                    }
+                });
+            }
+        }
+    }
+}

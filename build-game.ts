@@ -21,6 +21,7 @@ const JS_FILES = [
     'utils/easing.js',
     'utils/perlin-curve.js',
     'utils/value-change-helper.js',
+    'utils/rng.js',
 
     'tricks/trick.js',
     'tricks/trick-tracker.js',
@@ -48,6 +49,7 @@ const JS_FILES = [
     'entities/item-generator.js',
     'entities/level-outcome.js',
     'entities/background.js',
+    'entities/foreground.js',
     'entities/objective.js',
     'entities/waiter.js',
     'entities/rainbow.js',

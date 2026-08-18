@@ -21,7 +21,7 @@ class Ground extends Entity {
     render() {
         const camera = firstItem(this.world.category('camera'));
 
-        ctx.fillStyle = 'red';
+        ctx.fillStyle = '#88ca9f';
         ctx.beginPath();
         for (let x = camera.position.x - CANVAS_WIDTH / 2 ; x < camera.position.x + CANVAS_WIDTH / 2 + GROUND_CURVE_STEP ; x += GROUND_CURVE_STEP) {
             ctx.lineTo(x, this.curveAt(x));

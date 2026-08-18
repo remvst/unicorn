@@ -6,6 +6,8 @@ class TestLevel extends Level {
             // new PerlinCurve({ step: 200, amplitude: 80, multiplier: x => abs(sin(x / 2000)) }),
         ] }));
 
+        this.world.add(new Foreground());
+
         {
             const uc = this.world.add(new AudienceUnicorn());
             uc.position.x = 200;
