@@ -3,6 +3,7 @@ class Level {
         if (!this.world) {
             this.world = new World();
             this.world.add(new Background());
+            this.world.add(new Foreground());
             this.world.add(new Camera());
             this.world.add(new HUD());
             this.world.add(new ItemGenerator()); // TODO could be a problem across levels
