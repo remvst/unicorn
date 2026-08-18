@@ -29,9 +29,7 @@ class Bike extends PhysicsObject {
 
         this.usingPower = false;
 
-        this.bikeRenderable = new BikeRenderable(this);
-        this.riderRenderableBack = new RiderRenderable(this.bikeRenderable);
-        this.riderRenderableFront = new RiderRenderable(this.bikeRenderable, true);
+        this.renderable = new BikeAndRiderRenderable(this);
 
         this.controls = {
             // raiseWheel: false,
@@ -176,11 +174,10 @@ class Bike extends PhysicsObject {
         }
 
         // Animations
-        // Intentionally not updating the back since we know it's unaffected
         if (this.airborne(0.3)) {
-            this.riderRenderableFront.landAge = 0;
+            this.renderable.landAge = 0;
         } else {
-            this.riderRenderableFront.landAge += elapsed;
+            this.renderable.landAge += elapsed;
         }
 
         const targetBalance = raiseWheel
@@ -189,18 +186,18 @@ class Bike extends PhysicsObject {
             ? 1
             : 0;
 
-        this.riderRenderableFront.balance += between(
+        this.renderable.balance += between(
             -elapsed * 2,
-            targetBalance - this.riderRenderableFront.balance,
+            targetBalance - this.renderable.balance,
             elapsed * 2,
         );
 
         const targetJumpPrep = jump
             ? 1
             : 0;
-        this.riderRenderableFront.jumpPrep += between(
+        this.renderable.jumpPrep += between(
             -elapsed * 10,
-            targetJumpPrep - this.riderRenderableFront.jumpPrep,
+            targetJumpPrep - this.renderable.jumpPrep,
             elapsed * 2,
         );
     }
@@ -210,10 +207,8 @@ class Bike extends PhysicsObject {
             ctx.translate(this.position.x, this.position.y);
             ctx.rotate(this.rotation);
 
-            this.riderRenderableFront.pedalAge = this.riderRenderableBack.pedalAge = this.pedalAge;
-            this.riderRenderableBack.render();
-            this.bikeRenderable.render();
-            this.riderRenderableFront.render();
+            this.renderable.pedalAge = this.pedalAge;
+            this.renderable.render();
         });
 
         super.render();
@@ -240,7 +235,7 @@ class Bike extends PhysicsObject {
 }
 
 class BikeRenderable extends SkeletonRenderable {
-    constructor(bike, body = 1, wheels = 1) {
+    constructor(bike, wheels = 1) {
         super();
 
         const backWheel = bike.backWheel.position;
@@ -310,16 +305,14 @@ class BikeRenderable extends SkeletonRenderable {
     }
 }
 
-class RiderRenderable extends SkeletonRenderable {
-    constructor(bikeRenderable, front) {
-        super();
+class BikeAndRiderRenderable extends BikeRenderable {
+    constructor(bike) {
+        super(bike);
 
         this.balance = 0;
         this.landAge = 0;
         this.pedalAge = 0;
         this.jumpPrep = 0;
-
-        this.bikeRenderable = bikeRenderable;
 
         this.butt = {};
 
@@ -329,41 +322,39 @@ class RiderRenderable extends SkeletonRenderable {
         this.rightFoot = {};
         this.rightKnee = {};
 
-        this.butt = {};
         this.shoulders = {};
         this.head = {};
         this.leftHand = {};
         this.leftElbow = {};
 
-        this.add(setColor('#fff'));
+        // Right leg, rendered behind the bike
+        this.backPieces = new SkeletonRenderable()
+            .add(setColor('#fff'))
+            .add(lineRenderable(this.rightFoot, this.rightKnee, 4))
+            .add(lineRenderable(this.rightKnee, this.butt, 4));
 
-        if (front) {
-            this
-                .add(lineRenderable(this.leftFoot, this.leftKnee, 4))
-                .add(lineRenderable(this.leftKnee, this.butt, 4))
-                .add(lineRenderable(this.shoulders, this.butt, 4))
-                .add(lineRenderable(this.shoulders, this.leftElbow, 4))
-                .add(lineRenderable(this.shoulders, this.leftElbow, 4))
-                .add(lineRenderable(this.leftElbow, this.leftHand, 4))
-                .add(circleRenderable(this.head, 6, 0))
-                .add(circleRenderable(this.leftHand, 3, 0))
-                .add(circleRenderable(this.leftFoot, 1))
-        } else {
-            this
-                .add(lineRenderable(this.rightFoot, this.rightKnee, 4))
-                .add(lineRenderable(this.rightKnee, this.butt, 4));
-        }
+        // Rest of the rider, rendered in front of the bike
+        this.frontPieces = new SkeletonRenderable()
+            .add(setColor('#fff'))
+            .add(lineRenderable(this.leftFoot, this.leftKnee, 4))
+            .add(lineRenderable(this.leftKnee, this.butt, 4))
+            .add(lineRenderable(this.shoulders, this.butt, 4))
+            .add(lineRenderable(this.shoulders, this.leftElbow, 4))
+            .add(lineRenderable(this.leftElbow, this.leftHand, 4))
+            .add(circleRenderable(this.head, 6, 0))
+            .add(circleRenderable(this.leftHand, 3, 0))
+            .add(circleRenderable(this.leftFoot, 1));
     }
 
     render() {
-        this.leftFoot.x = this.bikeRenderable.pedalsCenter.x + cos(this.pedalAge * 9) * 5;
-        this.leftFoot.y = this.bikeRenderable.pedalsCenter.y + sin(this.pedalAge * 9) * 5;
+        this.leftFoot.x = this.pedalsCenter.x + cos(this.pedalAge * 9) * 5;
+        this.leftFoot.y = this.pedalsCenter.y + sin(this.pedalAge * 9) * 5;
 
-        this.rightFoot.x = this.bikeRenderable.pedalsCenter.x + cos(this.pedalAge * 9 + PI) * 5;
-        this.rightFoot.y = this.bikeRenderable.pedalsCenter.y + sin(this.pedalAge * 9 + PI) * 5;
+        this.rightFoot.x = this.pedalsCenter.x + cos(this.pedalAge * 9 + PI) * 5;
+        this.rightFoot.y = this.pedalsCenter.y + sin(this.pedalAge * 9 + PI) * 5;
 
-        this.butt.x = this.bikeRenderable.seatCenter.x;
-        this.butt.y = this.bikeRenderable.seatCenter.y - 2;
+        this.butt.x = this.seatCenter.x;
+        this.butt.y = this.seatCenter.y - 2;
 
         this.leftKnee.x = interpolate(
             this.leftFoot.x,
@@ -389,8 +380,8 @@ class RiderRenderable extends SkeletonRenderable {
             0.5,
         );
 
-        this.leftHand.x = this.bikeRenderable.handlebarsTop.x;
-        this.leftHand.y = this.bikeRenderable.handlebarsTop.y;
+        this.leftHand.x = this.handlebarsTop.x;
+        this.leftHand.y = this.handlebarsTop.y;
 
         this.shoulders.x =
             interpolate(this.butt.x, this.leftHand.x, 0.3) + // Base position
@@ -412,7 +403,9 @@ class RiderRenderable extends SkeletonRenderable {
         this.leftElbow.x = interpolate(this.shoulders.x, this.leftHand.x, 0.4);
         this.leftElbow.y = interpolateUnbounded(this.shoulders.y, this.leftHand.y, 1.2);
 
+        this.backPieces.render();
         super.render();
+        this.frontPieces.render();
     }
 }
 

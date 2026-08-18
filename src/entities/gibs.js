@@ -19,7 +19,7 @@ class BikeGib extends Gib {
         this.momentum.position.x = bike.momentum.position.x / 4;
         this.momentum.position.y = bike.momentum.position.y / 4;
         this.momentum.rotation = bike.momentum.rotation / 4;
-        this.renderable = new BikeRenderable(bike, true, false);
+        this.renderable = new BikeRenderable(bike, false);
 
         for (const pt of [
             this.renderable.seatBase,
