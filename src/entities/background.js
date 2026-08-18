@@ -27,18 +27,24 @@ class Background extends Entity {
             centerY: layerCameraY,
             toScreenX,
             toScreenY,
-        } = parallaxLayer(camera, 0.5);
+        } = parallaxLayer(camera, 0.1);
 
+        // Stars
         surfaceSweep(
             this.world,
             this.rng,
-            50,
+            100,
             ({ x, y }) => {
-                ctx.globalAlpha = rng.floating() * 0.5;
+                const period = interpolate(2, 4, this.rng.floating());
+                const s = this.rng.floating();
+                ctx.globalAlpha = interpolate(
+                    s / 4,
+                    s / 2,
+                    sin(this.rng.floating() + this.age * PI * 2 / period) / 2 + 0.5
+                );
                 ctx.fillStyle = '#fff';
                 ctx.translate(toScreenX(x), toScreenY(y));
-                // ctx.fillRect(-20, -20, 40, 40);
-
+                ctx.scale(s, s);
                 starShape(4, 20, 2);
                 ctx.fill();
             },
