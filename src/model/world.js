@@ -8,7 +8,8 @@ getLayer = (entity) => {
         Ground,
         Foreground,
         Particle,
-        Entity
+        HUD,
+        Entity,
     ]) {
         if (entity instanceof entityClass) return i;
         i++;

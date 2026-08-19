@@ -39,7 +39,15 @@ class MainMenu extends Screen {
         });
 
         ctx.font = 'bold 24pt Impact';
-        ctx.strokeStyle = 'rgba(0,0,0,0.5)';
-        if (this.age % 3 > 0.5) epicText('[SPACE] to start', CANVAS_WIDTH / 2, CANVAS_HEIGHT * 0.7);
+        if (this.age % 2 > 0.5) epicText('[SPACE] to start', CANVAS_WIDTH / 2, CANVAS_HEIGHT * 0.7);
+    }
+
+    cycle(elapsed) {
+        super.cycle(elapsed);
+        if (downKeys[32]) {
+            G.screens = [
+                new WorldScreen(new TestLevel()),
+            ];
+        }
     }
 }

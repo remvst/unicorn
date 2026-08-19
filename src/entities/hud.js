@@ -33,43 +33,24 @@ class HUD extends Entity {
 
 
 
+        ctx.translate(CANVAS_WIDTH - 20, 20);
+
         ctx.font = 'bold 18pt Arial';
+        ctx.textAlign = 'right';
+        ctx.textBaseline = 'top';
+        ctx.strokeStyle = '#000';
 
-        const padding = 10;
+        let y = 0;
 
-        const objectives = [...this.world.category('objective')];
-        const longest = 500;
+        ctx.font = 'bold 36pt Arial';
+        ctx.fillStyle = '#5ca5c7';
+        y += epicText(nomangle('GOALS:'), 0, y) + 30;
 
-        const metrics = ctx.measureText('1');
-        const boxHeight = metrics.actualBoundingBoxAscent + metrics.actualBoundingBoxDescent + padding * 2;
-
-        const x = CANVAS_WIDTH - longest - padding;
-        let y = padding;
-
-        // console.log(height);
-
-        for (const objective of objectives) {
-            ctx.fillStyle = 'rgba(0,0,0,0.5)';
-            ctx.fillRect(x, y, longest, boxHeight);
-
-            ctx.fillStyle = '#fff';
-            ctx.textBaseline = 'middle';
-
-            ctx.textAlign = 'left';
-            ctx.fillText(
-                objective.label,
-                x + padding,
-                y + boxHeight / 2,
-            );
-
-            ctx.textAlign = 'right';
-            ctx.fillText(
-                objective.detail,
-                x + longest - padding,
-                y + boxHeight / 2,
-            );
-
-            y += boxHeight + padding;
+        ctx.font = 'bold 18pt Arial';
+        ctx.fillStyle = '#fff';
+        for (const objective of this.world.category('objective')) {
+            const deet = objective.detail ? ':   ' + objective.detail : '';
+            y += epicText(objective.label + deet, 0, y) + 30;
         }
     }
 }
