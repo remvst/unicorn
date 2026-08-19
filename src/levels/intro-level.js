@@ -11,7 +11,8 @@ class IntroLevel extends Level {
 
         const { camera } = this.basics();
         camera.zoom = 1.5;
-        camera.offset = 0;
+        camera.offset.x = 0;
+        camera.offset.y = -0.1;
 
         const { ground } = this.basics();
 

@@ -12,6 +12,7 @@ const JS_FILES = [
     'graphics/wrap.js',
     'graphics/skeleton-renderable.js',
     'graphics/star.js',
+    'graphics/typography.js',
 
     'utils/math.js',
     'utils/resizer.js',

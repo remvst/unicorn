@@ -26,8 +26,8 @@ class Level {
 
     async autoRespawn() {
         while (true) {
-            const oldPlayer = firstItem(this.world.category('player'));
-            await waitFor(this.world, () => !firstItem(this.world.category('player')));
+            const oldPlayer = firstItem(this.world.category('bike'));
+            await waitFor(this.world, () => !firstItem(this.world.category('bike')));
             if (oldPlayer) await this.world.wait(2);
             this.spawnPlayer(oldPlayer?.position.x || 0);
         }

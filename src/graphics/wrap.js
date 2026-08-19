@@ -1,5 +1,6 @@
 canvasPrototype.wrap = function(f) {
     this.save();
-    f();
+    const res = f();
     this.restore();
+    return res;
 };
