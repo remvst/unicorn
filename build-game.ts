@@ -71,6 +71,7 @@ const JS_FILES = [
     'sound/ZzFXMicro.js',
     'sound/zzfxm.js',
     'sound/zzfxm-song.js',
+    'sound/play-song.js',
 
     'game.js',
     'index.js',
