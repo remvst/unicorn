@@ -2,7 +2,7 @@ class Bike extends PhysicsObject {
     constructor() {
         super();
 
-        this.categories.push('bike');
+        this.categories.push('bike', 'cameratarget');
 
         this.power = 0;
 

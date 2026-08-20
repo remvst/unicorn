@@ -9,11 +9,12 @@ class Camera extends Entity {
     cycle(elapsed) {
         super.cycle(elapsed);
 
-        const player = firstItem(this.world.category('bike'));
-        if (!player) return;
-
-        this.position.x = player.position.x + CANVAS_WIDTH * this.offset.x / this.zoom;
-        this.position.y = player.position.y + CANVAS_HEIGHT * this.offset.y / this.zoom;
+        const target = firstItem(this.world.category('cameratarget'));
+        if (target) {
+            target.cycle(0); // Cheat to force the camera to be locked
+            this.position.x = target.position.x + CANVAS_WIDTH * this.offset.x / this.zoom;
+            this.position.y = target.position.y + CANVAS_HEIGHT * this.offset.y / this.zoom;
+        }
     }
 
     render(elapsed) {

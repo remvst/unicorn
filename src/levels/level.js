@@ -8,6 +8,7 @@ class Level {
             this.world.add(new HUD());
             this.world.add(new ItemGenerator()); // TODO could be a problem across levels
             this.world.add(new Ground());
+            this.world.add(new CameraTarget());
 
             this.autoRespawn();
         }
@@ -26,10 +27,19 @@ class Level {
 
     async autoRespawn() {
         while (true) {
-            const oldPlayer = firstItem(this.world.category('bike'));
-            await waitFor(this.world, () => !firstItem(this.world.category('bike')));
-            if (oldPlayer) await this.world.wait(2);
-            this.spawnPlayer(oldPlayer?.position.x || 0);
+            const { player: oldPlayer, ground, camera, cameraTarget } = this.basics();
+            await waitFor(this.world, () => !this.basics().player);
+            if (oldPlayer) await this.world.wait(1);
+            let x = 0;
+            if (oldPlayer) {
+                x = firstItem(ground.curve.peaks(oldPlayer.position.x + 100, 10000, 100)) || x;
+                await Promise.all([
+                    cameraTarget.interp(cameraTarget.position, 'x', cameraTarget.position.x, x, 0.3, linear),
+                    cameraTarget.interp(cameraTarget.position, 'y', cameraTarget.position.y, ground.curveAt(x) -
+                            oldPlayer.backWheel.position.y - oldPlayer.backWheel.radius, 0.3),
+                ]);
+            }
+            this.spawnPlayer(x);
         }
     }
 
@@ -37,8 +47,9 @@ class Level {
         return {
             world: this.world,
             ground: firstItem(this.world.category('ground')),
-            player: firstItem(this.world.category('player')),
+            player: firstItem(this.world.category('bike')),
             camera: firstItem(this.world.category('camera')),
+            cameraTarget: firstItem(this.world.category('cameratarget')),
         };
     }
 

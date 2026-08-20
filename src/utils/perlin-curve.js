@@ -36,19 +36,19 @@ class PerlinCurve {
         )) * this.multiplier(x);
     }
 
-    * peaks(fromX, toX) {
-        yield* this.slopeChanges(fromX, toX, 1);
+    * peaks(fromX, toX, radius) {
+        yield* this.slopeChanges(fromX, toX, 1, radius);
     }
 
-    * valleys(fromX, toX) {
-        yield* this.slopeChanges(fromX, toX, -1);
+    * valleys(fromX, toX, radius) {
+        yield* this.slopeChanges(fromX, toX, -1, radius);
     }
 
-    * slopeChanges(fromX, toX, sign) {
+    * slopeChanges(fromX, toX, sign, radius) {
         const step = 5;
         let slopeBefore = 0;
         for (let x = fromX ; x < toX ; x += step) {
-            const slope = Math.sign(this.slopeFor(x));
+            const slope = Math.sign(this.slopeFor(x, radius));
 
             if (slope !== slopeBefore && slope === sign) {
                 yield x;

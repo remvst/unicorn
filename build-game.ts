@@ -57,6 +57,7 @@ const JS_FILES = [
     'entities/rainbow.js',
     'entities/gibs.js',
     'entities/autopilot-bike.js',
+    'entities/camera-target.js',
 
     'levels/level.js',
     'levels/test-level.js',
