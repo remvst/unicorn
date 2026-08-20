@@ -6,32 +6,31 @@ class HUD extends Entity {
 
         ctx.translate(camera.position.x - CANVAS_WIDTH / 2, camera.position.y - CANVAS_HEIGHT / 2);
 
-        const trickString = player.comboTracker.startedTricks.map(t => t.label + `(${t.points.toFixed(0)})`).join(' + ').toUpperCase();
-        if (trickString) {
-            ctx.wrap(() => {
-                ctx.translate(CANVAS_WIDTH / 2, CANVAS_HEIGHT * 0.6);
+        if (player.comboTracker.startedTricks.length) ctx.wrap(() => {
+            ctx.translate(CANVAS_WIDTH / 2, CANVAS_HEIGHT * 0.6);
+            ctx.fillStyle = '#fff';
+            ctx.font = 'bold 18pt Arial';
+            ctx.textBaseline = 'top';
+            ctx.textAlign = 'center';
+            ctx.strokeStyle = '#000';
 
-                // Tricks
-                ctx.fillStyle = '#fff';
-                ctx.font = 'bold 18pt Arial';
-                ctx.textBaseline = 'top';
-                ctx.textAlign = 'center';
-                ctx.lineWidth = 1;
-                ctx.strokeStyle = '#000';
-                ctx.fillText(trickString, 0, 0);
+            let y = 0;
 
-                const scoreLine = player.comboTracker.points.toFixed(0);
-                ctx.fillText(scoreLine, 0, 50);
-                ctx.strokeText(scoreLine, 0, 50);
+            y += epicText(`${player.comboTracker.points}   X ${player.comboTracker.startedTricks.length}`, 0, y) + 15;
 
-                // Combo timer
-                ctx.fillStyle = '#fff';
-                const w = player.comboTracker.comboPower * 200;
-                ctx.fillRect(-w / 2, 100, w, 10);
-            });
-        }
+            const lines = [[]];
+            for (const trick of player.comboTracker.startedTricks) {
+                const l = lines[lines.length - 1];
+                l.push(trick.label);
+                if (l.length > 3) lines.push([]);
+            }
+            for (const l of lines) {
+                if (l.length) y += epicText(l.join(' + '), 0, y) + 15;
+            }
 
-
+            ctx.fillStyle = '#fff';
+            ctx.fillRect(-200 / 2, y, player.comboTracker.comboPower * 200, 5);
+        });
 
         ctx.translate(CANVAS_WIDTH - 20, 20);
 
