@@ -5,6 +5,6 @@ const songData =
 const buffer = zzfxM(...songData);    // Generate the sample data
 
 playSong = () => {
-    playSong = () => { }; // Prevent it from being called twice
-    const node = zzfxP(...buffer);        // Play the song
+    playSong = () => zzfxX.resume();
+    zzfxP(...buffer).loop = 1;
 }
