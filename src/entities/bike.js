@@ -79,7 +79,7 @@ class Bike extends PhysicsObject {
         }
 
         // Stomping
-        if (jump && this.airborne) {
+        if (jump && this.airborne()) {
             this.momentum.position.y += 1000 * elapsed;
         }
 
@@ -146,7 +146,8 @@ class Bike extends PhysicsObject {
         // Friction
         let friction = 0;
         if (backWheelOnGround || frontWheelOnGround) {
-            if (accelerate || jump) friction = 0;
+            if (accelerate) friction = 0;
+            else if (jump) friction = 50;
             else if (brake) friction = 1000;
             else friction = 200;
         }
