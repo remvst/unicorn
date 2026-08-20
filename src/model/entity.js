@@ -35,6 +35,13 @@ class Entity {
         this.rng.reset();
     }
 
+    cancelCameraTransformations() {
+        const camera = firstItem(this.world.category('camera'));
+        ctx.translate(camera.position.x, camera.position.y);
+        ctx.scale(1 / camera.zoom, 1 / camera.zoom);
+        ctx.translate(-CANVAS_WIDTH / 2, -CANVAS_HEIGHT / 2);
+    }
+
     render() {
 
     }

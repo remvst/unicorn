@@ -19,10 +19,10 @@ class IntroLevel extends Level {
 
         // ground.render = () => {};
 
+        this.world.clearCategory('bike');
         const bike = this.world.add(new AutopilotBike());
         bike.position.y = ground.curveAt(bike.position.x) -
             bike.backWheel.position.y - bike.backWheel.radius; // TODO eventually hardcode this?
-        this.world.remove(this.basics().player);
 
         await new Promise((r) => {});
     }

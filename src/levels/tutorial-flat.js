@@ -4,6 +4,8 @@ class TutorialFlat extends Level {
         const { ground } = this.basics();
         ground.curve = new PerlinCurve({ step: 2000, amplitude: 200 });
 
+        this.world.addUnique(new Prompt('HOLD ▲ TO PEDAL'));
+
         const levelStartX = await this.levelTransition({
             dialog: [
                 'A bike in unicorn land? That makes no sense!',
@@ -13,7 +15,7 @@ class TutorialFlat extends Level {
 
         await this.runObjectives({
             objectives: [
-                new Objective('Go right', 1, () => waitFor(this.world, () => {
+                new Objective('Go right →', 1, () => waitFor(this.world, () => {
                     return this.basics().player?.position.x > levelStartX + 500; // TODO fix predicate
                 })),
             ]

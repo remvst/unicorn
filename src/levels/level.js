@@ -107,11 +107,12 @@ class Level {
         camera.interp(camera, 'zoom', camera.zoom, 2, 0.3);
 
         // Give instructions
-        // TODO render on screen
         for (const l of dialog) {
-            console.log(l);
+            const prompt = this.world.addUnique(new Prompt(l));
+            await waitFor(this.world, () => prompt.age > 3);
         }
-        await uc.interp(uc.position, 'bs', 0, 0, 2);
+        this.world.clearCategory('prompt');
+        await uc.interp(uc, 's', 0, 0, 1);
 
         // Make the unicorn go away
         uc.facing = 1;

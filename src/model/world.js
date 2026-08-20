@@ -51,8 +51,21 @@ class World {
         entity.pool?.add(entity);
     }
 
-    category(id) {
-        return (this.categories[id] ||= new Set());
+    category(category) {
+        return (this.categories[category] ||= new Set());
+    }
+
+    addUnique(entity) {
+        for (const category of entity.categories) {
+            this.clearCategory(category);
+        }
+        return this.add(entity);
+    }
+
+    clearCategory(category) {
+        for (const prompt of [...this.category(category)]) {
+            this.remove(prompt);
+        }
     }
 
     cycle(elapsed) {

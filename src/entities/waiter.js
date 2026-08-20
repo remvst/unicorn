@@ -13,4 +13,11 @@ class Waiter extends Entity {
     }
 }
 
-waitFor = (world, predicate) =>  world.add(new Waiter()).awaitResolution(predicate);
+waitFor = (world, predicate) => world.add(new Waiter()).awaitResolution(predicate);
+waitForDuration = (world, duration) => {
+    let total = 0;
+    return world.add(new Waiter()).awaitResolution((elapsed) => {
+        total += elapsed;
+        return total > duration;
+    });
+}

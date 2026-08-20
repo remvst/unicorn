@@ -1,10 +1,9 @@
 class HUD extends Entity {
     render() {
         const player = firstItem(this.world.category('player'));
-        const camera = firstItem(this.world.category('camera'));
         if (!player) return;
 
-        ctx.translate(camera.position.x - CANVAS_WIDTH / 2, camera.position.y - CANVAS_HEIGHT / 2);
+        this.cancelCameraTransformations();
 
         if (player.comboTracker.startedTricks.length) ctx.wrap(() => {
             ctx.translate(CANVAS_WIDTH / 2, CANVAS_HEIGHT * 0.6);
@@ -35,22 +34,23 @@ class HUD extends Entity {
 
         ctx.translate(CANVAS_WIDTH - 20, 20);
 
-        ctx.font = 'bold 18pt Arial';
-        ctx.textAlign = 'right';
-        ctx.textBaseline = 'top';
-        ctx.strokeStyle = '#000';
+        if (firstItem(this.world.category('objective'))) {
+            ctx.textAlign = 'right';
+            ctx.textBaseline = 'top';
+            ctx.strokeStyle = '#000';
 
-        let y = 0;
+            let y = 0;
 
-        ctx.font = 'bold 36pt Arial';
-        ctx.fillStyle = '#5ca5c7';
-        y += epicText(nomangle('GOALS:'), 0, y) + 30;
+            ctx.font = 'bold 36pt Arial';
+            ctx.fillStyle = '#5ca5c7';
+            y += epicText(nomangle('GOALS:'), 0, y) + 30;
 
-        ctx.font = 'bold 18pt Arial';
-        ctx.fillStyle = '#fff';
-        for (const objective of this.world.category('objective')) {
-            const deet = objective.detail ? ':   ' + objective.detail : '';
-            y += epicText(objective.label + deet, 0, y) + 30;
+            ctx.font = 'bold 18pt Arial';
+            ctx.fillStyle = '#fff';
+            for (const objective of this.world.category('objective')) {
+                const deet = objective.detail ? ':   ' + objective.detail : '';
+                y += epicText(objective.label + deet, 0, y) + 30;
+            }
         }
     }
 }
