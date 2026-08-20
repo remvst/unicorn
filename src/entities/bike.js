@@ -91,6 +91,13 @@ class Bike extends PhysicsObject {
             );
         }
 
+        // Cap spinning
+        this.momentum.rotation = between(
+            -PI * 2,
+            this.momentum.rotation,
+            PI * 2,
+        );
+
         this.power = max(0, this.power - elapsed / 8);
     }
 
