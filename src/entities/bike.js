@@ -85,9 +85,9 @@ class Bike extends PhysicsObject {
         // Rotation dampening
         if (this.airborne(0.1) && !raiseWheel && !lowerWheel) {
             this.momentum.rotation -= between(
-                -elapsed * Math.PI,
+                -elapsed * PI * 2,
                 this.momentum.rotation,
-                elapsed * Math.PI,
+                elapsed * PI * 2,
             );
         }
 
