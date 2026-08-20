@@ -11,8 +11,6 @@ class CameraTarget extends Entity {
         if (bike) {
             this.position.x = bike.position.x;
             this.position.y = bike.position.y;
-        } else {
-            console.log(this.position.x);
         }
     }
 }
