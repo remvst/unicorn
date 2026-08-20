@@ -5,6 +5,7 @@ getLayer = (entity) => {
         Rainbow,
         Unicorn,
         PhysicsObject,
+        Item,
         Ground,
         Foreground,
         Particle,
