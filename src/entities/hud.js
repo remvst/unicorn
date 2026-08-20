@@ -28,8 +28,9 @@ class HUD extends Entity {
                 if (l.length) y += epicText(l.join(' + '), 0, y) + 15;
             }
 
+            const w = player.comboTracker.comboPower * 200
             ctx.fillStyle = '#fff';
-            ctx.fillRect(-200 / 2, y, player.comboTracker.comboPower * 200, 5);
+            ctx.fillRect(-w / 2, y, w, 5);
         });
 
         ctx.translate(CANVAS_WIDTH - 20, 20);
