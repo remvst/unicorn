@@ -59,8 +59,9 @@ class Bike extends PhysicsObject {
         } = this.controls;
 
         // Backflip/frontflip
-        if (raiseWheel) this.momentum.rotation -= elapsed * Math.PI * 2;
-        if (lowerWheel) this.momentum.rotation += elapsed * Math.PI * 2;
+        // If the player is trying to counteract a flip, give extra power so it's easier to control
+        if (raiseWheel) this.momentum.rotation -= elapsed * (this.momentum.rotation > 0 ? PI * 4 : PI * 2);
+        if (lowerWheel) this.momentum.rotation += elapsed * (this.momentum.rotation < 0 ? PI * 4 : PI * 2);
 
         const momentumRotationBefore = this.momentum.rotation;
 
