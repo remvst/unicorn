@@ -66,9 +66,11 @@ const JS_FILES = [
     'levels/tutorial-backflip.js',
     'levels/all-levels.js',
 
-    'sound/sonantx.js',
-    'sound/song.js',
+    // 'sound/sonantx.js',
+    // 'sound/song.js',
     'sound/ZzFXMicro.js',
+    'sound/zzfxm.js',
+    'sound/zzfxm-song.js',
 
     'game.js',
     'index.js',
