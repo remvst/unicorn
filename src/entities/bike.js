@@ -237,9 +237,9 @@ class Bike extends PhysicsObject {
             size: 10,
         });
 
-        this.world.add(new WheelGib(this, this.backWheel));
-        this.world.add(new WheelGib(this, this.frontWheel));
-        this.world.add(new BikeGib(this));
+        this.world.add(new WheelGib(this, this.backWheel)).removeWhenAgeIs(20);
+        this.world.add(new WheelGib(this, this.frontWheel)).removeWhenAgeIs(20);
+        this.world.add(new BikeGib(this)).removeWhenAgeIs(20);
     }
 }
 

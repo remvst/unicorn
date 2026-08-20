@@ -46,6 +46,11 @@ class Entity {
 
     }
 
+    async removeWhenAgeIs(maxAge) {
+        await waitFor(this.world, () => this.age > maxAge);
+        this.world.remove(this);
+    }
+
     interp(
         owner,
         interpProperty,
