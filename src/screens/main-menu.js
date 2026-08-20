@@ -46,7 +46,7 @@ class MainMenu extends Screen {
         super.cycle(elapsed);
         if (downKeys[32]) {
             G.screens = [
-                new WorldScreen(new TestLevel()),
+                new WorldScreen(ALL_LEVELS.map(levelClass => new levelClass())),
             ];
         }
     }

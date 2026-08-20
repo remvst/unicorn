@@ -4,7 +4,8 @@ class IntroLevel extends Level {
             // new PerlinCurve({ step: 2000, amplitude: 800 }),
             new PerlinCurve({ step: 2000, amplitude: 100 }),
             // new PerlinCurve({ step: 200, amplitude: 80, multiplier: x => abs(sin(x / 2000)) }),
-        ] }));
+        ]
+        }));
 
         const uc = this.world.add(new AudienceUnicorn());
         uc.position.x = 200;
@@ -21,6 +22,7 @@ class IntroLevel extends Level {
         const bike = this.world.add(new AutopilotBike());
         bike.position.y = ground.curveAt(bike.position.x) -
             bike.backWheel.position.y - bike.backWheel.radius; // TODO eventually hardcode this?
+        this.world.remove(this.basics().player);
 
         await new Promise((r) => {});
     }

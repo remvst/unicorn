@@ -6,7 +6,7 @@ class Game {
         }
 
         this.screens = [
-            new WorldScreen(new (ALL_LEVELS[0])()),
+            new WorldScreen([new IntroLevel()]),
             new MainMenu(),
         ];
         this.frame();

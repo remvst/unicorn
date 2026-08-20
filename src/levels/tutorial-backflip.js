@@ -6,6 +6,11 @@ class TutorialBackflip extends Level {
                 '(in case you couldn\'t tell, that was sarcasm)',
                 'Anyway do you think you can backflip over those hills?',
             ],
+            newCurve: new PerlinCurve({ plus: [
+                // new PerlinCurve({ step: 2000, amplitude: 800 }),
+                new PerlinCurve({ step: 2000, amplitude: 100 }),
+                // new PerlinCurve({ step: 200, amplitude: 80, multiplier: x => abs(sin(x / 2000)) }),
+            ] })
         });
 
         await this.runObjectives({

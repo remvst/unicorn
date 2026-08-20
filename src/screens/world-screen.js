@@ -1,9 +1,14 @@
 class WorldScreen extends Screen {
-    constructor(level) {
+    constructor(levels) {
         super();
 
-        this.level = level;
-        this.level.initialize();
+        (async () => {
+            for (const level of levels) {
+                level.world = this.level?.world;
+                this.level = level;
+                await this.level.start();
+            }
+        })();
 
         if (DEBUG) this.debugValues = () => {
             const vals = [`Entities: ${this.level.world.entities.size}`];

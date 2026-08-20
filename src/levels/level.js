@@ -1,5 +1,5 @@
 class Level {
-    initialize() {
+    start() {
         if (!this.world) {
             this.world = new World();
             this.world.add(new Background());
@@ -10,10 +10,11 @@ class Level {
             this.world.add(new Ground());
             this.world.add(new CameraTarget());
 
+            this.spawnPlayer();
             this.autoRespawn();
         }
 
-        this.setup()
+        return this.setup();
     }
 
     spawnPlayer(x = 0) {
@@ -30,9 +31,9 @@ class Level {
             const { player: oldPlayer, ground, camera, cameraTarget } = this.basics();
             await waitFor(this.world, () => !this.basics().player);
             if (oldPlayer) await this.world.wait(1);
-            let x = 0;
+            let x = oldPlayer?.position.x || 0;
             if (oldPlayer) {
-                x = firstItem(ground.curve.peaks(oldPlayer.position.x + 100, 10000, 100)) || x;
+                x = firstItem(ground.curve.peaks(x, 10000, 100)) || x;
                 await Promise.all([
                     cameraTarget.interp(cameraTarget.position, 'x', cameraTarget.position.x, x, 0.3, linear),
                     cameraTarget.interp(cameraTarget.position, 'y', cameraTarget.position.y, ground.curveAt(x) -
@@ -87,7 +88,7 @@ class Level {
     async levelTransition({
         dialog,
     }) {
-        const { ground, player, camera } = this.basics();
+        const { ground, camera } = this.basics();
 
         const previousLevelEndX = this.flattenGround();
 
@@ -97,12 +98,12 @@ class Level {
         uc.facing = -1;
 
         // Wait for the player to reach the unicorn
-        await waitFor(this.world, () => player.position.x > uc.position.x - 400);
+        await waitFor(this.world, () => this.basics().player?.position.x > uc.position.x - 400);
 
         // Force the player to stop and land
-        player.controlsOverride = {brake: true};
-        player.momentum.rotation = 0;
-        player.rotation = 0;
+        this.basics().player.controlsOverride = {brake: true};
+        this.basics().player.momentum.rotation = 0;
+        this.basics().player.rotation = 0;
         camera.interp(camera, 'zoom', camera.zoom, 2, 0.3);
 
         // Give instructions
@@ -119,7 +120,7 @@ class Level {
         uc.world.remove(uc);
 
         // Restore player control
-        player.controlsOverride = null;
+        this.basics().player.controlsOverride = null;
         camera.interp(camera, 'zoom', camera.zoom, 1, 0.3);
 
         return this.transitionIntoCurve(new PerlinCurve({ step: 500, amplitude: 200 }));
@@ -128,5 +129,6 @@ class Level {
     async runObjectives({ objectives }) {
         for (const obj of objectives) this.world.add(obj);
         await Promise.all(objectives.map(obj => obj.start()));
+        for (const obj of objectives) this.world.remove(obj);
     }
 }
