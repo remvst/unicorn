@@ -72,7 +72,7 @@ class Bike extends PhysicsObject {
         }
 
         const [jumpBefore, jumpAfter] = this.jumpChange.change(jump);
-        if (jumpBefore && !jumpAfter && !this.airborne(0.1)) {
+        if (jumpBefore && !jumpAfter && !this.airborne(0.1) && this.world.age > 0.5) {
             this.jump();
         }
 
