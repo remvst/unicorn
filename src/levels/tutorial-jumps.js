@@ -2,13 +2,12 @@ class TutorialJumps extends Level {
     async setup() {
         await this.levelTransition({
             dialog: [
-                'Okay okay, now here\'s a rough one',
-                'These hills are gnarly, hold ▲ and let go to jump further',
-                'Catch some air, 3 times',
+                'You can also jump to get a bit of extra air',
+                'Hold [SPACE], then release to jump',
             ],
-            curve: new PerlinCurve({ step: 500, amplitude: 400 }),
+            curve: new PerlinCurve({ step: 500, amplitude: 200 }),
         });
-        this.world.addUnique(new Prompt('HOLD ▲, RELEASE TO JUMP'));
+        this.world.addUnique(new Prompt('HOLD [SPACE], RELEASE TO JUMP'));
 
         await this.runObjectives({
             objectives: [

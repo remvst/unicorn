@@ -2,17 +2,22 @@ class LevelFrontflip extends Level {
     async setup() {
         const levelStartX = await this.levelTransition({
             dialog: [
-                'Alright, not bad for a first try',
-                'Let\'s see if these unicorns are impressed though',
-                'Show off a frontflip, then link a few flips together',
+                'Yooo that was pretty gnarly',
+                'Did you know sick combos created rainbows?',
+                'More rainbows = happier unicorns',
+                'Happier unicorns = more magic in the world',
+                'So anyway, go make some rainbows!',
             ],
-            curve: new PerlinCurve({ step: 1500, amplitude: 400 }),
+            curve: new PerlinCurve({ plus: [
+                new PerlinCurve({ step: 1000, amplitude: 100 }),
+                new PerlinCurve({ step: 500, amplitude: 300 }),
+                new PerlinCurve({ step: 200, amplitude: 100 }),
+                // new PerlinCurve({ step: 200, amplitude: 80, multiplier: x => abs(sin(x / 2000)) }),
+            ] }),
         });
 
-        const uc1 = this.world.add(new AudienceUnicorn());
-        uc1.position.x = levelStartX + 400;
-        const uc2 = this.world.add(new AudienceUnicorn());
-        uc2.position.x = levelStartX + 600;
+        this.world.add(new AudienceUnicorn()).position.x = levelStartX + 400;
+        this.world.add(new AudienceUnicorn()).position.x = levelStartX + 600;
 
         await this.runObjectives({
             objectives: [
