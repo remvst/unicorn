@@ -48,9 +48,4 @@ class Player extends Bike {
 
         this.comboTracker.cycle(elapsed);
     }
-
-    die() {
-        super.die();
-        this.world.add(new LevelOutcome(false));
-    }
 }

@@ -25,35 +25,11 @@ class WorldScreen extends Screen {
     }
 
     cycle(elapsed) {
+        super.cycle(elapsed);
         this.level.world.cycle(elapsed);
-        this.onOutcome(firstItem(this.level.world.category(LevelOutcome)));
     }
 
     render() {
         this.level.world.render();
-    }
-
-    onOutcome(outcome) {
-        // TODO GUT
-        if (this.outcome || !outcome) return;
-        this.outcome = outcome;
-
-        const index = ALL_LEVELS.indexOf(this.level.constructor);
-        console.log('success?', index, outcome.success);
-
-        if (outcome.success) {
-            const nextLevel = ALL_LEVELS[index + 1];
-            if (!nextLevel) {
-                // TODO end of the game
-            } else {
-                const { world } = this.level;
-                this.level = new nextLevel();
-                this.level.world = world;
-                this.level.initialize();
-            }
-        } else {
-            // TODO reset level
-        }
-
     }
 }

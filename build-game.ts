@@ -50,7 +50,6 @@ const JS_FILES = [
     'entities/unicorn.js',
     'entities/item.js',
     'entities/item-generator.js',
-    'entities/level-outcome.js',
     'entities/background.js',
     'entities/foreground.js',
     'entities/objective.js',
@@ -68,8 +67,6 @@ const JS_FILES = [
     'levels/tutorial-backflip.js',
     'levels/all-levels.js',
 
-    // 'sound/sonantx.js',
-    // 'sound/song.js',
     'sound/ZzFXMicro.js',
     'sound/zzfxm.js',
     'sound/zzfxm-song.js',
