@@ -25,6 +25,7 @@ const JS_FILES = [
     'utils/value-change-helper.js',
     'utils/rng.js',
     'utils/superclasses.js',
+    'utils/curves.js',
 
     'tricks/trick.js',
     'tricks/trick-tracker.js',

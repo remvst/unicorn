@@ -17,13 +17,9 @@ class TutorialFlips extends Level {
 
         this.world.clearCategory(Prompt);
 
-        this.transitionIntoCurve(new PerlinCurve({ plus: [
-            new PerlinCurve({ step: 1000, amplitude: 200 }),
-            new PerlinCurve({ step: 500, amplitude: 300 }),
-            // new PerlinCurve({ step: 200, amplitude: 80, multiplier: x => abs(sin(x / 2000)) }),
-        ] }));
+        this.transitionIntoCurve(simpleBumps());
 
-        this.world.addUnique(new Prompt('◄ / ► TO BALANCE'));
+        this.world.addUnique(new Prompt('◄ / ► TO FLIP WHILE AIRBORNE'));
 
         await this.runObjectives({
             objectives: [

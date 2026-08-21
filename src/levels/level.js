@@ -58,30 +58,29 @@ class Level {
     }
 
     flattenGround() {
-        const { ground } = this.basics();
-        let x = firstItem(this.world.category(Camera)).position.x;
-        ground.curve = ground.curve.faded(
-            x += CANVAS_WIDTH / 2,
-            x += CANVAS_WIDTH / 2,
-            x => 1 - linear(x),
-        );
-        return x;
+        return this.transitionIntoCurve(plains());
     }
 
     transitionIntoCurve(curve) {
         const { ground } = this.basics();
-        let x = firstItem(this.world.category(Camera)).position.x;
+        const startX = firstItem(this.world.category(Camera)).position.x +  CANVAS_WIDTH / 2;
+        const endX = startX + CANVAS_WIDTH / 2;
+
         ground.curve = new PerlinCurve({
             plus: [
-                ground.curve,
+                ground.curve.faded(
+                    startX,
+                    endX,
+                    x => 1 - linear(x),
+                ),
                 curve.faded(
-                    x += CANVAS_WIDTH / 2,
-                    x += CANVAS_WIDTH / 2,
+                    startX,
+                    endX,
                     linear,
                 ),
             ]
         });
-        return x;
+        return endX;
     }
 
     async levelTransition({
@@ -98,7 +97,7 @@ class Level {
             }
         }
 
-        const previousLevelEndX = this.flattenGround();
+        const previousLevelEndX = this.transitionIntoCurve(plains());
 
         // Add a unicorn at the beginning
         const uc = this.world.add(new Unicorn());

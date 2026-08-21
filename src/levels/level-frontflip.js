@@ -8,12 +8,7 @@ class LevelFrontflip extends Level {
                 'Happier unicorns = more magic in the world',
                 'So anyway, go make some rainbows!',
             ],
-            curve: new PerlinCurve({ plus: [
-                new PerlinCurve({ step: 1000, amplitude: 100 }),
-                new PerlinCurve({ step: 500, amplitude: 300 }),
-                new PerlinCurve({ step: 200, amplitude: 100 }),
-                // new PerlinCurve({ step: 200, amplitude: 80, multiplier: x => abs(sin(x / 2000)) }),
-            ] }),
+            curve: regularLevel(),
         });
 
         this.world.add(new AudienceUnicorn()).position.x = levelStartX + 400;
