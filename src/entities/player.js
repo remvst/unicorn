@@ -8,7 +8,6 @@ class Player extends Bike {
         super.render();
 
         if (DEBUG_TRICKS) ctx.wrap(() => {
-            // const momentumAngle = 0;
             const momentumAngle = atan2(this.momentum.position.y, this.momentum.position.x);
 
             ctx.lineWidth = 10;
