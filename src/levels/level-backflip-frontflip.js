@@ -9,6 +9,8 @@ class LevelBackflipFrontflip extends Level {
             curve: new PerlinCurve({ step: 800, amplitude: 300 }),
         });
 
+        this.world.addUnique(new ItemGenerator());
+
         await this.runObjectives({
             objectives: [
                 new Objective(`In one combo: ${['backflip', 'frontflip'].join(' + ')}`.toUpperCase(), 1, () => awaitCombo(this.world, [

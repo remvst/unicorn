@@ -5,8 +5,7 @@ class Level {
             this.world.add(new Background());
             this.world.add(new Foreground());
             this.world.add(new Camera());
-            this.world.add(new HUD());
-            this.world.add(new ItemGenerator()); // TODO could be a problem across levels
+            this.world.add(new HUD());// TODO could be a problem across levels
             this.world.add(new Ground());
             this.world.add(new CameraTarget());
 
@@ -90,6 +89,14 @@ class Level {
         curve,
     }) {
         const { camera } = this.basics();
+
+        // Cleanup items between levels
+        this.world.clearCategory(ItemGenerator);
+        for (const item of this.world.category(Item)) {
+            if (abs(camera.position.x) > CANVAS_WIDTH / 2) {
+                this.world.remove(item);
+            }
+        }
 
         const previousLevelEndX = this.flattenGround();
 
