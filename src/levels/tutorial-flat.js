@@ -50,6 +50,7 @@ class TutorialFlat extends Level {
                     'Happy unicorns = more magic in the world',
                     'Got it? Then go perform some combos!',
                 ],
+                curve: new PerlinCurve({ step: 500, amplitude: 400 }),
             });
             this.world.clearCategory(Prompt);
 

@@ -1,0 +1,40 @@
+Campaign structure:
+    Campaign should start with flip tutorial, then a simple level (2 objectives), then jump tutorial, then simple level (2 objectives), then wheelie tutorial, then more levels (2-3 objectives each).
+    Objectives after a tutorial should include what was taught in the tutorial
+    Each actual level in the campaign should have 2-3 objectives (start with 2 objectives if not enough objectives, or only have two objectives if they're extremely difficult).
+
+Goals wording:
+    tutorial -> "perform 3 {trick}s"
+    single tricks -> "{trick} in front of unicorns"
+    combo size -> "land a {size}x combo"
+    combo tricks -> "In one combo: {trick1} + {trick2} + ..."
+
+All goals:
+    Tutorials: each tutorial can only have one objective. Flips must come first, then jumps, then 1-2 levels, then wheelies
+        tutorial: 3 flips -> needs a good curve that allows easy backflips
+        tutorial: jumps -> player needs to perform 3 flips, curves must make it hard
+        tutorial: 3 wheelies -> needs a flat curve so it's easy to perform a wheelie
+
+    Single trick: tricks that the user only needs to perform once, in front of unicorns
+        single trick: frontflip
+        single trick: double backflip
+        single trick: double frontflip
+        single trick: triple backflip
+
+    Combo size: number of tricks in a combo
+        combo size: 5X combo
+        combo size: 10X combo
+        combo size: 20X combo
+        combo size: 50X combo
+
+    Combo tricks: player must perform the given tricks in the same combo
+        combo: 3 flips
+        combo: wheelie + backflip
+        combo: backflip + frontflip
+        combo: 3 wheelies
+        combo: double backflip + wheelie
+        combo: nosewheelie + frontflip combo
+        combo: 3 frontflips
+        combo: 5 wheelies
+        combo: 10 flips
+        combo: 5 backflips + 5 frontflips

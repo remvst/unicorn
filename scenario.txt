@@ -33,27 +33,46 @@ anyway I set a few objectives along the way, complete them and we should have ra
 
 Objectives:
 
+    tutorial: 3 flips
+    tutorial: 3 jumps
+
+    combo size: 5X combo
+    single trick: double backflip
+
+Level:
+    combo: backflip + frontflip
+    unicorns: backflip
+
 Tutorial:
-    3 backflips
-    3 jumps
     3 wheelies
 
-Levels:
+Level:
+    combo: wheelie + backflip
+    combo: 3 flips
     3 frontflips
-    3 backflips in one combo
-    double backflip
-    5X combo
-    5 backflip combo
+
+Level:
+    combo: 5 flips
+    unicorns: frontflip
     10X combo
-    double backflip + wheelie
-    wheelie + backflip combo
+
+    unicorns: double backflip
+    nosewheel in front of unicorns
+    combo: double backflip + wheelie
+
+    combo
+    combo: nosewheelie + frontflip combo
     20X combo
-    nosewheelie + frontflip combo
+
     5 frontflip combo
-    triple backflip
-    double frontflip
+    combo: double backflip + double frontflip
+    unicorns: double frontflip
+
+    unicorns: double frontflip
     combo: wheelie + nosewheelie + backflip
     combo: wheelie + nosewheelie + backflip + frontflip
+
     50X combo
     combo: 5 backflips + 5 frontflips
+
     combo: 10 backflips + 10 frontflips
