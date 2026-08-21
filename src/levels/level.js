@@ -33,7 +33,7 @@ class Level {
             if (oldPlayer) await this.world.wait(1);
             let x = oldPlayer?.position.x || 0;
             if (oldPlayer) {
-                x = firstItem(ground.curve.peaks(x, 10000, 100)) || x;
+                x = firstItem(ground.curve.peaks(x, 10000, 1)) || x;
                 await Promise.all([
                     cameraTarget.interp(cameraTarget.position, 'x', cameraTarget.position.x, x, 0.3, linear),
                     cameraTarget.interp(cameraTarget.position, 'y', cameraTarget.position.y, ground.curveAt(x) -
