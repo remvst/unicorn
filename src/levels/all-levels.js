@@ -1,6 +1,6 @@
 ALL_LEVELS = [
-    // TutorialFlips,
-    // LevelFrontflip,
+    TutorialFlips,
+    LevelFrontflip,
     TutorialJumps,
     LevelBackflipFrontflip,
     TutorialWheelies,

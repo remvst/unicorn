@@ -22,7 +22,7 @@ class LevelFrontflip extends Level {
         await this.runObjectives({
             objectives: [
                 new Objective('frontflip in front of unicorns'.toUpperCase(), 1, () => awaitTrick(this.world, t => t.label === 'frontflip' && t.inFrontOfAudience)),
-                new Objective(`In one combo: ${Array(3).fill('flip').join(' + ')}`.toUpperCase(), 1, () => awaitCombo(this.world, [
+                new Objective(`3 FLIPS IN ONE COMBO`.toUpperCase(), 1, () => awaitCombo(this.world, [
                     t => t.label.includes('flip'),
                     t => t.label.includes('flip'),
                     t => t.label.includes('flip'),
