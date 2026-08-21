@@ -138,13 +138,23 @@ class Wheelie extends TrickTracker {
         const front = this.bike.hasCollision(this.bike.frontWheel);
         const changeX = changeDiff(this.changeX.change(this.bike.position.x));
 
-        if (back === front) {
-            this.reset(); // airborne or landed, not a wheelie
-        } else if (back !== front) {
-            this.accX += changeX;
+        // Both wheels on the ground => reset
+        if (back && front) this.reset();
+
+        // Only one wheel on the ground => keep accumulating
+        if (back !== front) {
+            // Trick type change => reset
+            const targetTrickLabel  = back ? 'Wheelie' : 'Nosewheelie';
+            if (this.trick.label && this.trick.label !== targetTrickLabel) {
+                console.log('label change', targetTrickLabel, this.trick.label);
+                this.reset();
+            }
+
+            this.accX += abs(changeX);
+            this.trick.label = targetTrickLabel;
+
             if (this.accX > 200) {
                 this.trick.points = max(0, this.accX * 50 / 100);
-                this.trick.label ||= back ? 'Wheelie' : 'Nosewheelie';
                 this.combo.addTrick(this.trick);
             }
         }
