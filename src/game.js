@@ -12,6 +12,14 @@ class Game {
         this.frame();
     }
 
+    get bestCombo() {
+        return parseInt(localStorage["bc"]) || 0;
+    }
+
+    set bestCombo(x) {
+        localStorage["bc"] = x;
+    }
+
     frame() {
         const now = performance.now();
         const elapsed = min((now - (this.lastFrame || 0)) / 1000, 1 / 30);

@@ -32,10 +32,31 @@ class HUD extends Entity {
             ctx.fillRect(-w / 2, y, w, 5);
         });
 
-        ctx.translate(CANVAS_WIDTH - 20, 20);
-
         if (firstItem(this.world.category(Objective))) {
-            ctx.textAlign = 'right';
+            ctx.wrap(() => {
+                ctx.translate(CANVAS_WIDTH - 20, 20);
+                ctx.textAlign = 'right';
+                ctx.textBaseline = 'top';
+                ctx.strokeStyle = '#000';
+
+                let y = 0;
+
+                ctx.font = 'bold 36pt Arial';
+                ctx.fillStyle = '#5ca5c7';
+                y += epicText(nomangle('GOALS:'), 0, y) + 30;
+
+                ctx.font = 'bold 18pt Arial';
+                ctx.fillStyle = '#fff';
+                for (const objective of this.world.category(Objective)) {
+                    const deet = objective.detail ? ':   ' + objective.detail : '';
+                    y += epicText(objective.label + deet, 0, y) + 30;
+                }
+            });
+        }
+
+        if (G.bestCombo) ctx.wrap(() => {
+            ctx.translate(20, 20);
+            ctx.textAlign = 'left';
             ctx.textBaseline = 'top';
             ctx.strokeStyle = '#000';
 
@@ -43,14 +64,11 @@ class HUD extends Entity {
 
             ctx.font = 'bold 36pt Arial';
             ctx.fillStyle = '#5ca5c7';
-            y += epicText(nomangle('GOALS:'), 0, y) + 30;
+            y += epicText(nomangle('BEST COMBO:'), 0, y) + 30;
 
             ctx.font = 'bold 18pt Arial';
             ctx.fillStyle = '#fff';
-            for (const objective of this.world.category(Objective)) {
-                const deet = objective.detail ? ':   ' + objective.detail : '';
-                y += epicText(objective.label + deet, 0, y) + 30;
-            }
-        }
+            y += epicText(G.bestCombo.toLocaleString('en'), 0, y) + 30;
+        });
     }
 }

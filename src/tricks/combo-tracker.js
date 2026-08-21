@@ -25,6 +25,10 @@ class ComboTracker {
         this.lastChange = false;
     }
 
+    get totalPoints() {
+        return this.points * this.startedTricks.length;
+    }
+
     * unfinishedTricks() {
         for (const trick of this.startedTricks) {
             if (this.lockedTricks.has(trick) || this.landedTricks.has(trick)) continue;
@@ -82,6 +86,8 @@ class ComboTracker {
         for (const tracker of this.tricksTrackers) {
             tracker.reset();
         }
+
+        G.bestCombo = max(G.bestCombo, this.totalPoints);
 
         this.startedTricks.length = 0;
         this.lockedTricks.clear();
