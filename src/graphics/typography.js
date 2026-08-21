@@ -1,4 +1,4 @@
-epicText = (text, x ,y) => ctx.wrap(() => {
+epicText = (text, x, y, shiftX = 0) => ctx.wrap(() => {
     ctx.translate(x, y);
 
     // Shear the canvas a bit
@@ -17,7 +17,8 @@ epicText = (text, x ,y) => ctx.wrap(() => {
         );
     });
 
-    ctx.fillText(text, 0, 0);
+    ctx.translate(shiftX, 0);
+    ctx.fillText(text, -shiftX, 0);
 
     return metrics.actualBoundingBoxAscent + metrics.actualBoundingBoxDescent;
 });

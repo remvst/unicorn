@@ -27,6 +27,11 @@ class WorldScreen extends Screen {
     cycle(elapsed) {
         super.cycle(elapsed);
         this.level.world.cycle(elapsed);
+
+        const [pauseBefore, pauseAfter] = this.pauseChange.change(downKeys[27]);
+        if (!pauseBefore && pauseAfter) {
+            G.screens.push(new PauseMenu());
+        }
     }
 
     render() {

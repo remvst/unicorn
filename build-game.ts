@@ -35,7 +35,9 @@ const JS_FILES = [
 
     'screens/screen.js',
     'screens/world-screen.js',
+    'screens/menu.js',
     'screens/main-menu.js',
+    'screens/pause-menu.js',
 
     'model/entity.js',
     'model/world.js',

@@ -1,13 +1,3 @@
-RAINBOW_COLORS = [
-    '#f00',
-    '#f80',
-    '#ff0',
-    '#0f0',
-    '#00f',
-    '#408',
-    '#80f',
-]
-
 class Rainbow extends Entity {
 
     constructor() {
