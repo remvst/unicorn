@@ -6,7 +6,7 @@ class TutorialWheelies extends Level {
                 'Balance yourself on one wheel and you\'ve got a wheelie',
                 'Let\'s see 3 of those',
             ],
-            curve: new PerlinCurve({ step: 2000, amplitude: 50 }),
+            curve: plains(),
         });
         this.world.addUnique(new Prompt('◄ TO BALANCE ON ONE WHEEL'));
 
