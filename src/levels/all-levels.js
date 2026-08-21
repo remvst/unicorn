@@ -1,5 +1,12 @@
 ALL_LEVELS = [
-    // TestLevel,
-    TutorialFlat,
-    // TutorialBackflip,
+    TutorialFlips,
+    LevelFrontflip,
+    TutorialJumps,
+    LevelBackflipFrontflip,
+    TutorialWheelies,
+    LevelWheelieBasics,
+    LevelFrontflipWheelie,
+    LevelDoubleTricks,
+    LevelAdvancedCombos,
+    LevelFinale,
 ];
