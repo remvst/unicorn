@@ -29,3 +29,31 @@ aight so here's the deal, we have a bit of a rainbow shortage around here
 sick combos create more rainbows
 anyway I set a few objectives along the way, complete them and we should have rainbows until the next sparkle festival
 -> regular levels with objectives
+
+
+Objectives:
+
+Tutorial:
+    3 backflips
+    3 jumps
+    3 wheelies
+
+Levels:
+    3 frontflips
+    3 backflips in one combo
+    double backflip
+    5X combo
+    5 backflip combo
+    10X combo
+    double backflip + wheelie
+    wheelie + backflip combo
+    20X combo
+    nosewheelie + frontflip combo
+    5 frontflip combo
+    triple backflip
+    double frontflip
+    combo: wheelie + nosewheelie + backflip
+    combo: wheelie + nosewheelie + backflip + frontflip
+    50X combo
+    combo: 5 backflips + 5 frontflips
+    combo: 10 backflips + 10 frontflips

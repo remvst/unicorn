@@ -87,8 +87,9 @@ class Level {
 
     async levelTransition({
         dialog,
+        curve,
     }) {
-        const { ground, camera } = this.basics();
+        const { camera } = this.basics();
 
         const previousLevelEndX = this.flattenGround();
 
@@ -124,7 +125,7 @@ class Level {
         this.basics().player.controlsOverride = null;
         camera.interp(camera, 'zoom', camera.zoom, 1, 0.3);
 
-        return this.transitionIntoCurve(new PerlinCurve({ step: 500, amplitude: 200 }));
+        return this.transitionIntoCurve(curve);
     }
 
     async runObjectives({ objectives }) {
