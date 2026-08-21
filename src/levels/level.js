@@ -19,10 +19,13 @@ class Level {
     spawnPlayer(x = 0) {
         const ground = firstItem(this.world.category(Ground));
 
+        // Spawn the player with the right angle to fit on the curve
         const player = this.world.add(new Player());
-        player.position.x = x;
-        player.position.y = ground.curveAt(x) -
-            player.backWheel.position.y - player.backWheel.radius; // TODO eventually hardcode this?
+        player.rotation = ground.curve.angleFor(x);
+
+        const h = player.backWheel.position.y + player.backWheel.radius
+        player.position.x = x + cos(player.rotation + PI / 2) * h;
+        player.position.y = ground.curveAt(x) - sin(player.rotation + PI / 2) * h
     }
 
     async autoRespawn() {
@@ -31,14 +34,14 @@ class Level {
             await waitFor(this.world, () => !this.basics().player);
             if (oldPlayer) await this.world.wait(1);
             let x = oldPlayer?.position.x || 0;
-            if (oldPlayer) {
-                x = firstItem(ground.curve.peaks(x, 10000, 1)) || x;
-                await Promise.all([
-                    cameraTarget.interp(cameraTarget.position, 'x', cameraTarget.position.x, x, 0.3, linear),
-                    cameraTarget.interp(cameraTarget.position, 'y', cameraTarget.position.y, ground.curveAt(x) -
-                            oldPlayer.backWheel.position.y - oldPlayer.backWheel.radius, 0.3),
-                ]);
-            }
+            // if (oldPlayer) {
+            //     x = firstItem(ground.curve.peaks(x, 10000, 1)) || x;
+            //     await Promise.all([
+            //         cameraTarget.interp(cameraTarget.position, 'x', cameraTarget.position.x, x, 0.3, linear),
+            //         cameraTarget.interp(cameraTarget.position, 'y', cameraTarget.position.y, ground.curveAt(x) -
+            //                 oldPlayer.backWheel.position.y - oldPlayer.backWheel.radius, 0.3),
+            //     ]);
+            // }
             this.spawnPlayer(x);
         }
     }

@@ -14,6 +14,10 @@ class PerlinCurve {
         return (this.yFor(x + radius) - this.yFor(x - radius)) / (radius * 2);
     }
 
+    angleFor(x, radius = 1) {
+        return atan2(this.slopeFor(x, radius), radius * 2);
+    }
+
     yFor(x) {
         const multiplier = this.multiplier(x);
         if (!multiplier) return 0;
