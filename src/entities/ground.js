@@ -2,7 +2,6 @@ class Ground extends Entity {
 
     constructor() {
         super();
-        this.categories.push('ground');
         this.segments = new Cache();
 
         this.curve = new PerlinCurve({ plus: [
@@ -19,7 +18,7 @@ class Ground extends Entity {
     }
 
     render() {
-        const camera = firstItem(this.world.category('camera'));
+        const camera = firstItem(this.world.category(Camera));
 
         ctx.fillStyle = '#88ca9f';
         ctx.beginPath();

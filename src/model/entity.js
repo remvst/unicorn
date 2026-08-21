@@ -20,7 +20,6 @@ class Entity {
 
     constructor() {
         this.position = {};
-        this.categories = [];
         this.reset();
     }
 
@@ -36,7 +35,7 @@ class Entity {
     }
 
     cancelCameraTransformations() {
-        const camera = firstItem(this.world.category('camera'));
+        const camera = firstItem(this.world.category(Camera));
         ctx.translate(camera.position.x, camera.position.y);
         ctx.scale(1 / camera.zoom, 1 / camera.zoom);
         ctx.translate(-CANVAS_WIDTH / 2, -CANVAS_HEIGHT / 2);

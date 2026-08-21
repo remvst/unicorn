@@ -10,16 +10,12 @@ class IntroLevel extends Level {
         const uc = this.world.add(new AudienceUnicorn());
         uc.position.x = 200;
 
-        const { camera } = this.basics();
+        const { camera, ground } = this.basics();
         camera.zoom = 1.5;
         camera.offset.x = 0;
         camera.offset.y = -0.1;
 
-        const { ground } = this.basics();
-
-        // ground.render = () => {};
-
-        this.world.clearCategory('bike');
+        this.world.clearCategory(Bike);
         const bike = this.world.add(new AutopilotBike());
         bike.position.y = ground.curveAt(bike.position.x) -
             bike.backWheel.position.y - bike.backWheel.radius; // TODO eventually hardcode this?

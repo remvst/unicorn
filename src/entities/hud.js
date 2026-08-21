@@ -1,6 +1,6 @@
 class HUD extends Entity {
     render() {
-        const player = firstItem(this.world.category('player'));
+        const player = firstItem(this.world.category(Player));
         if (!player) return;
 
         this.cancelCameraTransformations();
@@ -34,7 +34,7 @@ class HUD extends Entity {
 
         ctx.translate(CANVAS_WIDTH - 20, 20);
 
-        if (firstItem(this.world.category('objective'))) {
+        if (firstItem(this.world.category(Objective))) {
             ctx.textAlign = 'right';
             ctx.textBaseline = 'top';
             ctx.strokeStyle = '#000';
@@ -47,7 +47,7 @@ class HUD extends Entity {
 
             ctx.font = 'bold 18pt Arial';
             ctx.fillStyle = '#fff';
-            for (const objective of this.world.category('objective')) {
+            for (const objective of this.world.category(Objective)) {
                 const deet = objective.detail ? ':   ' + objective.detail : '';
                 y += epicText(objective.label + deet, 0, y) + 30;
             }

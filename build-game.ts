@@ -24,6 +24,7 @@ const JS_FILES = [
     'utils/perlin-curve.js',
     'utils/value-change-helper.js',
     'utils/rng.js',
+    'utils/superclasses.js',
 
     'tricks/trick.js',
     'tricks/trick-tracker.js',

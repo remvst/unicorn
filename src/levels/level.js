@@ -18,7 +18,7 @@ class Level {
     }
 
     spawnPlayer(x = 0) {
-        const ground = firstItem(this.world.category('ground'));
+        const ground = firstItem(this.world.category(Ground));
 
         const player = this.world.add(new Player());
         player.position.x = x;
@@ -47,10 +47,10 @@ class Level {
     basics() {
         return {
             world: this.world,
-            ground: firstItem(this.world.category('ground')),
-            player: firstItem(this.world.category('bike')),
-            camera: firstItem(this.world.category('camera')),
-            cameraTarget: firstItem(this.world.category('cameratarget')),
+            ground: firstItem(this.world.category(Ground)),
+            player: firstItem(this.world.category(Bike)),
+            camera: firstItem(this.world.category(Camera)),
+            cameraTarget: firstItem(this.world.category(CameraTarget)),
         };
     }
 
@@ -60,7 +60,7 @@ class Level {
 
     flattenGround() {
         const { ground } = this.basics();
-        let x = firstItem(this.world.category('camera')).position.x;
+        let x = firstItem(this.world.category(Camera)).position.x;
         ground.curve = ground.curve.faded(
             x += CANVAS_WIDTH / 2,
             x += CANVAS_WIDTH / 2,
@@ -71,7 +71,7 @@ class Level {
 
     transitionIntoCurve(curve) {
         const { ground } = this.basics();
-        let x = firstItem(this.world.category('camera')).position.x;
+        let x = firstItem(this.world.category(Camera)).position.x;
         ground.curve = new PerlinCurve({
             plus: [
                 ground.curve,
@@ -111,7 +111,7 @@ class Level {
             const prompt = this.world.addUnique(new Prompt(l));
             await waitFor(this.world, () => prompt.age > 3);
         }
-        this.world.clearCategory('prompt');
+        this.world.clearCategory(Prompt);
         await uc.interp(uc, 's', 0, 0, 1);
 
         // Make the unicorn go away

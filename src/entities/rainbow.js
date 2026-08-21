@@ -12,7 +12,6 @@ class Rainbow extends Entity {
 
     constructor() {
         super();
-        this.categories.push('rainbow');
         this.radius = rnd(50, 200);
     }
 
@@ -39,7 +38,7 @@ class Rainbow extends Entity {
 }
 
 spawnRainbows = async (aroundEntity) => {
-    const ground = firstItem(aroundEntity.world.category('ground'));
+    const ground = firstItem(aroundEntity.world.category(Ground));
 
     let x = aroundEntity.position.x;
     for (let i = 0 ; i < 5 ; i++) {

@@ -7,7 +7,7 @@ class AutopilotBike extends Bike {
     }
 
     targetAngle() {
-        const ground = firstItem(this.world.category('ground'));
+        const ground = firstItem(this.world.category(Ground));
         return atan2(ground.curve.slopeFor(this.position.x), 1);
     }
 }

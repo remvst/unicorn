@@ -2,7 +2,6 @@ class Item extends Entity {
 
     constructor() {
         super();
-        this.categories.push('item');
 
         this.gradient = ctx.createLinearGradient(-50, 0, 50, 0);
         this.gradient.addColorStop(0, 'rgba(255,255,255,0)');
@@ -35,7 +34,7 @@ class Item extends Entity {
     cycle(elapsed) {
         super.cycle(elapsed);
 
-        for (const bike of this.world.category('bike')) {
+        for (const bike of this.world.category(Bike)) {
             if (distance(this.position, bike.position) < 50) {
                 this.world.remove(this);
                 // bike.power = min(1, bike.power + 0.1);

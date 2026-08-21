@@ -28,8 +28,9 @@ class World {
     add(entity) {
         entity.world = this;
         this.entities.add(entity);
-        for (const category of entity.categories) {
-            this.category(category).add(entity);
+        for (const entityClass of superclassesOf(entity)) {
+            if (entityClass.constructor === Entity) break; // Small optimization
+            this.category(entityClass.constructor).add(entity);
         }
 
         entity.layer ||= getLayer(entity);
@@ -52,19 +53,19 @@ class World {
     }
 
     category(category) {
-        return (this.categories[category] ||= new Set());
+        return (this.categories[category.name] ||= new Set());
     }
 
     addUnique(entity) {
-        for (const category of entity.categories) {
-            this.clearCategory(category);
+        for (const entityClass of superclassesOf(entity)) {
+            this.clearCategory(entityClass.constructor);
         }
         return this.add(entity);
     }
 
     clearCategory(category) {
-        for (const prompt of [...this.category(category)]) {
-            this.remove(prompt);
+        for (const entity of [...this.category(category)]) {
+            this.remove(entity);
         }
     }
 
@@ -76,7 +77,7 @@ class World {
     }
 
     render() {
-        const camera = firstItem(this.category('camera'));
+        const camera = firstItem(this.category(Camera));
         camera.cycle(0); // Cheat to force the camera to be locked
 
         ctx.wrap(() => {

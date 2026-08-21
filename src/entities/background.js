@@ -11,7 +11,7 @@ class Background extends Entity {
     }
 
     render() {
-        const camera = firstItem(this.world.category('camera'));
+        const camera = firstItem(this.world.category(Camera));
 
         // Background color
         ctx.fillStyle = this.gradient;
@@ -100,8 +100,8 @@ surfaceSweep = (
     centerX,
     centerY,
 ) => {
-    const ground = firstItem(world.category('ground'));
-    const camera = firstItem(world.category('camera'));
+    const ground = firstItem(world.category(Ground));
+    const camera = firstItem(world.category(Camera));
     const opts = { ground, camera };
 
     centerX ??= camera.position.x;
@@ -133,8 +133,8 @@ xSweep = (
     backward,
     centerX, // Sweep is grid-aligned around this x instead of the camera, e.g. for parallax layers
 ) => {
-    const ground = firstItem(world.category('ground'));
-    const camera = firstItem(world.category('camera'));
+    const ground = firstItem(world.category(Ground));
+    const camera = firstItem(world.category(Camera));
     const opts = { ground, camera };
 
     centerX ??= camera.position.x;

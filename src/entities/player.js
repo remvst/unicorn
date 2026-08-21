@@ -1,7 +1,6 @@
 class Player extends Bike {
     constructor() {
         super();
-        this.categories.push('player');
         this.comboTracker = new ComboTracker(this);
     }
 
@@ -19,7 +18,7 @@ class Player extends Bike {
             ctx.lineTo(this.position.x + cos(momentumAngle) * 100, this.position.y + sin(momentumAngle) * 100)
             ctx.stroke();
 
-            const ground = firstItem(this.world.category('ground'));
+            const ground = firstItem(this.world.category(Ground));
             const slope = ground.curve.slopeFor(this.backWheel.absolute.position.x);
             const idealAngle = atan2(slope, 1);
 

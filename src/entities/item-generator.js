@@ -7,17 +7,17 @@ class ItemGenerator extends Entity {
     }
 
     cycle(elapsed) {
-        const camera = firstItem(this.world.category('camera'));
+        const camera = firstItem(this.world.category(Camera));
         this.cache.getOrCreate(
             Math.ceil(camera.position.x / this.interval),
             () => {
-                for (const item of this.world.category('item')) {
+                for (const item of this.world.category(Item)) {
                     if (item.position.x < camera.position.x - CANVAS_WIDTH) {
                         this.world.remove(item);
                     }
                 }
 
-                const ground = firstItem(this.world.category('ground'));
+                const ground = firstItem(this.world.category(Ground));
                 const valleyX = firstItem(ground.curve.valleys(camera.position.x + CANVAS_WIDTH, camera.position.x + CANVAS_WIDTH + 20000));
                 for (let x = valleyX, i = 0 ; i < 5 ; x += 100, i++) {
                     const item = this.world.add(Entity.recycle(Item));

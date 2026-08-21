@@ -10,7 +10,7 @@ class Unicorn extends Entity {
     render() {
         ctx.translate(this.position.x, this.position.y);
 
-        const ground = firstItem(this.world.category('ground'));
+        const ground = firstItem(this.world.category(Ground));
         ctx.rotate(atan2(ground.curve.slopeFor(this.position.x), 1));
 
         ctx.scale(this.facing, 1);
@@ -22,7 +22,7 @@ class Unicorn extends Entity {
     cycle(elapsed) {
         super.cycle(elapsed);
 
-        const ground = firstItem(this.world.category('ground'));
+        const ground = firstItem(this.world.category(Ground));
         this.position.y = ground.curveAt(this.position.x) - 40;
     }
 }
@@ -36,12 +36,12 @@ class AudienceUnicorn extends Unicorn {
     cycle(elapsed) {
         super.cycle(elapsed);
 
-        const camera = firstItem(this.world.category('camera'));
+        const camera = firstItem(this.world.category(Camera));
         if (this.position.x < camera.position.x - CANVAS_WIDTH) {
             this.position.x = camera.position.x + CANVAS_WIDTH + random(500, 1000);
         }
 
-        for (const player of this.world.category('player')) {
+        for (const player of this.world.category(Player)) {
             if (distance(player.position, this.position) > AUDIENCE_RADIUS) continue;
             for (const trick of player.comboTracker.unfinishedTricks()) {
                 trick.inFrontOfAudience = true;

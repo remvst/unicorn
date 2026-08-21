@@ -1,7 +1,6 @@
 class Objective extends Entity {
     constructor(label, requiredCount, promiseFactory) {
         super();
-        this.categories.push('objective');
 
         this.label = label;
         this.requiredCount = requiredCount;
@@ -21,17 +20,17 @@ class Objective extends Entity {
         while (this.doneCount < this.requiredCount) {
             await this.promiseFactory();
             this.doneCount++;
-            spawnRainbows(firstItem(this.world.category('player')));
+            spawnRainbows(firstItem(this.world.category(Player)));
         }
     }
 }
 
 awaitTrick = async (world, predicate) => {
-    const player = firstItem(world.category('player'));
+    const player = firstItem(world.category(Player));
     const exludeTricks = new Set(player?.comboTracker.landedTricks || []);
 
     await waitFor(world, () => {
-        const player = firstItem(world.category('player'));
+        const player = firstItem(world.category(Player));
         if (!player) return;
 
         for (const trick of player.comboTracker.landedTricks) {
@@ -49,12 +48,12 @@ awaitChange = async (world, valueGetter) => {
 }
 
 awaitCombo = async (world, predicates) => {
-    await awaitChange(world, () => firstItem(world.category('player'))?.comboTracker.startedTricks.length === 0);
+    await awaitChange(world, () => firstItem(world.category(Player))?.comboTracker.startedTricks.length === 0);
 
     const matchingTricks = new Set();
 
     await waitFor(world, () => {
-        const player = firstItem(world.category('player'));
+        const player = firstItem(world.category(Player));
         if (!player) return;
 
         matchingTricks.clear();

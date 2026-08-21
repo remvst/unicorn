@@ -1,7 +1,6 @@
 class Prompt extends Entity {
     constructor(label) {
         super();
-        this.categories.push('prompt');
         this.label = label;
     }
 

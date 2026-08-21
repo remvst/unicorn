@@ -216,7 +216,7 @@ class PhysicsObject extends Entity {
     * segments() {
         this.segmentsCache ||= new Cache();
 
-        for (const ground of this.world.category('ground')) {
+        for (const ground of this.world.category(Ground)) {
             const stepX = 20;
             const window = 400;
             const refX = floorToNearest(this.position.x, stepX);
