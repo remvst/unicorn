@@ -3,7 +3,7 @@ class ItemGenerator extends Entity {
     constructor() {
         super();
         this.cache = new Cache();
-        this.interval = CANVAS_WIDTH * 2;
+        this.interval = CANVAS_WIDTH * 4;
     }
 
     cycle(elapsed) {
