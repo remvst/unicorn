@@ -40,7 +40,7 @@ class JumpTracker extends TrickTracker {
     }
 
     cycle(elapsed) {
-        const landed = this.bike.hasCollision(this.bike.backWheel) || this.bike.hasCollision(this.bike.frontWheel);
+        const landed = !this.bike.airborne();
         if (landed) this.reset();
 
         this.acc.position.x += changeDiff(this.changeX.change(this.bike.position.x));
@@ -70,52 +70,6 @@ class Flip extends JumpTracker {
                 ;
 
             this.combo.addTrick(this.trick);
-        }
-    }
-}
-
-
-class PerfectLanding extends TrickTracker {
-
-    constructor() {
-        super();
-        this.fullLandChange = new ValueChangeHelper();
-    }
-
-    reset() {
-        super.reset();
-        this.landedAcc = 0;
-        this.changeMomentum = new ValueChangeHelper();
-    }
-
-    cycle(elapsed) {
-        super.cycle(elapsed);
-
-        // Intentional large coyote-time to force jumps >1s
-        const back = this.bike.hasCollision(this.bike.backWheel, 1);
-        const front = this.bike.hasCollision(this.bike.frontWheel, 1);
-
-        const [fullBefore, fullAfter] = this.fullLandChange.change(front && back);
-
-        const momentum = pointDistance(0, 0, this.bike.momentum.position.x, this.bike.momentum.position.y);
-
-        if (!front && !back) {
-            this.reset();
-            this.changeMomentum.change(momentum);
-        }
-
-        if (front || back) {
-            this.landedAcc += elapsed;
-        }
-
-        if (fullAfter && !fullBefore && this.landedAcc < 0.1) {
-            const [momentumBefore, momentumNow] = this.changeMomentum.change(momentum);
-            const score = momentumNow / momentumBefore;
-            if (score > 0.9) {
-                this.trick.label = nomangle('PERFECT LANDING');
-                this.trick.points = 500;
-                this.combo.addTrick(this.trick);
-            }
         }
     }
 }
@@ -160,32 +114,24 @@ class Wheelie extends TrickTracker {
     }
 }
 
-class TallJump extends JumpTracker {
-    cycle(elapsed) {
-        super.cycle(elapsed);
-
-        this.trick.points = max(
-            this.trick.points,
-            -this.acc.position.y,
-        );
-        if (this.trick.points > 100) {
-            this.trick.label = nomangle('JUMP HEIGHT');
-            this.combo.addTrick(this.trick);
-        }
+class AirTime extends TrickTracker {
+    reset() {
+        super.reset();
+        this.acc = 0;
     }
-}
 
-class LongJump extends JumpTracker {
     cycle(elapsed) {
         super.cycle(elapsed);
 
-        this.trick.points = max(
-            this.trick.points,
-            this.acc.position.x * 20 / 100,
-        );
-        if (this.trick.points > 100) {
-            this.trick.label = nomangle('JUMP DISTANCE');
-            this.combo.addTrick(this.trick);
+        if (!this.bike.airborne()) {
+            this.reset();
+        } else {
+            this.acc += elapsed;
+            this.trick.points = this.acc * 100;
+            if (this.trick.points > 200) {
+                this.trick.label = this.acc.toFixed(1) + nomangle('S AIR TIME');
+                this.combo.addTrick(this.trick);
+            }
         }
     }
 }
