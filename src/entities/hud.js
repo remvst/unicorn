@@ -1,5 +1,7 @@
 class HUD extends Entity {
     render() {
+        if (!G || !(G.screens[G.screens.length - 1] instanceof WorldScreen)) return;
+
         const player = firstItem(this.world.category(Player));
         if (!player) return;
 

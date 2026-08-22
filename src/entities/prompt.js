@@ -5,6 +5,8 @@ class Prompt extends Entity {
     }
 
     render() {
+        if (!G || !(G.screens[G.screens.length - 1] instanceof WorldScreen)) return;
+
         this.cancelCameraTransformations();
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
