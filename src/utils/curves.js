@@ -8,7 +8,7 @@ regularLevel = () => new PerlinCurve({
     plus: [
         mountains(),
         simpleBumps(),
-        extraBumps(),
+        // extraBumps(),
     ],
 });
 

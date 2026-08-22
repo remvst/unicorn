@@ -79,7 +79,7 @@ class Level {
     }
 
     async levelTransition({
-        dialog,
+        transition,
         curve,
     }) {
         const { camera } = this.basics();
@@ -93,10 +93,20 @@ class Level {
         }
 
         const previousLevelEndX = this.transitionIntoCurve(plains());
+        await transition(previousLevelEndX + CANVAS_WIDTH / 2)
 
+        return this.transitionIntoCurve(curve);
+    }
+
+    async announceLevelTitle(x, announcement) {
+        await waitFor(this.world, () => this.basics().player?.position.x > x);
+        this.world.addUnique(new Prompt(announcement)).removeWhenAgeIs(3);
+    }
+
+    async runUnicornDialog(x, dialog) {
         // Add a unicorn at the beginning
         const uc = this.world.add(new Unicorn());
-        uc.position.x = previousLevelEndX + CANVAS_WIDTH / 2;
+        uc.position.x = x;
         uc.facing = -1;
 
         // Wait for the player to reach the unicorn
@@ -125,13 +135,16 @@ class Level {
         // Restore player control
         this.basics().player.controlsOverride = null;
         camera.interp(camera, 'zoom', camera.zoom, 1, 0.3);
-
-        return this.transitionIntoCurve(curve);
     }
 
-    async runObjectives({ objectives }) {
-        for (const obj of objectives) this.world.add(obj);
-        await Promise.all(objectives.map(obj => obj.start()));
-        for (const obj of objectives) this.world.remove(obj);
+    async runObjectives({ objectives, requiredCount }) {
+        requiredCount ??= objectives.length;
+
+        let completedCount = 0;
+        for (const obj of objectives) {
+            this.world.add(obj).start().then(() => completedCount++);
+        }
+
+        await waitFor(this.world, () => completedCount >= requiredCount);
     }
 }
