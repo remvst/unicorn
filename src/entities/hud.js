@@ -36,7 +36,7 @@ class HUD extends Entity {
             for (const trick of player.comboTracker.startedTricks) {
                 const l = lines[lines.length - 1];
                 l.push(trick.label.toUpperCase()); // TODO these should all be uppercase in the first place so we don't need to call toUpperCase()
-                if (l.length > 3) lines.push([]);
+                if (l.length > 5) lines.push([]);
             }
             for (const l of lines) {
                 if (l.length) y += epicText(l.join(' + '), 0, y).h;
