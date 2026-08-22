@@ -5,10 +5,19 @@ class MainLevel extends Level {
     }
 
     async setup() {
+        this.world.clearCategory(ItemGenerator);
+
         await this.levelTransition({
             curve: regularLevel(),
             transition: (x) => this.announceLevelTitle(x, 'ENTERING:\nSUNNY HILLS')
         });
+
+        this.world.clearCategory(Unicorn);
+
+        this.world.add(new ItemGenerator());
+        for (const x of [200, 300, 400]) {
+            this.world.add(new AudienceUnicorn()).position.x = x;
+        }
 
         this.world.clearCategory(Objective);
 

@@ -1,14 +1,6 @@
 class IntroLevel extends Level {
     async setup() {
-        this.transitionIntoCurve(new PerlinCurve({ plus: [
-            // new PerlinCurve({ step: 2000, amplitude: 800 }),
-            new PerlinCurve({ step: 2000, amplitude: 100 }),
-            // new PerlinCurve({ step: 200, amplitude: 80, multiplier: x => abs(sin(x / 2000)) }),
-        ]
-        }));
-
-        const uc = this.world.add(new AudienceUnicorn());
-        uc.position.x = 200;
+        this.basics().ground.curve = plains();
 
         const { camera, ground } = this.basics();
         camera.zoom = 1.5;

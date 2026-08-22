@@ -14,7 +14,7 @@ class TutorialWheelies extends Level {
         await this.runObjectives({
             objectives: [
                 new Objective(
-                    nomangle('DO A WHEELIE'),
+                    nomangle('PERFORM 3 WHEELIES'),
                     3,
                     () => awaitTrick(this.world, anyWheelie),
                 ),

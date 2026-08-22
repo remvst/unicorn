@@ -5,7 +5,7 @@ class Level {
             this.world.add(new Background());
             this.world.add(new Foreground());
             this.world.add(new Camera());
-            this.world.add(new HUD());// TODO could be a problem across levels
+            this.world.add(new HUD());
             this.world.add(new Ground());
             this.world.add(new CameraTarget());
 
