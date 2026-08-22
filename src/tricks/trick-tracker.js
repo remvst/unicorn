@@ -135,3 +135,30 @@ class AirTime extends TrickTracker {
         }
     }
 }
+
+class Stomp extends TrickTracker {
+    reset() {
+        super.reset();
+        this.acc = 0;
+    }
+
+    cycle(elapsed) {
+        super.cycle(elapsed);
+
+        if (!this.bike.airborne()) {
+            if (this.acc > 0.3) {
+                this.trick.label = nomangle('STOMP');
+                this.trick.points = 50;
+                this.combo.addTrick(this.trick);
+            }
+
+            this.reset();
+        } else {
+            if (this.bike.controls.jump) {
+                this.acc += elapsed;
+            } else {
+                this.acc = 0;
+            }
+        }
+    }
+}

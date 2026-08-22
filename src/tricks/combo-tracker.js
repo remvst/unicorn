@@ -9,6 +9,7 @@ class ComboTracker {
             new Flip(),
             new Wheelie(),
             new AirTime(),
+            new Stomp(),
         ];
         for (const tracker of this.tricksTrackers) {
             tracker.bind(this);

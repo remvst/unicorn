@@ -38,6 +38,7 @@ beInFrontOfAudience = () => (trick) => trick.inFrontOfAudience;
 anyFlip = containLabel(nomangle('FL'));
 anyWheelie = containLabel(nomangle('WH'));
 anyAir = containLabel(nomangle('AIR'));
+anyStomp = containLabel(nomangle('STOMP'));
 
 backflip = haveLabel(nomangle('BACKFLIP'));
 frontflip = haveLabel(nomangle('FRONTFLIP'));
