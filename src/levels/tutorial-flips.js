@@ -9,7 +9,7 @@ class TutorialFlips extends Level {
         const startX = this.basics().player?.position.x;
         await this.runObjectives({
             objectives: [
-                new Objective(nomange('Go right →'), 1, () => waitFor(this.world, () => {
+                new Objective(nomangle('Go right →'), 1, () => waitFor(this.world, () => {
                     return this.basics().player?.position.x > startX + 500;
                 })),
             ],
