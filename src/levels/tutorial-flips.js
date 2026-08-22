@@ -23,7 +23,7 @@ class TutorialFlips extends Level {
 
         await this.runObjectives({
             objectives: [
-                new Objective('perform 3 flips'.toUpperCase(), 3, () => awaitTrick(this.world, t => t.label.includes('flip'))),
+                new Objective('perform 3 flips'.toUpperCase(), 3, () => awaitTrick(this.world, anyFlip)),
             ],
         });
 

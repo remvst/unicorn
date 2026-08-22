@@ -5,13 +5,13 @@ class TutorialJumps extends Level {
                 'You can also jump to get a bit of extra air',
                 'Hold [SPACE], then release to jump',
             ],
-            curve: new PerlinCurve({ step: 500, amplitude: 200 }),
+            curve: simpleBumps(),
         });
         this.world.addUnique(new Prompt('HOLD [SPACE], RELEASE TO JUMP'));
 
         await this.runObjectives({
             objectives: [
-                new Objective('perform 3 jumps'.toUpperCase(), 3, () => awaitTrick(this.world, t => t.label.includes('Jump'))),
+                new Objective('GET AIR TIME', 3, () => awaitTrick(this.world, anyAir)),
             ],
         });
 
