@@ -18,4 +18,8 @@ class Screen {
     render() {
 
     }
+
+    get isForeground() {
+        return G && G.screens[G.screens.length - 1] === this
+    }
 }
