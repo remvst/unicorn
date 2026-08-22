@@ -7,13 +7,20 @@ epicText = (text, x, y, shiftX = 0) => ctx.wrap(() => {
     const padding = ctx.lineWidth / 2;
     const metrics = ctx.measureText(text);
 
+    if (ctx.textBaseline === 'bottom') {
+        ctx.translate(
+            0,
+            -(metrics.actualBoundingBoxAscent + metrics.actualBoundingBoxDescent) + padding
+        );
+    }
+
     ctx.wrap(() => {
         ctx.fillStyle = ctx.strokeStyle;
         ctx.fillRect(
             -metrics.actualBoundingBoxLeft,
             -metrics.actualBoundingBoxAscent,
             metrics.actualBoundingBoxRight + metrics.actualBoundingBoxLeft + padding * 2,
-            ceil(metrics.actualBoundingBoxAscent + metrics.actualBoundingBoxDescent) + padding * 2,
+            (metrics.actualBoundingBoxAscent + metrics.actualBoundingBoxDescent) + padding * 2,
         );
     });
 

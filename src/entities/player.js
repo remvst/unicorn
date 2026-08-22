@@ -4,6 +4,11 @@ class Player extends Bike {
         this.comboTracker = new ComboTracker(this);
     }
 
+    die() {
+        super.die();
+        this.comboTracker.failed = true;
+    }
+
     render() {
         super.render();
 

@@ -1,27 +1,56 @@
 class HUD extends Entity {
-    renderCombo(player, ongoing) {
+    constructor() {
+        super();
+        this.comboChange = new ValueChangeHelper();
+    }
+
+    renderCombo(comboTracker) {
+        const {
+            failed,
+            validated,
+            comboPower,
+            points,
+            totalPoints,
+            startedTricks,
+        } = comboTracker;
+
         ctx.lineWidth = 20;
 
-        if (player.comboTracker.startedTricks.length) ctx.wrap(() => {
+        if (startedTricks.length) ctx.wrap(() => {
             ctx.translate(CANVAS_WIDTH / 2, CANVAS_HEIGHT * 0.7);
-            ctx.fillStyle = ongoing ? '#fff' : '#900';
-            ctx.strokeStyle = ongoing ? '#000' : '#400';
+            ctx.fillStyle = failed ? '#900' : '#fff';
+            ctx.strokeStyle = failed ? '#400' : '#000';
             ctx.font = 'bold 24pt Impact';
-            ctx.textBaseline = 'top';
             ctx.textAlign = 'center';
 
-            const comboNumber = ongoing
-                ? `${player.comboTracker.points.toLocaleString('en')}   X ${player.comboTracker.startedTricks.length}`
-                : player.comboTracker.totalPoints.toLocaleString('en');
+            ctx.textBaseline = 'bottom';
+
+            if ((validated || failed) && this.age - this.comboValidateTime > 2) return;
+            const animRatio = interpolate(0, 1, easeOutBounce((this.age - this.comboValidateTime) / 0.2));
+            ctx.scale(animRatio, animRatio);
+
+            const comboNumber = failed || validated
+                ? totalPoints.toLocaleString('en')
+                : `${points.toLocaleString('en')}   X ${startedTricks.length}`;
             const comboNumberSize = ctx.wrap(() => {
-                if (ongoing) ctx.globalAlpha = 0.5;
+                if (failed) {
+                    ctx.fillStyle = '#900';
+                    ctx.strokeStyle = '#400';
+                } else if (validated) {
+                    ctx.fillStyle = '#0f0';
+                    ctx.strokeStyle = '#040';
+                } else {
+                    ctx.globalAlpha = 0.5;
+                    ctx.fillStyle = '#fff';
+                    ctx.strokeStyle = '#000';
+                }
                 return epicText(comboNumber, 0, 0);
             });
 
-            if (ongoing) ctx.wrap(() => {
+            if (!failed && !validated) ctx.wrap(() => {
                 const w = comboNumberSize.w + 50;
                 ctx.beginPath();
-                ctx.rect(-w / 2, -50, w * player.comboTracker.comboPower, 100);
+                ctx.rect(-w / 2, -100, w * (validated ? 1 : comboPower), 200);
                 ctx.clip();
 
                 const z = ctx.fillStyle;
@@ -30,12 +59,13 @@ class HUD extends Entity {
                 epicText(comboNumber, 0, 0);
             });
 
-            let y = comboNumberSize.h;
+            let y = -1;
 
             ctx.font = 'bold 18pt Impact';
+            ctx.textBaseline = 'top';
 
             const lines = [[]];
-            for (const trick of player.comboTracker.startedTricks) {
+            for (const trick of startedTricks) {
                 const l = lines[lines.length - 1];
                 l.push(trick.label.toUpperCase()); // TODO these should all be uppercase in the first place so we don't need to call toUpperCase()
                 if (l.length > 5) lines.push([]);
@@ -52,9 +82,14 @@ class HUD extends Entity {
         this.cancelCameraTransformations();
 
         const player = firstItem(this.world.category(Player));
-        if (player) this.comboAnimateOutAge = this.age;
-        this.lastPlayer = player || this.lastPlayer;
-        this.renderCombo(this.lastPlayer, !!player);
+        if (player?.comboTracker.startedTricks.length) this.lastComboTracker = player.comboTracker;
+
+        const [validatedBefore, validatedAfter] = this.comboChange.change(this.lastComboTracker?.validated || this.lastComboTracker?.failed);
+        if (validatedBefore != validatedAfter) {
+            this.comboValidateTime = this.age;
+        }
+
+        if (this.lastComboTracker) this.renderCombo(this.lastComboTracker);
 
         ctx.textBaseline = 'top';
         ctx.strokeStyle = '#000';

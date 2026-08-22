@@ -3,8 +3,6 @@ class ComboTracker {
     constructor(bike) {
         this.bike = bike;
 
-        this.comboId = 0;
-
         this.tricksTrackers = [
             new Flip(),
             new Wheelie(),
@@ -87,12 +85,9 @@ class ComboTracker {
 
         G.bestCombo = max(G.bestCombo, this.totalPoints);
 
-        this.startedTricks.length = 0;
-        this.lockedTricks.clear();
-        this.landedTricks.clear();
-        this.points = 0;
+        this.bike.comboTracker = new ComboTracker(this.bike);
 
-        this.comboId++;
+        this.validated = true;
     }
 
     hasLandedTrick(predicate) {
