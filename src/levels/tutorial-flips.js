@@ -4,10 +4,12 @@ class TutorialFlips extends Level {
             transition: (x) => this.runUnicornDialog(x, [
                 'A bike in unicorn land? Why?',
                 '...',
-                'Anyway, think you can backflip?',
+                'Think you can backflip over those hills?',
             ]),
             curve: simpleBumps(),
         });
+
+        this.world.addUnique(new Prompt(nomangle('◄ / ▶ TO FLIP WHILE AIRBORNE')));
 
         await this.runObjectives({
             objectives: [

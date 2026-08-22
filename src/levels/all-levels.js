@@ -1,14 +1,33 @@
 function* allLevels() {
     const doA = nomangle('DO A ');
-    const inFrontOfAUnicorn = nomangle(' IN FRONT OF A UNICORN');
+    const inFrontOfAUnicorn = nomangle(' IN FRONT OF UNICORNS');
     const combo = nomangle('COMBO: ');
+
+    // Difficult tricks: tricks that are just difficult on their own
+    const difficultTricks = [
+        new Objective(doA + nomangle('DOUBLE BACKFLIP'), 1, (world) => awaitTrick(world, doubleBackflip)),
+        new Objective(doA + nomangle('DOUBLE FRONTFLIP'), 1, (world) => awaitTrick(world, doubleFrontflip)),
+        new Objective(doA + nomangle('TRIPLE BACKFLIP'), 1, (world) => awaitTrick(world, tripleBackflip)),
+    ];
 
     // Single trick: tricks that the user only needs to perform once, in front of unicorns
     const singleTricksObjectives = [
         new Objective(doA + nomangle('FRONTFLIP') + inFrontOfAUnicorn, 1, (world) => awaitTrick(world, trickMust(frontflip, beInFrontOfAudience()))),
         new Objective(doA + nomangle('DOUBLE BACKFLIP') + inFrontOfAUnicorn, 1, (world) => awaitTrick(world, trickMust(doubleBackflip, beInFrontOfAudience()))),
-        new Objective(doA + nomangle('DOUBLE FRONTFLIP') + inFrontOfAUnicorn, 1, (world) => awaitTrick(world, trickMust(doubleFrontflip, beInFrontOfAudience()))),
-        new Objective(doA + nomangle('TRIPLE BACKFLIP') + inFrontOfAUnicorn, 1, (world) => awaitTrick(world, trickMust(tripleBackflip, beInFrontOfAudience()))),
+        // new Objective(doA + nomangle('DOUBLE FRONTFLIP') + inFrontOfAUnicorn, 1, (world) => awaitTrick(world, trickMust(doubleFrontflip, beInFrontOfAudience()))),
+        // new Objective(doA + nomangle('TRIPLE BACKFLIP') + inFrontOfAUnicorn, 1, (world) => awaitTrick(world, trickMust(tripleBackflip, beInFrontOfAudience()))),
+        //
+        // TODO wheelie + nosewheelie
+        // TODO backflip and frontflip in front of unicorn (same combo)
+        new Objective(combo + nomangle('2 FLIPS') + inFrontOfAUnicorn, 1, (world) => awaitCombo(world, comboMust(
+            haveDistinctLandedTricks(...repeatedTrick(2, trickMust(anyFlip, beInFrontOfAudience()))),
+        ))),
+        new Objective(combo + nomangle('BACKFLIP AND FRONTFLIP') + inFrontOfAUnicorn, 1, (world) => awaitCombo(world, comboMust(
+            haveDistinctLandedTricks(
+                trickMust(backflip, beInFrontOfAudience()),
+                trickMust(frontflip, beInFrontOfAudience()),
+            ),
+        ))),
     ];
 
     // Combo size: number of tricks in a combo
@@ -61,6 +80,7 @@ function* allLevels() {
             singleTricksObjectives.shift(),
             comboSizeObjectives.shift(),
             comboTricksObjectives.shift(),
+            difficultTricks.shift(),
         ].filter(Boolean));
     }
 

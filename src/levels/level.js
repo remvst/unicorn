@@ -140,6 +140,8 @@ class Level {
     }
 
     async runObjectives({ objectives, requiredCount }) {
+        this.world.clearCategory(Objective);
+
         requiredCount ??= objectives.length;
 
         let completedCount = 0;
