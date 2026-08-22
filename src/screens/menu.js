@@ -20,6 +20,9 @@ RAINBOW_PATTERN = (() => {
 
 class Menu extends Screen {
     renderTitle(lines, subtitle) {
+        ctx.lineWidth = 20;
+        ctx.strokeStyle = '#000';
+
         ctx.wrap(() => {
             ctx.strokeStyle = '#000';
             ctx.textAlign = 'center';
@@ -31,13 +34,13 @@ class Menu extends Screen {
             ctx.font = 'bold 24pt Impact';
             ctx.fillStyle = '#5ca5c7';
             if (subtitle) {
-                y -= epicText(subtitle, 0, 0) + 5;
+                y -= epicText(subtitle, 0, 0).h - ctx.lineWidth / 2;
             }
 
             ctx.font = 'bold 64pt Impact';
             for (let i = lines.length - 1; i >= 0; i--) {
                 ctx.fillStyle = i % 2 ? RAINBOW_PATTERN : '#fff';
-                y -= epicText(lines[i], 0, y, this.age * 400) + 15;
+                y -= epicText(lines[i], 0, y, this.age * 400).h - ctx.lineWidth / 2;
             }
         });
     }

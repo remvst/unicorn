@@ -1,23 +1,36 @@
 class HUD extends Entity {
-    render() {
-        if (!G || !(G.screens[G.screens.length - 1] instanceof WorldScreen)) return;
-
-        const player = firstItem(this.world.category(Player));
-        if (!player) return;
-
-        this.cancelCameraTransformations();
+    renderCombo(player, ongoing) {
+        ctx.lineWidth = 20;
 
         if (player.comboTracker.startedTricks.length) ctx.wrap(() => {
-            ctx.translate(CANVAS_WIDTH / 2, CANVAS_HEIGHT * 0.6);
-            ctx.fillStyle = '#fff';
-            ctx.font = 'bold 18pt Arial';
+            ctx.translate(CANVAS_WIDTH / 2, CANVAS_HEIGHT * 0.7);
+            ctx.fillStyle = ongoing ? '#fff' : '#900';
+            ctx.strokeStyle = ongoing ? '#000' : '#400';
+            ctx.font = 'bold 24pt Impact';
             ctx.textBaseline = 'top';
             ctx.textAlign = 'center';
-            ctx.strokeStyle = '#000';
 
-            let y = 0;
+            const comboNumber = `${player.comboTracker.points}   X ${player.comboTracker.startedTricks.length}`;
+            const comboNumberSize = ctx.wrap(() => {
+                if (ongoing) ctx.globalAlpha = 0.5;
+                return epicText(comboNumber, 0, 0);
+            });
 
-            y += epicText(`${player.comboTracker.points}   X ${player.comboTracker.startedTricks.length}`, 0, y) + 15;
+            if (ongoing) ctx.wrap(() => {
+                const w = comboNumberSize.w + 50;
+                ctx.beginPath();
+                ctx.rect(-w / 2, -50, w * player.comboTracker.comboPower, 100);
+                ctx.clip();
+
+                const z = ctx.fillStyle;
+                ctx.fillStyle = ctx.strokeStyle;
+                ctx.strokeStyle = z;
+                epicText(comboNumber, 0, 0);
+            });
+
+            let y = comboNumberSize.h;
+
+            ctx.font = 'bold 18pt Impact';
 
             const lines = [[]];
             for (const trick of player.comboTracker.startedTricks) {
@@ -26,51 +39,58 @@ class HUD extends Entity {
                 if (l.length > 3) lines.push([]);
             }
             for (const l of lines) {
-                if (l.length) y += epicText(l.join(' + '), 0, y) + 15;
+                if (l.length) y += epicText(l.join(' + '), 0, y).h;
             }
-
-            const w = player.comboTracker.comboPower * 200
-            ctx.fillStyle = '#fff';
-            ctx.fillRect(-w / 2, y, w, 5);
         });
+    }
+
+    render() {
+        if (!G || !(G.screens[G.screens.length - 1] instanceof WorldScreen)) return;
+
+        this.cancelCameraTransformations();
+
+        const player = firstItem(this.world.category(Player));
+        if (player) this.comboAnimateOutAge = this.age;
+        this.lastPlayer = player || this.lastPlayer;
+        this.renderCombo(this.lastPlayer, !!player);
+
+        ctx.textBaseline = 'top';
+        ctx.strokeStyle = '#000';
+        ctx.lineWidth = 20;
 
         if (firstItem(this.world.category(Objective))) {
             ctx.wrap(() => {
-                ctx.translate(CANVAS_WIDTH - 20, 20);
+                ctx.translate(CANVAS_WIDTH - 40, 40);
                 ctx.textAlign = 'right';
-                ctx.textBaseline = 'top';
-                ctx.strokeStyle = '#000';
 
                 let y = 0;
 
                 ctx.font = 'bold 36pt Arial';
                 ctx.fillStyle = '#5ca5c7';
-                y += epicText(nomangle('GOALS:'), 0, y) + 30;
+                y += epicText(nomangle('GOALS:'), 0, y).h + 15;
 
                 ctx.font = 'bold 18pt Arial';
                 ctx.fillStyle = '#fff';
                 for (const objective of this.world.category(Objective)) {
                     const deet = objective.detail ? ':   ' + objective.detail : '';
-                    y += epicText(objective.label + deet, 0, y) + 30;
+                    y += epicText(objective.label + deet, 0, y).h + 15;
                 }
             });
         }
 
         if (G.bestCombo) ctx.wrap(() => {
-            ctx.translate(20, 20);
+            ctx.translate(40, 40);
             ctx.textAlign = 'left';
-            ctx.textBaseline = 'top';
-            ctx.strokeStyle = '#000';
 
             let y = 0;
 
             ctx.font = 'bold 36pt Arial';
             ctx.fillStyle = '#5ca5c7';
-            y += epicText(nomangle('BEST COMBO:'), 0, y) + 30;
+            y += epicText(nomangle('BEST COMBO:'), 0, y).h + 15;
 
             ctx.font = 'bold 18pt Arial';
             ctx.fillStyle = '#fff';
-            y += epicText(G.bestCombo.toLocaleString('en'), 0, y) + 30;
+            y += epicText(G.bestCombo.toLocaleString('en'), 0, y).h + 15;
         });
     }
 }

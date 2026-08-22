@@ -4,7 +4,7 @@ epicText = (text, x, y, shiftX = 0) => ctx.wrap(() => {
     // Shear the canvas a bit
     ctx.transform(1, 0, -0.25, 1, 0, 0);
 
-    const padding = 10;
+    const padding = ctx.lineWidth / 2;
     const metrics = ctx.measureText(text);
 
     ctx.wrap(() => {
@@ -20,5 +20,8 @@ epicText = (text, x, y, shiftX = 0) => ctx.wrap(() => {
     ctx.translate(shiftX, 0);
     ctx.fillText(text, -shiftX, 0);
 
-    return metrics.actualBoundingBoxAscent + metrics.actualBoundingBoxDescent;
+    return {
+        w: metrics.actualBoundingBoxRight + metrics.actualBoundingBoxLeft + padding * 2,
+        h: metrics.actualBoundingBoxAscent + metrics.actualBoundingBoxDescent + padding * 2
+    };
 });

@@ -11,6 +11,7 @@ class Prompt extends Entity {
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.strokeStyle = '#000';
+        ctx.lineWidth = 20;
         ctx.font = 'bold 36pt Arial';
         ctx.fillStyle = '#fff';
         epicText(this.label, CANVAS_WIDTH / 2, CANVAS_HEIGHT / 4);

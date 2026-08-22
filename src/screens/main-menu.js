@@ -3,7 +3,7 @@ class MainMenu extends Menu {
 
     render() {
         this.renderTitle([
-            nomangle('UNICORNS,'),
+            nomangle('UNICORNS'),
             nomangle('RAINBOWS \'N'),
             nomangle('BACKFLIPS'),
         ], document.title.split(':')[1].trim());
