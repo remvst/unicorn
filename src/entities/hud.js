@@ -73,7 +73,13 @@ class HUD extends Entity {
                 ctx.fillStyle = '#fff';
                 for (const objective of this.world.category(Objective)) {
                     const deet = objective.detail ? ':   ' + objective.detail : '';
-                    y += epicText(objective.label + deet, 0, y).h + 15;
+                    ctx.globalAlpha = objective.completed ? 0.5 : 1;
+                    const { w, h } = epicText(objective.label + deet, 0, y);
+
+                    if (objective.completed) {
+                        ctx.fillRect(-w + ctx.lineWidth, y + h / 2, w, 2);
+                    }
+                    y += h + 15;
                 }
             });
         }

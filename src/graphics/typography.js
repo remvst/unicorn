@@ -10,18 +10,18 @@ epicText = (text, x, y, shiftX = 0) => ctx.wrap(() => {
     ctx.wrap(() => {
         ctx.fillStyle = ctx.strokeStyle;
         ctx.fillRect(
-            -metrics.actualBoundingBoxLeft - padding,
-            -metrics.actualBoundingBoxAscent - padding,
+            -metrics.actualBoundingBoxLeft,
+            -metrics.actualBoundingBoxAscent,
             metrics.actualBoundingBoxRight + metrics.actualBoundingBoxLeft + padding * 2,
-            (metrics.actualBoundingBoxAscent + metrics.actualBoundingBoxDescent) + padding * 2,
+            ceil(metrics.actualBoundingBoxAscent + metrics.actualBoundingBoxDescent) + padding * 2,
         );
     });
 
     ctx.translate(shiftX, 0);
-    ctx.fillText(text, -shiftX, 0);
+    ctx.fillText(text, padding - shiftX, padding);
 
     return {
         w: metrics.actualBoundingBoxRight + metrics.actualBoundingBoxLeft + padding * 2,
-        h: metrics.actualBoundingBoxAscent + metrics.actualBoundingBoxDescent + padding * 2
+        h: (metrics.actualBoundingBoxAscent + metrics.actualBoundingBoxDescent) + padding * 2
     };
 });
