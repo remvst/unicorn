@@ -65,7 +65,6 @@ const JS_FILES = [
     'entities/prompt.js',
 
     'levels/level.js',
-    'levels/test-level.js',
     'levels/intro-level.js',
     'levels/tutorial-pedal.js',
     'levels/tutorial-flips.js',
@@ -247,6 +246,8 @@ const argv = yargs(process.argv.slice(2)).options({
     let css = await fs.readFile('src/style.css', 'utf-8');
 
     const jsFiles = [...JS_FILES];
+
+    if (constants.DEBUG) jsFiles.push('levels/test-level.js');
 
     let js = (await Promise.all(
         jsFiles.map(path => fs.readFile('src/' + path, 'utf-8')))
