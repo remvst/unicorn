@@ -38,7 +38,7 @@ class AudienceUnicorn extends Unicorn {
 
         const camera = firstItem(this.world.category(Camera));
         if (this.position.x < camera.position.x - CANVAS_WIDTH) {
-            this.position.x = camera.position.x + CANVAS_WIDTH + random(500, 1000);
+            this.position.x = camera.position.x + CANVAS_WIDTH + 1000;
         }
 
         for (const player of this.world.category(Player)) {
