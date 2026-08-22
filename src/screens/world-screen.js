@@ -1,9 +1,9 @@
 class WorldScreen extends Screen {
-    constructor(levels) {
+    constructor(levelsGenerator) {
         super();
 
         (async () => {
-            for (const level of levels) {
+            for (const level of levelsGenerator()) {
                 level.world = this.level?.world;
                 this.level = level;
                 await this.level.start();
@@ -11,6 +11,7 @@ class WorldScreen extends Screen {
         })();
 
         if (DEBUG) this.debugValues = () => {
+            if (!this.level) return [];
             const vals = [`Entities: ${this.level.world.entities.size}`];
             for (const camera of this.level.world.category(Camera)) {
                 vals.push([`Camera: ${camera.position.x.toFixed(0)},${camera.position.y.toFixed(0)}`]);
@@ -26,7 +27,7 @@ class WorldScreen extends Screen {
 
     cycle(elapsed) {
         super.cycle(elapsed);
-        this.level.world.cycle(elapsed);
+        this.level?.world.cycle(elapsed);
 
         const [pauseBefore, pauseAfter] = this.pauseChange.change(downKeys[27]);
         if (this.isForeground && !pauseBefore && pauseAfter) {
@@ -35,6 +36,6 @@ class WorldScreen extends Screen {
     }
 
     render() {
-        this.level.world.render();
+        this.level?.world.render();
     }
 }

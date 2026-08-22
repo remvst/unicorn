@@ -18,7 +18,7 @@ class Objective extends Entity {
     async start() {
         this.doneCount = 0;
         while (this.doneCount < this.requiredCount) {
-            await this.promiseFactory();
+            await this.promiseFactory(this.world);
             this.doneCount++;
             spawnRainbows(firstItem(this.world.category(Player)));
         }

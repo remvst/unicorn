@@ -72,12 +72,7 @@ const JS_FILES = [
     'levels/tutorial-jumps.js',
     'levels/tutorial-stomp.js',
     'levels/tutorial-wheelies.js',
-    'levels/level-frontflip.js',
-    'levels/level-backflip-frontflip.js',
-    'levels/level-wheelie-basics.js',
-    'levels/level-frontflip-wheelie.js',
-    'levels/level-double-tricks.js',
-    'levels/level-advanced-combos.js',
+    'levels/main-level.js',
     'levels/level-finale.js',
     'levels/all-levels.js',
 
