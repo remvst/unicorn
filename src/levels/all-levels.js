@@ -1,21 +1,5 @@
 function* allLevels() {
-    // const allObjectives = [
-    //     new Objective('DO A BACKFLIP'.toUpperCase(), 1, (world) => awaitTrick(world, backflip)),
-    //     new Objective('COMBO BACKFLIP + FRONTFLIP'.toUpperCase(), 3, (world) => awaitCombo(world, comboMust(
-    //         haveDistinctLandedTricks(
-    //             backflip,
-    //             frontflip,
-    //         ),
-    //     ))),
-    //     new Objective('COMBO BACKFLIP + BACKFLIP'.toUpperCase(), 3, (world) => awaitCombo(world, comboMust(
-    //         haveDistinctLandedTricks(
-    //             ...repeatedTrick(2, backflip),
-    //         )
-    //     ))),
-    //     new Objective('GET AIR TIME', 1, (world) => awaitTrick(world, anyAir)),
-    // ];
-
-    const doA = nomangle('DO A');
+    const doA = nomangle('DO A ');
     const inFrontOfAUnicorn = nomangle(' IN FRONT OF A UNICORN');
     const combo = nomangle('COMBO: ');
 
