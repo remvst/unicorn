@@ -67,13 +67,12 @@ class ComboTracker {
         // Both wheels down, mark tricks as landed
         if (front && back) {
             for (const trick of this.lockedTricks) {
-                console.log('landed', trick.label)
                 this.landedTricks.add(trick);
             }
             this.lockedTricks.clear();
         }
 
-        if (this.comboPower <= 0 && (front || back)) {
+        if (this.comboPower <= 0 && front && back) {
             this.validateCombo();
         }
     }
