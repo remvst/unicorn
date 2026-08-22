@@ -4,12 +4,12 @@ class TutorialFlips extends Level {
         const { ground } = this.basics();
         ground.curve = new PerlinCurve({ step: 2000, amplitude: 150 });
 
-        this.world.addUnique(new Prompt('▲ TO PEDAL, ▼ TO BRAKE'));
+        this.world.addUnique(new Prompt(nomangle('▲ TO PEDAL, ▼ TO BRAKE')));
 
         const startX = this.basics().player?.position.x;
         await this.runObjectives({
             objectives: [
-                new Objective('GO RIGHT →'.toUpperCase(), 1, () => waitFor(this.world, () => {
+                new Objective(nomange('Go right →'), 1, () => waitFor(this.world, () => {
                     return this.basics().player?.position.x > startX + 500;
                 })),
             ],
@@ -19,11 +19,11 @@ class TutorialFlips extends Level {
 
         this.transitionIntoCurve(simpleBumps());
 
-        this.world.addUnique(new Prompt('◄ / ► TO FLIP WHILE AIRBORNE'));
+        this.world.addUnique(new Prompt(nomangle('◄ / ► TO FLIP WHILE AIRBORNE')));
 
         await this.runObjectives({
             objectives: [
-                new Objective('perform 3 flips'.toUpperCase(), 3, () => awaitTrick(this.world, anyFlip)),
+                new Objective(nomangle('perform 3 flips'), 3, () => awaitTrick(this.world, anyFlip)),
             ],
         });
 
