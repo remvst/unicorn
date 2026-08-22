@@ -45,6 +45,10 @@ frontflip = haveLabel(nomangle('FRONTFLIP'));
 wheelie = haveLabel(nomangle('WHEELIE'));
 nosewheelie = containLabel(nomangle('NOSEWH'));
 
+doubleBackflip = haveLabel(nomangle('DOUBLE BACKFLIP'));
+tripleBackflip = haveLabel(nomangle('TRIPLE BACKFLIP'));
+doubleFrontflip = haveLabel(nomangle('DOUBLE FRONTFLIP'));
+
 // Combo matchers
 comboMust = (...predicates) => (comboTracker) => !predicates.some((p) => !p(comboTracker));
 

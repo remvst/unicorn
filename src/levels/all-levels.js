@@ -1,6 +1,6 @@
 function* allLevels() {
     // const allObjectives = [
-    //     new Objective('DO A BACKFLIP'.toUpperCase(), 3, (world) => awaitTrick(world, backflip)),
+    //     new Objective('DO A BACKFLIP'.toUpperCase(), 1, (world) => awaitTrick(world, backflip)),
     //     new Objective('COMBO BACKFLIP + FRONTFLIP'.toUpperCase(), 3, (world) => awaitCombo(world, comboMust(
     //         haveDistinctLandedTricks(
     //             backflip,
@@ -12,39 +12,63 @@ function* allLevels() {
     //             ...repeatedTrick(2, backflip),
     //         )
     //     ))),
-    //     new Objective('GET AIR TIME', 3, (world) => awaitTrick(world, anyAir)),
+    //     new Objective('GET AIR TIME', 1, (world) => awaitTrick(world, anyAir)),
     // ];
+
+    const doA = nomangle('DO A');
+    const inFrontOfAUnicorn = nomangle(' IN FRONT OF A UNICORN');
+    const combo = nomangle('COMBO: ');
 
     // Single trick: tricks that the user only needs to perform once, in front of unicorns
     const singleTricksObjectives = [
-        //     single trick: frontflip
-        //     single trick: double backflip
-        //     single trick: double frontflip
-        //     single trick: triple backflip
+        new Objective(doA + nomangle('FRONTFLIP') + inFrontOfAUnicorn, 1, (world) => awaitTrick(world, trickMust(frontflip, beInFrontOfAudience()))),
+        new Objective(doA + nomangle('DOUBLE BACKFLIP') + inFrontOfAUnicorn, 1, (world) => awaitTrick(world, trickMust(doubleBackflip, beInFrontOfAudience()))),
+        new Objective(doA + nomangle('DOUBLE FRONTFLIP') + inFrontOfAUnicorn, 1, (world) => awaitTrick(world, trickMust(doubleFrontflip, beInFrontOfAudience()))),
+        new Objective(doA + nomangle('TRIPLE BACKFLIP') + inFrontOfAUnicorn, 1, (world) => awaitTrick(world, trickMust(tripleBackflip, beInFrontOfAudience()))),
     ];
 
     // Combo size: number of tricks in a combo
     const comboSizeObjectives = [
-        //     combo size: 5X combo
-        //     combo size: 10X combo
-        //     combo size: 15X combo
-        //     combo size: 20X combo
-        //     combo size: 30X combo
-        //     combo size: 40X combo
-        //     combo size: 50X combo
+        new Objective(doA + nomangle('5X COMBO'), 1, (world) => awaitCombo(world, comboMust(beOfSize(5)))),
+        new Objective(doA + nomangle('10X COMBO'), 1, (world) => awaitCombo(world, comboMust(beOfSize(10)))),
+        new Objective(doA + nomangle('15X COMBO'), 1, (world) => awaitCombo(world, comboMust(beOfSize(15)))),
+        new Objective(doA + nomangle('20X COMBO'), 1, (world) => awaitCombo(world, comboMust(beOfSize(20)))),
+        new Objective(doA + nomangle('30X COMBO'), 1, (world) => awaitCombo(world, comboMust(beOfSize(30)))),
+        new Objective(doA + nomangle('40X COMBO'), 1, (world) => awaitCombo(world, comboMust(beOfSize(40)))),
+        new Objective(doA + nomangle('50X COMBO'), 1, (world) => awaitCombo(world, comboMust(beOfSize(50)))),
     ];
 
     const comboTricksObjectives = [
-        //     combo: 3 flips
-        //     combo: wheelie + backflip
-        //     combo: backflip + frontflip
-        //     combo: 3 wheelies
-        //     combo: double backflip + wheelie
-        //     combo: nosewheelie + frontflip combo
-        //     combo: 3 frontflips
-        //     combo: 5 wheelies
-        //     combo: 10 flips
-        //     combo: 5 backflips + 5 frontflips
+        new Objective(combo + nomangle('3 FLIPS'), 1, (world) => awaitCombo(world, comboMust(
+            haveDistinctLandedTricks(...repeatedTrick(3, anyFlip)),
+        ))),
+        new Objective(combo + nomangle('WHEELIE + BACKFLIP'), 1, (world) => awaitCombo(world, comboMust(
+            haveDistinctLandedTricks(wheelie, backflip),
+        ))),
+        new Objective(combo + nomangle('BACKFLIP + FRONTFLIP'), 1, (world) => awaitCombo(world, comboMust(
+            haveDistinctLandedTricks(backflip, frontflip),
+        ))),
+        new Objective(combo + nomangle('3 WHEELIES'), 1, (world) => awaitCombo(world, comboMust(
+            haveDistinctLandedTricks(...repeatedTrick(3, wheelie)),
+        ))),
+        new Objective(combo + nomangle('DOUBLE BACKFLIP + WHEELIE'), 1, (world) => awaitCombo(world, comboMust(
+            haveDistinctLandedTricks(doubleBackflip, wheelie),
+        ))),
+        new Objective(combo + nomangle('NOSEWHEELIE + FRONTFLIP'), 1, (world) => awaitCombo(world, comboMust(
+            haveDistinctLandedTricks(nosewheelie, frontflip),
+        ))),
+        new Objective(combo + nomangle('3 FRONTFLIPS'), 1, (world) => awaitCombo(world, comboMust(
+            haveDistinctLandedTricks(...repeatedTrick(3, frontflip)),
+        ))),
+        new Objective(combo + nomangle('5 WHEELIES'), 1, (world) => awaitCombo(world, comboMust(
+            haveDistinctLandedTricks(...repeatedTrick(5, wheelie)),
+        ))),
+        new Objective(combo + nomangle('10 FLIPS'), 1, (world) => awaitCombo(world, comboMust(
+            haveDistinctLandedTricks(...repeatedTrick(10, anyFlip)),
+        ))),
+        new Objective(combo + nomangle('5 BACKFLIPS + 5 FRONTFLIPS'), 1, (world) => awaitCombo(world, comboMust(
+            haveDistinctLandedTricks(...repeatedTrick(5, backflip), ...repeatedTrick(5, frontflip)),
+        ))),
     ];
 
     const allObjectives = [];

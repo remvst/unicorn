@@ -16,14 +16,5 @@ class MainLevel extends Level {
             objectives: this.objectives,
             requiredCount: this.objectives.length - 1,
         });
-
-        for (const obj of [...this.world.category(Objective)]) {
-            if (obj.completed) {
-                this.world.remove(obj);
-
-                const index = remainingObjectives.indexOf(obj);
-                if (index >= 0) remainingObjectives.splice(index, 1);
-            }
-        }
     }
 }

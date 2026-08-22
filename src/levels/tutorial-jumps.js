@@ -13,7 +13,7 @@ class TutorialJumps extends Level {
         await this.runObjectives({
             objectives: [
                 new Objective(
-                    'GET AIR TIME',
+                    nomangle('BE IN THE AIR FOR 2S'),
                     3,
                     () => awaitTrick(this.world, anyAir),
                 ),

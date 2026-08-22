@@ -149,32 +149,4 @@ class Level {
 
         await waitFor(this.world, () => completedCount >= requiredCount);
     }
-
-    async runObjectiveRoundRobin({ objectives }) {
-        const remainingObjectives = [...objectives];
-
-        for (let i = 0; ; i++) {
-            await this.levelTransition({
-                curve: regularLevel(),
-                transition: (x) => this.announceLevelTitle(x, 'ENTERING:\nSUNNY HILLS')
-            });
-
-            this.world.clearCategory(Objective);
-
-            const newObjectives = remainingObjectives.slice(0, 2);
-            await this.runObjectives({
-                objectives: newObjectives,
-                requiredCount: 1,
-            });
-
-            for (const obj of [...this.world.category(Objective)]) {
-                if (obj.completed) {
-                    this.world.remove(obj);
-
-                    const index = remainingObjectives.indexOf(obj);
-                    if (index >= 0) remainingObjectives.splice(index, 1);
-                }
-            }
-        }
-    }
 }
