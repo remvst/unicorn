@@ -35,11 +35,19 @@ class HUD extends Entity {
             const lines = [[]];
             for (const trick of player.comboTracker.startedTricks) {
                 const l = lines[lines.length - 1];
-                l.push(trick.label.toUpperCase()); // TODO these should all be uppercase in the first place so we don't need to call toUpperCase()
-                if (l.length > 5) lines.push([]);
+                if (l.length > 5) lines.push([trick]);
+                else l.push(trick)
             }
             for (const l of lines) {
-                if (l.length) y += epicText(l.join(' + '), 0, y).h;
+                const colorChanges = [];
+                let acc = '';
+                for (const trick of l) {
+                    if (acc.length) acc += ' + ';
+                    if (trick.inFrontOfAudience && ongoing) colorChanges.push([acc.length, RAINBOW_PATTERN], [acc.length + trick.label.length, '#fff']);
+                    acc += trick.label;
+                }
+
+                if (l.length) y += epicText(acc, 0, y, this.age * 100, colorChanges).h;
             }
         });
     }
@@ -72,9 +80,8 @@ class HUD extends Entity {
                 ctx.font = 'bold 18pt Arial';
                 ctx.fillStyle = '#fff';
                 for (const objective of this.world.category(Objective)) {
-                    const deet = objective.detail ? ':   ' + objective.detail : '';
                     ctx.globalAlpha = objective.completed ? 0.5 : 1;
-                    const { w, h } = epicText(objective.label + deet, 0, y);
+                    const { w, h } = epicText(objective.label + (objective.detail ? ':   ' + objective.detail : ''), 0, y);
 
                     if (objective.completed) {
                         ctx.fillRect(-w + ctx.lineWidth, y + h / 2, w, 2);

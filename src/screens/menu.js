@@ -40,7 +40,13 @@ class Menu extends Screen {
             ctx.font = 'bold 64pt Impact';
             for (let i = lines.length - 1; i >= 0; i--) {
                 ctx.fillStyle = i % 2 ? RAINBOW_PATTERN : '#fff';
-                y -= epicText(lines[i], 0, y, this.age * 400).h;
+                const idx = lines[i].indexOf(nomangle('RAINBOWS'));
+                const colorChanges = i % 2
+                    ? [
+                        [0, RAINBOW_PATTERN],
+                        [8, '#fff']
+                    ] : null;
+                y -= epicText(lines[i], 0, y, this.age * 400, colorChanges).h;
             }
         });
     }
