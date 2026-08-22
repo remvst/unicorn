@@ -3,12 +3,12 @@ class MainMenu extends Menu {
 
     render() {
         this.renderTitle([
-            'UNICORNS',
-            'RAINBOWS \'N',
-            'BACKFLIPS',
+            nomangle('UNICORNS,'),
+            nomangle('RAINBOWS \'N'),
+            nomangle('BACKFLIPS'),
         ], document.title.split(':')[1].trim());
 
-        this.renderButton('[SPACE] to start');
+        this.renderButton(nomangle('[SPACE] to start'));
     }
 
     cycle(elapsed) {

@@ -114,6 +114,26 @@ const CONSTANTS = {
 const MANGLE_PARAMS = {
     "skip": [
         "repeat",
+        "actualBoundingBoxLeft",
+        "actualBoundingBoxRight",
+        "actualBoundingBoxAscent",
+        "actualBoundingBoxDescent",
+
+        // DOM elements
+        "canvas",
+
+        // Font stuff
+        "Impact",
+        "bold",
+        "Arial",
+
+        // Text alignment stuff
+        "left",
+        "right",
+        "center",
+        "bottom",
+        "top",
+        "middle",
     ],
     "force": [
         "a",
@@ -152,7 +172,6 @@ const MANGLE_PARAMS = {
         "remove",
         "speed",
         "item",
-        "center",
         "wrap",
         "angle",
         "target",

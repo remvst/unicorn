@@ -3,10 +3,10 @@ class PauseMenu extends Menu {
 
     render() {
         this.renderTitle([
-            'GAME PAUSED',
+            nomangle('GAME PAUSED'),
         ]);
 
-        this.renderButton('[ESC] to resume');
+        this.renderButton(nomangle('[ESC] to resume'));
     }
 
     cycle(elapsed) {
