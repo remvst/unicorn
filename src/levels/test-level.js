@@ -17,23 +17,27 @@ class TestLevel extends Level {
 
         await this.runObjectives({
             objectives: [
-                new Objective('DO A BACKFLIP'.toUpperCase(), 3, () => awaitTrick(this.world, trickMustContainLabel(nomangle('BACKFLIP')))),
-                new Objective('COMBO BACKFLIP + FRONTFLIP'.toUpperCase(), 3, () => awaitCombo(this.world, comboMustHaveTricks([
-                    trickMustContainLabel(nomangle('BACKFLIP')),
-                    trickMustContainLabel(nomangle('FRONTFLIP')),
-                ]))),
-                new Objective('COMBO BACKFLIP + BACKFLIP'.toUpperCase(), 3, () => awaitCombo(this.world, comboMustHaveTricks([
-                    ...repeat(2, backflip),
-                ]))),
+                new Objective('DO A BACKFLIP'.toUpperCase(), 3, () => awaitTrick(this.world, backflip)),
+                new Objective('COMBO BACKFLIP + FRONTFLIP'.toUpperCase(), 3, () => awaitCombo(this.world, comboMust(
+                    haveDistinctLandedTricks(
+                        backflip,
+                        frontflip,
+                    ),
+                ))),
+                new Objective('COMBO BACKFLIP + BACKFLIP'.toUpperCase(), 3, () => awaitCombo(this.world, comboMust(
+                    haveDistinctLandedTricks(
+                        ...repeatedTrick(2, backflip),
+                    )
+                ))),
                 new Objective('GET AIR TIME', 3, () => awaitTrick(this.world, anyAir)),
 
-                new Objective('COMBO 5X'.toUpperCase(), 3, () => awaitCombo(this.world, comboSizeMustBe(5))),
-                new Objective('COMBO 5X WITHOUT BACKFLIP'.toUpperCase(), 3, () => awaitCombo(this.world,
-                    comboMustHaveAll([
-                        comboMustNot(comboMustHaveTricks([backflip])),
-                        comboSizeMustBe(5),
-                    ]),
-                )),
+                // new Objective('COMBO 5X'.toUpperCase(), 3, () => awaitCombo(this.world, comboMust(beOfSize(5)))),
+                // new Objective('COMBO 5X WITHOUT BACKFLIP'.toUpperCase(), 3, () => awaitCombo(this.world,
+                //     comboMustHaveAll([
+                //         comboMustNot(comboMustHaveTricks([backflip])),
+                //         comboSizeMustBe(5),
+                //     ]),
+                // )),
                 // new Objective('2 BACKFLIPS SAME COMBO'.toUpperCase(), 3, () => awaitCombo(this.world, [
                 //     t => t.label.includes('backflip'),
                 //     t => t.label.includes('backflip'),

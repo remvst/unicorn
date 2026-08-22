@@ -30,34 +30,31 @@ awaitCombo = async (world, predicate) => {
 }
 
 // Trick matchers
-trickMustContainLabel = label => (trick) => trick.label.includes(label);
-trickMustHaveLabel = label => (trick) => trick.label.includes(label);
+trickMust = (...predicates) => trick => !predicates.some(p => !p(trick))
+haveLabel = label => (trick) => trick.label.includes(label);
+containLabel = label => (trick) => trick.label.includes(label);
+beInFrontOfAudience = () => (trick) => trick.inFrontOfAudience;
 
-anyFlip = trickMustContainLabel(nomangle('FL'));
-anyWheelie = trickMustContainLabel(nomangle('WH'));
-anyAir = trickMustContainLabel(nomangle('AIR'));
+anyFlip = containLabel(nomangle('FL'));
+anyWheelie = containLabel(nomangle('WH'));
+anyAir = containLabel(nomangle('AIR'));
 
-backflip = trickMustHaveLabel(nomangle('BACKFLIP'));
-frontflip = trickMustHaveLabel(nomangle('FRONTFLIP'));
-wheelie = trickMustHaveLabel(nomangle('WHEELIE'));
-nosewheelie = trickMustContainLabel(nomangle('NOSEWH'));
+backflip = haveLabel(nomangle('BACKFLIP'));
+frontflip = haveLabel(nomangle('FRONTFLIP'));
+wheelie = haveLabel(nomangle('WHEELIE'));
+nosewheelie = containLabel(nomangle('NOSEWH'));
 
 // Combo matchers
-comboMustNot = predicate => {
-    return (comboTracker) => !predicate(comboTracker)
-}
+comboMust = (...predicates) => (comboTracker) => !predicates.some((p) => !p(comboTracker));
 
-repeat = (x, obj) => {
+beOfSize = size => comboTracker => comboTracker.startedTricks.length >= size;
+
+repeatedTrick = (x, predicate) => {
     const res = [];
-    while (x--) res.push(obj);
+    while (x--) res.push(predicate);
     return res;
 }
-
-comboSizeMustBe = size => comboTracker => comboTracker.startedTricks.length >= size;
-
-comboMustHaveAll = predicates => (comboTracker) => !predicates.some((p) => !p(comboTracker));
-
-comboMustHaveTricks = predicates => {
+haveDistinctLandedTricks = (...predicates) => {
     const matchingTricks = new Set();
     return (comboTracker) => {
         matchingTricks.clear();
