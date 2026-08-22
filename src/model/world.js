@@ -20,7 +20,7 @@ getLayer = (entity) => {
 class World {
     constructor() {
         this.entities = new Set();
-        this.categories = {};
+        this.categories = new Map();
         this.layers = [];
         this.age = 0;
     }
@@ -41,7 +41,7 @@ class World {
 
     remove(entity) {
         this.entities.delete(entity);
-        for (const category of Object.values(this.categories)) {
+        for (const category of this.categories.values()) {
             category.delete(entity);
         }
         for (const layer of Object.values(this.layers)) {
@@ -53,7 +53,8 @@ class World {
     }
 
     category(category) {
-        return (this.categories[category.name] ||= new Set());
+        if (!this.categories.has(category)) this.categories.set(category, new Set());
+        return this.categories.get(category);
     }
 
     addUnique(entity) {
