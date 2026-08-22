@@ -10,7 +10,9 @@ class HUD extends Entity {
             ctx.textBaseline = 'top';
             ctx.textAlign = 'center';
 
-            const comboNumber = `${player.comboTracker.points}   X ${player.comboTracker.startedTricks.length}`;
+            const comboNumber = ongoing
+                ? `${player.comboTracker.points.toLocaleString('en')}   X ${player.comboTracker.startedTricks.length}`
+                : player.comboTracker.totalPoints.toLocaleString('en');
             const comboNumberSize = ctx.wrap(() => {
                 if (ongoing) ctx.globalAlpha = 0.5;
                 return epicText(comboNumber, 0, 0);
