@@ -58,10 +58,10 @@ class Flip extends JumpTracker {
 
         if (flipCount >= 1) {
             const prefix = flipCount > 1 ? ([
-                'double ',
-                'triple',
-            ][flipCount - 2] || `${flipCount}x`) : '';
-            const trick = this.acc.rotation < 0 ? 'backflip' : 'frontflip';
+                nomangle('DOUBLE '),
+                nomangle('TRIPLE '),
+            ][flipCount - 2] || `${flipCount}X `) : '';
+            const trick = this.acc.rotation < 0 ? nomangle('BACKFLIP') : nomangle('FRONTFLIP');
             this.trick.label = prefix + trick;
             this.trick.points =
                 200 * // base
@@ -112,7 +112,7 @@ class PerfectLanding extends TrickTracker {
             const [momentumBefore, momentumNow] = this.changeMomentum.change(momentum);
             const score = momentumNow / momentumBefore;
             if (score > 0.9) {
-                this.trick.label = 'Perfect landing';
+                this.trick.label = nomangle('PERFECT LANDING');
                 this.trick.points = 500;
                 this.combo.addTrick(this.trick);
             }
@@ -144,9 +144,8 @@ class Wheelie extends TrickTracker {
         // Only one wheel on the ground => keep accumulating
         if (back !== front) {
             // Trick type change => reset
-            const targetTrickLabel  = back ? 'Wheelie' : 'Nosewheelie';
+            const targetTrickLabel  = back ? nomangle('WHEELIE') : nomangle('NOSEWHEELIE');
             if (this.trick.label && this.trick.label !== targetTrickLabel) {
-                console.log('label change', targetTrickLabel, this.trick.label);
                 this.reset();
             }
 
@@ -170,7 +169,7 @@ class TallJump extends JumpTracker {
             -this.acc.position.y,
         );
         if (this.trick.points > 100) {
-            this.trick.label = 'Jump height';
+            this.trick.label = nomangle('JUMP HEIGHT');
             this.combo.addTrick(this.trick);
         }
     }
@@ -185,7 +184,7 @@ class LongJump extends JumpTracker {
             this.acc.position.x * 20 / 100,
         );
         if (this.trick.points > 100) {
-            this.trick.label = 'Jump distance';
+            this.trick.label = nomangle('JUMP DISTANCE');
             this.combo.addTrick(this.trick);
         }
     }
