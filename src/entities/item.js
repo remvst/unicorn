@@ -37,6 +37,7 @@ class Item extends Entity {
         for (const bike of this.world.category(Bike)) {
             if (distance(this.position, bike.position) < 50) {
                 this.world.remove(this);
+                zzfx(...[.4,,657,.08,.11,.25,,.6,,351,,,,.3,,,,.9,.19,,511]); // Powerup 142
                 // bike.power = min(1, bike.power + 0.1);
 
                 // TODO use slope momentum instead

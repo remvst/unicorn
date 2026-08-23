@@ -46,6 +46,7 @@ class Bike extends PhysicsObject {
     jump() {
         this.momentum.position.y -= 200;
         this.momentum.rotation -= Math.PI / 4;
+        zzfx(...[.9,,231,,,.07,1,3.8,40,111,,,,,,,,.89,.04,,186]); // Jump 17
     }
 
     cycleUnsafe(elapsed) {
@@ -159,14 +160,16 @@ class Bike extends PhysicsObject {
         // Death
         if (this.hasCollision(this.head)) this.die();
 
-        const [backWheelBefore, backWheelAfter] = this.backWheelOnGroundChange.change(this.hasCollision(this.backWheel, 0.2));
-        const [frontWheelBefore, frontWheelAfter] = this.frontWheelOnGroundChange.change(this.hasCollision(this.frontWheel, 0.2));
+        const [backWheelBefore, backWheelAfter] = this.backWheelOnGroundChange.change(this.hasCollision(this.backWheel, 0.3));
+        const [frontWheelBefore, frontWheelAfter] = this.frontWheelOnGroundChange.change(this.hasCollision(this.frontWheel, 0.3));
 
         const wheelClouds = [];
         if (!backWheelBefore && backWheelAfter) wheelClouds.push(this.backWheel);
         if (!frontWheelBefore && frontWheelAfter) wheelClouds.push(this.frontWheel);
 
         for (const wheel of wheelClouds) {
+            zzfx(...[.2,,29,.01,.03,.02,3,2,,-24,-181,.22,,.8,,,,.7,.01,,-1362]); // Blip 79
+
             dustCloud({
                 world: this.world,
                 position: {
@@ -224,6 +227,7 @@ class Bike extends PhysicsObject {
     }
 
     die() {
+        zzfx(...[1.5,,375,.01,.02,.19,5,.39546947939141197,,,,,,2,,.4,.13,.64,.01,,169]); // Hit 65
         this.world.remove(this);
 
         dustCloud({
