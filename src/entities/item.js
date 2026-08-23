@@ -58,3 +58,9 @@ class Item extends Entity {
         }
     }
 }
+
+class ItemGenerator extends EntityGenerator {
+    constructor() {
+        super(Item, CANVAS_WIDTH * 4, 5, 50);
+    }
+}

@@ -27,6 +27,12 @@ class Unicorn extends Entity {
     }
 }
 
+class UnicornGenerator extends EntityGenerator {
+    constructor() {
+        super(AudienceUnicorn, CANVAS_WIDTH * 3, 3, 100);
+    }
+}
+
 class AudienceUnicorn extends Unicorn {
     constructor() {
         super();
@@ -35,13 +41,6 @@ class AudienceUnicorn extends Unicorn {
 
     cycle(elapsed) {
         super.cycle(elapsed);
-
-        const camera = firstItem(this.world.category(Camera));
-        if (this.position.x < camera.position.x - CANVAS_WIDTH) {
-            while (this.position.x < camera.position.x + CANVAS_WIDTH) {
-                this.position.x += CANVAS_WIDTH * 4;
-            }
-        }
 
         for (const player of this.world.category(Player)) {
             if (distance(player.position, this.position) > AUDIENCE_RADIUS) continue;

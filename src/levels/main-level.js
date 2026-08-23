@@ -19,9 +19,7 @@ class MainLevel extends Level {
         this.world.clearCategory(Unicorn); // TODO this clears on-screen unicorns, not good
 
         this.world.addUnique(new ItemGenerator());
-        for (const x of [200, 300, 400]) {
-            this.world.add(new AudienceUnicorn()).position.x = x;
-        }
+        this.world.addUnique(new UnicornGenerator());
 
         this.world.clearCategory(Objective);
 

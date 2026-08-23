@@ -4,6 +4,7 @@ class TrickAttackLevel extends Level {
         await this.announceLevelTitle(0, nomangle('TRICK ATTACK'));
 
         this.world.addUnique(new ItemGenerator());
+        this.world.addUnique(new UnicornGenerator());
 
         const combos = new Set();
 

@@ -44,6 +44,7 @@ const JS_FILES = [
     'model/entity.js',
     'model/world.js',
 
+    'entities/entity-generator.js',
     'entities/camera.js',
     'entities/ground.js',
     'entities/physics-object.js',
@@ -54,7 +55,6 @@ const JS_FILES = [
     'entities/interpolator.js',
     'entities/unicorn.js',
     'entities/item.js',
-    'entities/item-generator.js',
     'entities/background.js',
     'entities/foreground.js',
     'entities/objective.js',

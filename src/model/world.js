@@ -59,9 +59,7 @@ class World {
     }
 
     addUnique(entity) {
-        for (const entityClass of superclassesOf(entity)) {
-            this.clearCategory(entityClass.constructor);
-        }
+        this.clearCategory(firstItem(superclassesOf(entity)).constructor);
         return this.add(entity);
     }
 
