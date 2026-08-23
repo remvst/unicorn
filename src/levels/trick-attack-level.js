@@ -1,0 +1,44 @@
+class TrickAttackLevel extends Level {
+    async setup() {
+        await this.levelTransition({
+            curve: regularLevel(),
+            transition: (x) => {
+                return this.announceLevelTitle(x, nomangle('TRICK ATTACK'));
+            }
+        });
+
+        const combos = new Set();
+
+        const totalScore = () => {
+            return [...combos].filter(c => c.validated).reduce((a, combo) => a + combo.totalPoints, 0);
+        };
+
+        const obj = new Objective('', 1, async (world) => {
+            const startAge = world.age;
+
+            // For for the timer
+            await waitFor(world, () => {
+                const { player } = this.basics();
+                if (player) combos.add(player.comboTracker);
+
+                const totalTime = world.age - startAge;
+                const timeLeft = max(0, 120 - totalTime);
+                obj.label = nomangle('TIME LEFT: ') + floor(timeLeft);
+                return !timeLeft && !player?.comboTracker.startedTricks.length;
+            });
+        });
+
+        const scoreObj = new Objective('', 1, (world) => {
+            return waitFor(world, () => {
+                scoreObj.label = nomangle('SCORE: ') + totalScore().toLocaleString('en');
+                return obj.completed
+            });
+        });
+
+        await this.runObjectives({
+            objectives: [scoreObj, obj],
+        });
+
+        await this.world.addUnique(new Prompt(nomangle('FINAL SCORE: ') + totalScore().toLocaleString('en'))).removeWhenAgeIs(5);
+    }
+}

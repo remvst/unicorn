@@ -11,17 +11,5 @@ class LevelFinale extends Level {
         });
 
         this.world.addUnique(new Prompt(nomangle('THANKS FOR PLAYING'))).removeWhenAgeIs(5);
-
-        await this.runObjectives({
-            objectives: [
-                new Objective(
-                    nomangle('PERFORM SICK COMBOS'),
-                    1,
-                    () => new Promise(r => { }),
-                ),
-            ],
-        });
-
-        await new Promise(r => { });
     }
 }

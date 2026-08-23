@@ -117,4 +117,11 @@ function* allLevels() {
         yield new MainLevel(pickNextTitle(), objectives);
     }
     yield new LevelFinale();
+    yield* trickAttackMode();
+}
+
+function* trickAttackMode() {
+    while (true) {
+        yield new TrickAttackLevel();
+    }
 }

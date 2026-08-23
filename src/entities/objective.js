@@ -20,7 +20,7 @@ class Objective extends Entity {
         while (this.doneCount < this.requiredCount) {
             await this.promiseFactory(this.world);
             this.doneCount++;
-            spawnRainbows(firstItem(this.world.category(Player)));
+            spawnRainbows(firstItem(this.world.category(Player)) || firstItem(this.world.category(Camera)));
         }
     }
 }

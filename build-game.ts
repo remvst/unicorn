@@ -74,6 +74,7 @@ const JS_FILES = [
     'levels/tutorial-wheelies.js',
     'levels/main-level.js',
     'levels/level-finale.js',
+    'levels/trick-attack-level.js',
     'levels/all-levels.js',
 
     'sound/ZzFXMicro.js',
