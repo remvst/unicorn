@@ -120,6 +120,8 @@ surfaceSweep = (
                 opts.x = tileX + rng.floating() * CANVAS_WIDTH;
                 opts.y = tileY + rng.floating() * CANVAS_HEIGHT;
                 opts.groundY = ground.curveAt(opts.x);
+                opts.screenX = opts.x - camera.position.x + CANVAS_WIDTH / 2;
+                opts.screenY = opts.y - camera.position.y + CANVAS_HEIGHT / 2;
                 ctx.wrap(() => populate(opts));
             }
         }

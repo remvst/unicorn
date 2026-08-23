@@ -10,6 +10,10 @@ createNumberGenerator = seed => {
     };
 
     const rng = {
+        'seed': (x) => {
+            seed = x;
+            rng.reset();
+        },
         'reset': () => {
             ints[0] = imul(seed, 0x85ebca6b);
             ints[1] = imul(seed, 0xc2b2ae35);

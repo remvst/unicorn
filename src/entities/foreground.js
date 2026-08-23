@@ -89,14 +89,22 @@ class Foreground extends Entity {
 
         // Grass
         const { rng } = this;
+        const bladeRng = createNumberGenerator();
         surfaceSweep(
             this.world,
             rng,
             200,
-            ({ x, groundY }) => {
-                const y = groundY + rng.floating() * CANVAS_HEIGHT;
+            ({ x, y, groundY, screenX, screenY }) => {
+                if (
+                    !isBetween(-50, screenX, CANVAS_WIDTH) ||
+                    !isBetween(-50, screenY, CANVAS_HEIGHT) ||
+                    y < groundY
+                ) return;
 
-                for (let i = 0 ; i < interpolate(5, 10, rng.floating()) ; i++) {
+                const rng = bladeRng;
+                rng.seed(x);
+
+                for (let i = 0; i < interpolate(5, 10, rng.floating()); i++) {
                     ctx.wrap(() => {
                         ctx.fillStyle = rng.pick(GRASS_COLORS);
                         ctx.translate(
