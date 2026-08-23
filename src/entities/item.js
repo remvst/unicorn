@@ -38,11 +38,10 @@ class Item extends Entity {
             if (distance(this.position, bike.position) < 50) {
                 this.world.remove(this);
                 zzfx(...[.4,,657,.08,.11,.25,,.6,,351,,,,.3,,,,.9,.19,,511]); // Powerup 142
-                // bike.power = min(1, bike.power + 0.1);
 
-                // TODO use slope momentum instead
-                bike.momentum.position.x += cos(bike.rotation) * 50;
-                bike.momentum.position.y += sin(bike.rotation) * 50;
+                const angle = firstItem(this.world.category(Ground)).curve.angleFor(this.position.x);
+                bike.momentum.position.x += cos(angle) * 100;
+                bike.momentum.position.y += sin(angle) * 100;
 
                 dustCloud({
                     world: this.world,
