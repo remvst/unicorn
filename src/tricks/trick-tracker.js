@@ -162,9 +162,9 @@ class Stomp extends TrickTracker {
             this.reset();
         } else {
             if (this.bike.controls.jump) {
-                this.acc += elapsed;
+                this.acc = max(0, this.acc + elapsed);
             } else {
-                this.acc = 0;
+                this.acc = min(0.6, this.acc - elapsed);
             }
         }
     }
