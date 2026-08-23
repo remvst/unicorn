@@ -33,6 +33,7 @@ const JS_FILES = [
     'tricks/combo-tracker.js',
 
     'input/keyboard.js',
+    'input/touch.js',
 
     'screens/screen.js',
     'screens/world-screen.js',
@@ -106,6 +107,8 @@ const CONSTANTS = {
     "BACKGROUND_CURVE_COUNT": 5,
 
     "AUDIENCE_RADIUS": 500,
+
+    "MOBILE_BUTTON_SIZE": 100,
 };
 
 const MANGLE_PARAMS = {

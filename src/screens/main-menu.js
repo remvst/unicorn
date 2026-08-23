@@ -13,7 +13,7 @@ class MainMenu extends Menu {
 
     cycle(elapsed) {
         super.cycle(elapsed);
-        if (downKeys[32]) {
+        if (downKeys[32] || TOUCH_DOWN) {
             G.screens = [new WorldScreen(allLevels)];
         }
     }

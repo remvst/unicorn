@@ -1,3 +1,11 @@
+renderArrow = () => {
+    ctx.beginPath();
+    ctx.moveTo(MOBILE_BUTTON_SIZE / 2, 0);
+    ctx.lineTo(-MOBILE_BUTTON_SIZE / 2, MOBILE_BUTTON_SIZE / 2);
+    ctx.lineTo(-MOBILE_BUTTON_SIZE / 2, -MOBILE_BUTTON_SIZE / 2);
+    ctx.fill();
+}
+
 class HUD extends Entity {
     constructor() {
         super();
@@ -134,6 +142,30 @@ class HUD extends Entity {
             ctx.font = 'bold 18pt Arial';
             ctx.fillStyle = '#fff';
             y += epicText(G.bestCombo.toLocaleString('en'), 0, y).h + 15;
+        });
+
+        ctx.wrap(() => {
+            const arrows = [
+                [-PI / 2, player?.controls.accelerate],
+                [PI / 2, player?.controls.brake],
+                [PI, player?.controls.raiseWheel],
+                [0, player?.controls.lowerWheel],
+            ];
+            for (let i = 0; i < arrows.length; i++) {
+                ctx.wrap(() => {
+                    ctx.globalAlpha = arrows[i][1] ? 1 : 0.5;
+                    ctx.translate((i + 0.5) * CANVAS_WIDTH / 4, CANVAS_HEIGHT - 100);
+                    ctx.rotate(arrows[i][0]);
+                    renderArrow();
+                });
+            }
+
+            ctx.wrap(() => {
+                ctx.globalAlpha = player?.controls.jump ? 1 : 0.5;
+                ctx.translate(CANVAS_WIDTH * 7 / 8, CANVAS_HEIGHT - 375);
+                ctx.rotate(-PI / 2);
+                renderArrow();
+            });
         });
     }
 }
