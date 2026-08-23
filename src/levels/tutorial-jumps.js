@@ -21,5 +21,13 @@ class TutorialJumps extends Level {
         });
 
         this.world.clearCategory(Prompt);
+
+        this.runUnicornDialog(0, [
+            nomangle('Seems like gnarly combos generate rainbows'),
+            nomangle('Gnarly combos = more rainbows'),
+            nomangle('More rainbows = happier unicorns'),
+            nomangle('Happy unicorns = more magic in the world'),
+            nomangle('Go make some rainbows'),
+        ])
     }
 }
