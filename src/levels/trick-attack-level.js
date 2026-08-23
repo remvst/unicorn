@@ -1,11 +1,9 @@
 class TrickAttackLevel extends Level {
     async setup() {
-        await this.levelTransition({
-            curve: regularLevel(),
-            transition: (x) => {
-                return this.announceLevelTitle(x, nomangle('TRICK ATTACK'));
-            }
-        });
+        await this.transitionIntoCurve(regularLevel());
+        await this.announceLevelTitle(0, nomangle('TRICK ATTACK'));
+
+        this.world.add(new ItemGenerator());
 
         const combos = new Set();
 
