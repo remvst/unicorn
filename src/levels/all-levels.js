@@ -107,12 +107,12 @@ function* allLevels() {
     yield new TutorialPedal();
     yield new TutorialFlips();
     yield new TutorialJumps();
-    yield new MainLevel(pickNextTitle(), pickNextMainObjectives)
+    yield new MainLevel(pickNextTitle(), pickNextMainObjectives())
     yield new TutorialStomp();
-    yield new MainLevel(pickNextTitle(), pickNextMainObjectives)
+    yield new MainLevel(pickNextTitle(), pickNextMainObjectives())
     yield new TutorialWheelies();
     while (true) {
-        const objectives = pickNextMainObjectives;
+        const objectives = pickNextMainObjectives();
         if (!objectives.length) break;
         yield new MainLevel(pickNextTitle(), objectives);
     }

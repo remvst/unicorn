@@ -1,8 +1,8 @@
 class MainLevel extends Level {
-    constructor(title, getObjectives) {
+    constructor(title, objectives) {
         super();
         this.title = title;
-        this.getObjectives = getObjectives;
+        this.objectives = objectives;
     }
 
     async setup() {
@@ -25,10 +25,9 @@ class MainLevel extends Level {
 
         this.world.clearCategory(Objective);
 
-        const objectives = this.getObjectives();
         await this.runObjectives({
-            objectives: objectives,
-            requiredCount: max(1, objectives.length - 1),
+            objectives: this.objectives,
+            requiredCount: max(1, this.objectives.length - 1),
         });
     }
 }
