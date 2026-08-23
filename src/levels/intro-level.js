@@ -1,11 +1,12 @@
 class IntroLevel extends Level {
     async setup() {
-        this.basics().ground.curve = plains();
+        const { camera, ground } = this;
 
-        const { camera, ground } = this.basics();
         camera.zoom = 1.5;
         camera.offset.x = 0;
         camera.offset.y = -0.1;
+
+        ground.curve = plains();
 
         this.world.clearCategory(Bike);
         const bike = this.world.add(new AutopilotBike());

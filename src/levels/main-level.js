@@ -12,7 +12,7 @@ class MainLevel extends Level {
             curve: regularLevel(),
             transition: (x) => {
                 this.announceLevelTitle(x, this.title);
-                return waitFor(this.world, () => this.basics().camera.position.x > x + CANVAS_WIDTH);
+                return waitFor(this.world, () => this.camera.position.x > x + CANVAS_WIDTH);
             }
         });
 

@@ -17,7 +17,7 @@ class TrickAttackLevel extends Level {
 
             // For for the timer
             await waitFor(world, () => {
-                const { player } = this.basics();
+                const { player } = this;
                 if (player) combos.add(player.comboTracker);
 
                 const totalTime = world.age - startAge;

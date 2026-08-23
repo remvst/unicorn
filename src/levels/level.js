@@ -35,22 +35,17 @@ class Level {
 
     async autoRespawn() {
         while (true) {
-            const { player: oldPlayer } = this.basics();
-            await waitFor(this.world, () => !this.basics().player);
-            if (oldPlayer) await this.world.wait(1);
-            let x = oldPlayer?.position.x || 0;
+            const { player }  = this;
+            await waitFor(this.world, () => !this.player);
+            if (player) await this.world.wait(1);
+            let x = player?.position.x || 0;
             this.spawnPlayer(x);
         }
     }
 
-    basics() {
-        return {
-            world: this.world,
-            ground: firstItem(this.world.category(Ground)),
-            player: firstItem(this.world.category(Bike)),
-            camera: firstItem(this.world.category(Camera)),
-        };
-    }
+    get player() { return firstItem(this.world.category(Bike)); }
+    get ground() { return firstItem(this.world.category(Ground)); }
+    get camera() { return firstItem(this.world.category(Camera)); }
 
     setup() {
         // override in subclasses
@@ -61,8 +56,8 @@ class Level {
     }
 
     transitionIntoCurve(curve) {
-        const { ground } = this.basics();
-        const startX = firstItem(this.world.category(Camera)).position.x +  CANVAS_WIDTH / 2;
+        const { ground } = this;
+        const startX = this.camera.position.x + CANVAS_WIDTH / 2;
         const endX = startX + CANVAS_WIDTH / 2;
 
         ground.curve = new PerlinCurve({
@@ -86,7 +81,7 @@ class Level {
         transition,
         curve,
     }) {
-        const { camera } = this.basics();
+        const { camera } = this;
 
         // Cleanup items between levels
         this.world.clearCategory(ItemGenerator);
@@ -103,21 +98,21 @@ class Level {
     }
 
     async announceLevelTitle(x, announcement) {
-        await waitFor(this.world, () => this.basics().player?.position.x > x);
+        await waitFor(this.world, () => this.player?.position.x > x);
         this.world.addUnique(new Prompt(announcement)).removeWhenAgeIs(3);
     }
 
     async runUnicornDialog(x, dialog) {
-        const { camera } = this.basics();
+        const { camera } = this;
 
         // Wait for the player to reach the transition
-        await waitFor(this.world, () => this.basics().player?.position.x > x);
+        await waitFor(this.world, () => this.player?.position.x > x);
 
         // Force them to stop and land
-        this.basics().player.controlsOverride = {brake: true};
-        this.basics().player.momentum.rotation = 0;
-        this.basics().player.rotation = 0;
-        await waitFor(this.world, () => this.basics().player?.momentum.position.x <= 10);
+        this.player.controlsOverride = {brake: true};
+        this.player.momentum.rotation = 0;
+        this.player.rotation = 0;
+        await waitFor(this.world, () => this.player?.momentum.position.x <= 10);
         await camera.interp(camera, 'zoom', camera.zoom, 2, 0.3);
 
         this.world.clearCategory(Objective);
@@ -126,7 +121,7 @@ class Level {
         const uc = this.world.add(new Unicorn());
         uc.facing = -1;
         uc.walking = true;
-        await uc.interp(uc.position, 'x', this.basics().player.position.x + CANVAS_WIDTH / 2, this.basics().player.position.x + 200, 2);
+        await uc.interp(uc.position, 'x', this.player.position.x + CANVAS_WIDTH / 2, this.player.position.x + 200, 2);
         uc.walking = false;
 
         // Give instructions
@@ -143,7 +138,7 @@ class Level {
         uc.world.remove(uc);
 
         // Restore player control
-        this.basics().player.controlsOverride = null;
+        this.player.controlsOverride = null;
         camera.interp(camera, 'zoom', camera.zoom, 1, 0.3);
     }
 
