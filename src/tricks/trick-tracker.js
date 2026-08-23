@@ -61,12 +61,12 @@ class Flip extends JumpTracker {
                 nomangle('DOUBLE '),
                 nomangle('TRIPLE '),
             ][flipCount - 2] || `${flipCount}X `) : '';
-            const trick = this.acc.rotation < 0 ? nomangle('BACKFLIP') : nomangle('FRONTFLIP');
+            const trick = (this.acc.rotation < 0 ? nomangle('BACK') : nomangle('FRONT')) + nomangle('FLIP');
             this.trick.label = prefix + trick;
             this.trick.points =
                 200 * // base
-                (this.rotationAcc < 0 ? 1 : 2) * // increase base if frontflip
-                pow(2, flipCount - 1) // exponential as the number of flips increase
+                (this.acc.rotation < 0 ? 1 : 3) * // increase base if frontflip
+                pow(3, flipCount - 1) // exponential as the number of flips increase
                 ;
 
             this.combo.addTrick(this.trick);
@@ -114,7 +114,7 @@ class Wheelie extends TrickTracker {
             this.trick.label = targetTrickLabel;
 
             if (this.accX > 200) {
-                this.trick.points = max(0, this.accX * 50 / 100);
+                this.trick.points = max(0, this.accX * (front ? 150 : 50) / 100);
                 this.combo.addTrick(this.trick);
             }
         }
