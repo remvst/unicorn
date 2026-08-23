@@ -27,7 +27,7 @@ class Level {
         const relativeAngle = atan2(bw.position.y, bw.position.x);
         const relativeDist = hypot(bw.position.x, bw.position.y);
 
-        const nx = -sin(theta), ny = -cos(theta);
+        const nx = sin(theta), ny = -cos(theta);
 
         player.position.x = x + nx * bw.radius - cos(relativeAngle + theta) * relativeDist;
         player.position.y = ground.curveAt(x) + ny * bw.radius - sin(relativeAngle + theta) * relativeDist;
