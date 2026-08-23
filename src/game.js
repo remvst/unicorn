@@ -5,11 +5,15 @@ class Game {
             this.frameTimes = Array(60).fill(0);
         }
 
+        this.mainMenu();
+        this.frame();
+    }
+
+    mainMenu() {
         this.screens = [
             new WorldScreen(() => [new IntroLevel()]),
             new MainMenu(),
         ];
-        this.frame();
     }
 
     get bestCombo() {

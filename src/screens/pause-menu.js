@@ -6,7 +6,8 @@ class PauseMenu extends Menu {
             nomangle('GAME PAUSED'),
         ]);
 
-        this.renderButton(nomangle('[ESC] to resume'));
+        this.renderButton(nomangle('[ESC] - RESUME'));
+        this.renderButton(nomangle('[M] - MAIN MENU'));
     }
 
     cycle(elapsed) {
@@ -15,6 +16,12 @@ class PauseMenu extends Menu {
         const [pauseBefore, pauseAfter] = this.pauseChange.change(downKeys[27]);
         if (!pauseBefore && pauseAfter) {
             G.screens.pop();
+        }
+
+        if (downKeys[77]) {
+            if (confirm(nomangle('Exit? (your progress will be lost'))) {
+                G.mainMenu();
+            }
         }
     }
 }
