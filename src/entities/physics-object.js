@@ -58,18 +58,7 @@ class PhysicsObject extends Entity {
     cycle(elapsed) {
         super.cycle(elapsed);
 
-        // Cap the substep duration so a fast-moving hitbox can't cross more than (roughly) its
-        // own radius in one physics step, which is what would let it tunnel through a segment.
-        // Using a fixed safety margin (the smallest hitbox radius) rather than the live distance
-        // to the nearest segment keeps the substep count a function of speed alone - resting on
-        // a segment (distance ~0) no longer explodes it, which is what made time-scaled momentum
-        // updates elsewhere in the class behave inconsistently.
-        const safeDist = Math.min(...this.hitboxes.map((hb) => hb.radius)) / 4;
-
-        // A hitbox's actual speed through the world is its linear speed plus its tangential
-        // speed from rotation (omega * distance from origin). Ignoring the rotational part
-        // underestimates speed for hitboxes far from the origin (e.g. the back wheel) during
-        // fast spins (flips), letting them tunnel through segments despite the cap above.
+        const safeDist = Math.min(...this.hitboxes.map((hb) => hb.radius)) / 2;
         const maxHitboxDist = Math.max(...this.hitboxes.map((hb) => pointDistance(0, 0, hb.position.x, hb.position.y)));
         const speed = pointDistance(0, 0, this.momentum.position.x, this.momentum.position.y)
             + Math.abs(this.momentum.rotation) * maxHitboxDist;
