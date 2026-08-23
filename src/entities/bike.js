@@ -427,9 +427,7 @@ class BikeAndRiderRenderable extends BikeRenderable {
         this.leftElbow.x = interpolate(this.shoulders.x, this.leftHand.x, 0.4);
         this.leftElbow.y = interpolateUnbounded(this.shoulders.y, this.leftHand.y, 1.2);
 
-        // this.backPieces.render();
         super.render();
-        // this.frontPieces.render();
     }
 }
 
