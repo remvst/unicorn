@@ -12,7 +12,11 @@
     "watch": "nodemon --watch 'src/**' --watch 'build-game.ts' -x \"npm run build:debug\"",
     "http": "http-server build",
     "start": "concurrently --kill-others \"npm run watch\" \"npm run http\"",
-    "sizecheck": "npm run build:preprod && npm run zip:preprod"
+    "sizecheck": "npm run build:preprod && npm run zip:preprod",
+    "prettier:fix": "npm run prettier:write",
+    "prettier:write": "prettier --write .",
+    "prettier:check": "prettier --check .",
+    "test": "npm run prettier:check"
   },
   "type": "module",
   "dependencies": {
@@ -32,6 +36,7 @@
     "@types/html-minifier": "^4.0.5",
     "concurrently": "^9.2.0",
     "http-server": "^14.1.1",
-    "nodemon": "^3.1.10"
+    "nodemon": "^3.1.10",
+    "prettier": "^3.9.6"
   }
 }
