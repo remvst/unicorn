@@ -5,6 +5,7 @@ build: debug preprod prod
 debug:
 	npm run build:debug
 	npm run build:debug:mangled
+	npm run build:rebeautified
 
 preprod:
 	npm run build:preprod

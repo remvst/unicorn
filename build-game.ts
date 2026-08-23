@@ -237,6 +237,7 @@ const argv = yargs(process.argv.slice(2)).options({
     debug: { type: 'boolean', default: false },
     mangle: { type: 'boolean', default: false },
     minify: { type: 'boolean', default: false },
+    beautify: { type: 'boolean', default: false },
     'roadroll-level': { type: 'number', default: 0 },
     pack: { type: 'boolean', default: false },
     html: { type: 'string', demandOption: true },
@@ -275,6 +276,14 @@ const argv = yargs(process.argv.slice(2)).options({
                 properties: false,
                 toplevel: true,
             }
+        })).code!;
+    }
+
+    if (argv.beautify) {
+        js = (await terser.minify(js, {
+            format: {
+                beautify: true
+            },
         })).code!;
     }
 

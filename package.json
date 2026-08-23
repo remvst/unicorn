@@ -5,6 +5,7 @@
   "scripts": {
     "build:debug": "tsx build-game.ts --debug --html=build/debug.html",
     "build:debug:mangled": "tsx build-game.ts --debug --mangle --html=build/debug_mangled.html",
+    "build:rebeautified": "tsx build-game.ts --mangle --minify --beautify --html=build/rebeautified.html",
     "build:preprod": "tsx build-game.ts --mangle --minify --roadroll-level=1 --html=build/preprod.html",
     "build:prod": "tsx build-game.ts --mangle --minify --roadroll-level=2 --html=build/index.html",
     "zip:preprod": "tsx build-zip.ts --html=build/preprod.html --zip=build/preprod.zip",
