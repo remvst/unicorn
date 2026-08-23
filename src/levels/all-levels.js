@@ -18,6 +18,7 @@ function* allLevels() {
         new Objective(doA + nomangle('DOUBLE BACKFLIP'), 1, (world) => awaitTrick(world, doubleBackflip)),
         new Objective(doA + nomangle('DOUBLE FRONTFLIP'), 1, (world) => awaitTrick(world, doubleFrontflip)),
         new Objective(doA + nomangle('TRIPLE BACKFLIP'), 1, (world) => awaitTrick(world, tripleBackflip)),
+        new Objective(doA + nomangle('TRIPLE FRONTFLIP'), 1, (world) => awaitTrick(world, tripleBackflip)),
     ];
 
     // Single trick: tricks that the user only needs to perform once, in front of unicorns
