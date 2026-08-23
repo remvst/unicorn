@@ -168,7 +168,7 @@ class Bike extends PhysicsObject {
         if (!frontWheelBefore && frontWheelAfter) wheelClouds.push(this.frontWheel);
 
         for (const wheel of wheelClouds) {
-            zzfx(...[.2,,29,.01,.03,.02,3,2,,-24,-181,.22,,.8,,,,.7,.01,,-1362]); // Blip 79
+            zzfx(...[.5,,29,.01,.03,.02,3,2,,-24,-181,.22,,.8,,,,.7,.01,,-1362]); // Blip 79
 
             dustCloud({
                 world: this.world,
