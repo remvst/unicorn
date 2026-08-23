@@ -134,6 +134,7 @@ const MANGLE_PARAMS = {
         "bottom",
         "top",
         "middle",
+        "alphabetic",
     ],
     "force": [
         "a",

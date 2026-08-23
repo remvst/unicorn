@@ -31,7 +31,7 @@ class HUD extends Entity {
             ctx.font = 'bold 24pt Impact';
             ctx.textAlign = 'center';
 
-            ctx.textBaseline = 'bottom';
+            ctx.textBaseline = 'alphabetic';
 
             if ((validated || failed) && this.age - this.comboValidateTime > 2) return;
             const animRatio = interpolate(0, 1, easeOutBounce((this.age - this.comboValidateTime) / 0.2));
@@ -67,7 +67,7 @@ class HUD extends Entity {
                 epicText(comboNumber, 0, 0);
             });
 
-            let y = -1;
+            let y = 20;
 
             ctx.font = 'bold 18pt Impact';
             ctx.textBaseline = 'top';

@@ -26,7 +26,7 @@ class Menu extends Screen {
         ctx.wrap(() => {
             ctx.strokeStyle = '#000';
             ctx.textAlign = 'center';
-            ctx.textBaseline = 'bottom';
+            ctx.textBaseline = 'alphabetic';
             ctx.translate(CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2);
 
             let y = 0;
@@ -34,13 +34,13 @@ class Menu extends Screen {
             ctx.font = 'bold 24pt Impact';
             ctx.fillStyle = '#5ca5c7';
             if (subtitle) {
-                y -= epicText(subtitle, 0, 0).h;
+                y = epicText(subtitle, 0, 0).t - 12;
             }
 
             ctx.font = 'bold 64pt Impact';
             for (let i = lines.length - 1; i >= 0; i--) {
                 ctx.fillStyle = i % 2 ? RAINBOW_PATTERN : '#fff';
-                y -= epicText(lines[i], 0, y, this.age * 400).h;
+                y = epicText(lines[i], 0, y, this.age * 400).t - 12;
             }
         });
     }
