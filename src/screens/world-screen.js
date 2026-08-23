@@ -13,14 +13,14 @@ class WorldScreen extends Screen {
 
         if (DEBUG) this.debugValues = () => {
             if (!this.level) return [];
-            const vals = [`Entities: ${this.level.world.entities.size}`];
+            const vals = [nomangle(`Entities: `) + this.level.world.entities.size];
             for (const camera of this.level.world.category(Camera)) {
-                vals.push([`Camera: ${camera.position.x.toFixed(0)},${camera.position.y.toFixed(0)}`]);
+                vals.push([nomangle(`Camera: `) + `${camera.position.x.toFixed(0)},${camera.position.y.toFixed(0)}`]);
             }
             for (const bike of this.level.world.category(Bike)) {
-                vals.push([`Player:`]);
+                vals.push([nomangle(`Player:`)]);
                 vals.push([`- ${bike.position.x.toFixed(0)},${bike.position.y.toFixed(0)}`]);
-                vals.push([`- Momentum: ${pointDistance(0, 0, bike.momentum.position.x, bike.momentum.position.y).toFixed(0)}`]);
+                vals.push([nomangle(`- Momentum: `) + `${pointDistance(0, 0, bike.momentum.position.x, bike.momentum.position.y).toFixed(0)}`]);
             }
             return vals;
         };

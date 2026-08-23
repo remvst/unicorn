@@ -6,7 +6,7 @@ class Screen {
 
         if (DEBUG) this.debugValues = () => {
             return [
-                `${this.constructor.name}: age: ${this.age}`,
+                this.constructor.name + nomangle( ' - age: ') + this.age.toFixed(2),
             ];
         };
     }

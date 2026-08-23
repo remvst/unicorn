@@ -55,14 +55,14 @@ class Game {
 
                 ctx.translate(10, 10);
                 ctx.font = '20px Courier';
-                ctx.textAlign = nomangle('left');
-                ctx.textBaseline = nomangle('middle');
+                ctx.textAlign = 'left';
+                ctx.textBaseline = 'middle';
                 ctx.fillStyle = '#fff';
                 ctx.shadowColor = '#000';
                 ctx.shadowOffsetY = 2;
 
                 const debugValues = [
-                    `FPS: ${fps.toFixed(1)}`,
+                    nomangle(`FPS: `) + fps.toFixed(1),
                 ]
 
                 for (const screen of this.screens) {
