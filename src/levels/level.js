@@ -7,7 +7,6 @@ class Level {
             this.world.add(new Camera());
             this.world.add(new HUD());
             this.world.add(new Ground());
-            this.world.add(new CameraTarget());
 
             this.spawnPlayer();
             this.autoRespawn();
@@ -35,7 +34,7 @@ class Level {
 
     async autoRespawn() {
         while (true) {
-            const { player: oldPlayer, ground, camera, cameraTarget } = this.basics();
+            const { player: oldPlayer } = this.basics();
             await waitFor(this.world, () => !this.basics().player);
             if (oldPlayer) await this.world.wait(1);
             let x = oldPlayer?.position.x || 0;
@@ -49,7 +48,6 @@ class Level {
             ground: firstItem(this.world.category(Ground)),
             player: firstItem(this.world.category(Bike)),
             camera: firstItem(this.world.category(Camera)),
-            cameraTarget: firstItem(this.world.category(CameraTarget)),
         };
     }
 

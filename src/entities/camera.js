@@ -8,7 +8,7 @@ class Camera extends Entity {
     cycle(elapsed) {
         super.cycle(elapsed);
 
-        const target = firstItem(this.world.category(Bike)) || firstItem(this.world.category(CameraTarget));
+        const target = firstItem(this.world.category(Bike));
         if (target) {
             target.cycle(0); // Cheat to force the camera to be locked
             this.position.x = target.position.x + CANVAS_WIDTH * this.offset.x / this.zoom;
