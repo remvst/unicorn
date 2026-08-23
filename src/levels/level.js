@@ -111,21 +111,24 @@ class Level {
     async runUnicornDialog(x, dialog) {
         const { camera } = this.basics();
 
-        // Add a unicorn at the beginning
-        const uc = this.world.add(new Unicorn());
-        uc.position.x = x;
-        uc.facing = -1;
+        // Wait for the player to reach the transition
+        await waitFor(this.world, () => this.basics().player?.position.x > x);
 
-        // Wait for the player to reach the unicorn
-        await waitFor(this.world, () => this.basics().player?.position.x > uc.position.x - 400);
-
-        // Force the player to stop and land
+        // Force them to stop and land
         this.basics().player.controlsOverride = {brake: true};
         this.basics().player.momentum.rotation = 0;
         this.basics().player.rotation = 0;
-        camera.interp(camera, 'zoom', camera.zoom, 2, 0.3);
+        await waitFor(this.world, () => this.basics().player?.momentum.position.x <= 10);
+        await camera.interp(camera, 'zoom', camera.zoom, 2, 0.3);
 
         this.world.clearCategory(Objective);
+
+        // Bring the unicorn
+        const uc = this.world.add(new Unicorn());
+        uc.facing = -1;
+        uc.walking = true;
+        await uc.interp(uc.position, 'x', this.basics().player.position.x + CANVAS_WIDTH / 2, this.basics().player.position.x + 200, 2);
+        uc.walking = false;
 
         // Give instructions
         for (const l of dialog) {
@@ -133,7 +136,6 @@ class Level {
             await waitFor(this.world, () => prompt.age > 3);
         }
         this.world.clearCategory(Prompt);
-        await uc.interp(uc, 's', 0, 0, 1);
 
         // Make the unicorn go away
         uc.facing = 1;
