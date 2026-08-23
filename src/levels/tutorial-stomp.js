@@ -13,14 +13,9 @@ class TutorialStomp extends Level {
         await this.runObjectives({
             objectives: [
                 new Objective(
-                    nomangle('COMBO: STOMP + 2S AIR TIME'),
-                    1,
-                    () => awaitCombo(this.world, comboMust(
-                        haveDistinctLandedTricks(
-                            anyStomp,
-                            anyAir,
-                        ),
-                    )),
+                    nomangle('STOMP THE GROUND'),
+                    5,
+                    () => awaitTrick(this.world, anyStomp),
                 ),
             ],
         });
