@@ -10,7 +10,7 @@ class TutorialPedal extends Level {
                 new Objective(
                     nomangle('Go right →'),
                     1,
-                    () => waitFor(this.world, () => this.basics().player?.position.x > startX + 2000),
+                    () => waitFor(this.world, () => this.basics().player?.position.x > startX + 1000),
                 ),
             ],
         });
