@@ -125,6 +125,8 @@ class Level {
         this.basics().player.rotation = 0;
         camera.interp(camera, 'zoom', camera.zoom, 2, 0.3);
 
+        this.world.clearCategory(Objective);
+
         // Give instructions
         for (const l of dialog) {
             const prompt = this.world.addUnique(new Prompt(l));
