@@ -41,6 +41,8 @@ spawnRainbows = async (aroundEntity) => {
         rainbow.position.y = ground.curveAt(x) + 20;
         ground.world.add(rainbow);
 
+        zzfx(...[.2,,657,.08,.11,.25,,.6,,351,,,,.3,,,,.9,.19,,511]); // Powerup 142
+
         await waitFor(ground.world, () => ground.age > age + 0.2);
     }
 }
