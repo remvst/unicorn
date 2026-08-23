@@ -1,4 +1,14 @@
 function* allLevels() {
+    const titles = [
+        nomangle('SPARKLE PLAINS'),
+        nomangle('STARRY HILLS'),
+        nomangle('RAINBOW MEADOWS'),
+        nomangle('GLITTERING FIELDS'),
+        nomangle('CELESTIAL VALLEY'),
+        nomangle('MAGICAL RIDGE'),
+        nomangle('TWINKLEWOOD'),
+    ];
+
     const doA = nomangle('DO A ');
     const inFrontOfAUnicorn = nomangle(' IN FRONT OF UNICORNS');
     const combo = nomangle('COMBO: ');
@@ -88,17 +98,23 @@ function* allLevels() {
         return allObjectives.filter(o => !o.completed).slice(0, 3);
     }
 
+    function pickNextTitle() {
+        const title = titles.shift();
+        titles.push(title);
+        return title;
+    }
+
     yield new TutorialPedal();
     yield new TutorialFlips();
     yield new TutorialJumps();
-    yield new MainLevel(pickNextMainObjectives())
+    yield new MainLevel(pickNextTitle(), pickNextMainObjectives())
     yield new TutorialStomp();
-    yield new MainLevel(pickNextMainObjectives())
+    yield new MainLevel(pickNextTitle(), pickNextMainObjectives())
     yield new TutorialWheelies();
     while (true) {
         const objectives = pickNextMainObjectives();
         if (!objectives.length) break;
-        yield new MainLevel(objectives);
+        yield new MainLevel(pickNextTitle(), objectives);
     }
     yield new LevelFinale();
 }

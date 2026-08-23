@@ -1,6 +1,7 @@
 class MainLevel extends Level {
-    constructor(objectives) {
+    constructor(title, objectives) {
         super();
+        this.title = title;
         this.objectives = objectives;
     }
 
@@ -9,7 +10,7 @@ class MainLevel extends Level {
 
         await this.levelTransition({
             curve: regularLevel(),
-            transition: (x) => this.announceLevelTitle(x, 'ENTERING:\nSUNNY HILLS')
+            transition: (x) => this.announceLevelTitle(x, this.title)
         });
 
         this.world.clearCategory(Unicorn); // TODO this clears on-screen unicorns, not good

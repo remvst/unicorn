@@ -3,6 +3,11 @@ easeOutSine = (x) => sin((x * PI) / 2);
 linear = (x) => x;
 smoothstep = (x) => x * x * (3 - 2 * x);
 easeOutQuint = (x) => 1 - Math.pow(1 - x, 5);
+easeOutBack = (x) => {
+    const c1 = 1.70158;
+    const c3 = c1 + 1;
+    return 1 + c3 * pow(x - 1, 3) + c1 * pow(x - 1, 2);
+}
 
 easeOutBounce = (x) => {
     const n1 = 7.5625;
