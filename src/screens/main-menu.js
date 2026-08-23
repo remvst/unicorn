@@ -8,8 +8,10 @@ class MainMenu extends Menu {
             nomangle('BACKFLIPS'),
         ], document.title.split(':')[1].trim());
 
-        this.renderButton(nomangle('[SPACE] - STORY MODE'));
-        this.renderButton(nomangle('[T] - TRICK ATTACK MODE'));
+        if (this.age > 2) {
+            this.renderButton(nomangle('[SPACE] - STORY MODE'));
+            this.renderButton(nomangle('[T] - TRICK ATTACK MODE'));
+        }
     }
 
     cycle(elapsed) {

@@ -7,6 +7,7 @@ class Level {
             this.world.add(new Camera());
             this.world.add(new HUD());
             this.world.add(new Ground());
+            this.world.add(new Flash());
 
             this.spawnPlayer();
             this.autoRespawn();

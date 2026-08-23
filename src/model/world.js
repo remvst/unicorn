@@ -10,6 +10,7 @@ getLayer = (entity) => {
         Foreground,
         Particle,
         HUD,
+        Flash,
         Entity,
     ]) {
         if (entity instanceof entityClass) return i;

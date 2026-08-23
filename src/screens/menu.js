@@ -22,32 +22,48 @@ class Menu extends Screen {
     cycle(elapsed) {
         super.cycle(elapsed);
         this.nextButtonY = CANVAS_HEIGHT * 0.7;
+        this.nextTitleY = CANVAS_HEIGHT / 2;
     }
 
-    renderTitle(lines, subtitle) {
+    renderTitleLine(l) {
         ctx.lineWidth = 20;
         ctx.strokeStyle = '#000';
 
         ctx.wrap(() => {
-            ctx.strokeStyle = '#000';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'alphabetic';
-            ctx.translate(CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2);
+            ctx.translate(0, this.nextTitleY);
 
-            let y = 0;
+            const x = CANVAS_WIDTH / 2 + interpolate(
+                CANVAS_WIDTH,
+                0,
+                smoothstep(between(0, (this.age - this.nextTitleDelay) / 1, 1)),
+            );
+            this.nextTitleY += epicText(
+                l,
+                x,
+                0,
+                this.age * 400,
+            ).t - 12;
+        });
+    }
 
+    renderTitle(lines, subtitle) {
+        this.nextTitleDelay = lines.length > 1 ? 0.9 : -1;
+
+        if (subtitle) {
             ctx.font = 'bold 24pt Impact';
             ctx.fillStyle = '#5ca5c7';
-            if (subtitle) {
-                y = epicText(subtitle, 0, 0).t - 12;
-            }
+            this.renderTitleLine(subtitle);
+            this.nextTitleDelay -= 0.3;
+        }
 
-            ctx.font = 'bold 64pt Impact';
-            for (let i = lines.length - 1; i >= 0; i--) {
-                ctx.fillStyle = i % 2 ? RAINBOW_PATTERN : '#fff';
-                y = epicText(lines[i], 0, y, this.age * 400).t - 12;
-            }
-        });
+        ctx.font = 'bold 64pt Impact';
+        for (let i = lines.length - 1; i >= 0; i--) {
+            ctx.fillStyle = i % 2 ? RAINBOW_PATTERN : '#fff';
+            this.renderTitleLine(lines[i]);
+            this.nextTitleDelay -= 0.3;
+        }
     }
 
     renderButton(l) {
