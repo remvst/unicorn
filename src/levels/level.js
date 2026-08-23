@@ -21,11 +21,16 @@ class Level {
 
         // Spawn the player with the right angle to fit on the curve
         const player = this.world.add(new Player());
-        player.rotation = ground.curve.angleFor(x);
+        const theta = player.rotation = ground.curve.angleFor(x);
 
-        const h = player.backWheel.position.y + player.backWheel.radius
-        player.position.x = x + cos(player.rotation + PI / 2) * h;
-        player.position.y = ground.curveAt(x) - sin(player.rotation + PI / 2) * h
+        const bw = player.backWheel;
+        const relativeAngle = atan2(bw.position.y, bw.position.x);
+        const relativeDist = hypot(bw.position.x, bw.position.y);
+
+        const nx = -sin(theta), ny = -cos(theta);
+
+        player.position.x = x + nx * bw.radius - cos(relativeAngle + theta) * relativeDist;
+        player.position.y = ground.curveAt(x) + ny * bw.radius - sin(relativeAngle + theta) * relativeDist;
     }
 
     async autoRespawn() {

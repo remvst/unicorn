@@ -144,7 +144,7 @@ class HUD extends Entity {
             y += epicText(G.bestCombo.toLocaleString('en'), 0, y).h + 15;
         });
 
-        ctx.wrap(() => {
+        if (inputMode === INPUT_MODE_TOUCH) ctx.wrap(() => {
             const arrows = [
                 [-PI / 2, player?.controls.accelerate],
                 [PI / 2, player?.controls.brake],
