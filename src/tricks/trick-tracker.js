@@ -105,7 +105,7 @@ class Wheelie extends TrickTracker {
 
             // Don't allow starting a wheelie until the user is actively balancing
             if (back && this.bike.controls.raiseWheel || front && this.bike.controls.lowerWheel) {
-                this.accX = 0;
+                this.accX = max(0, this.accX);
             }
 
             if (this.accX < 0) return;
