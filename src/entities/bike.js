@@ -45,7 +45,7 @@ class Bike extends PhysicsObject {
 
     jump() {
         this.momentum.position.y -= 200;
-        this.momentum.rotation -= Math.PI / 4;
+        this.momentum.rotation -= PI / 4;
         zzfx(...[.9,,231,,,.07,1,3.8,40,111,,,,,,,,.89,.04,,186]); // Jump 17
     }
 
@@ -131,7 +131,7 @@ class Bike extends PhysicsObject {
             let sdy = this.backWheel.lastCollisionSegment.p2.y - this.backWheel.lastCollisionSegment.p1.y;
             // Force direction to always point rightward
             if (sdx < 0) { sdx = -sdx; sdy = -sdy; }
-            const slen = Math.hypot(sdx, sdy);
+            const slen = hypot(sdx, sdy);
             sdx /= slen; sdy /= slen;
 
             // Cross product: positive means wheel is below the segment (ceiling contact)
@@ -152,8 +152,8 @@ class Bike extends PhysicsObject {
             else if (brake) friction = 1000;
             else friction = 200;
         }
-        this.momentum.position.x += -Math.sign(this.momentum.position.x) * Math.min(
-            Math.abs(this.momentum.position.x),
+        this.momentum.position.x += -sign(this.momentum.position.x) * min(
+            abs(this.momentum.position.x),
             elapsed * friction,
         );
 

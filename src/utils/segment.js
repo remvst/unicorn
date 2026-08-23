@@ -42,19 +42,19 @@ class Segment {
         const fx = hitbox.position.x - this.p1.x;
         const fy = hitbox.position.y - this.p1.y;
         const lenSq = dx * dx + dy * dy;
-        const t = lenSq > 0 ? Math.max(0, Math.min(1, (fx * dx + fy * dy) / lenSq)) : 0;
+        const t = lenSq > 0 ? max(0, min(1, (fx * dx + fy * dy) / lenSq)) : 0;
         const closestX = this.p1.x + t * dx;
         const closestY = this.p1.y + t * dy;
         const distX = hitbox.position.x - closestX;
         const distY = hitbox.position.y - closestY;
-        const dist = Math.sqrt(distX * distX + distY * distY);
+        const dist = sqrt(distX * distX + distY * distY);
         if (dist > 0) {
             const penetration = hitbox.radius - dist;
             out.x = (distX / dist) * penetration;
             out.y = (distY / dist) * penetration;
         } else {
             // Circle center exactly on segment: push along segment normal
-            const len = Math.sqrt(lenSq);
+            const len = sqrt(lenSq);
             out.x = (dy / len) * hitbox.radius;
             out.y = (-dx / len) * hitbox.radius;
         }

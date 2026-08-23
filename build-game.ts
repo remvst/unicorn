@@ -230,6 +230,9 @@ const MANGLE_PARAMS = {
         "bottom",
         "animate",
         "navigate",
+        "position",
+        "setColor",
+        "setLineCap",
     ]
 };
 

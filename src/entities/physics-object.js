@@ -23,11 +23,11 @@ class PhysicsObject extends Entity {
     }
 
     absolute(relativeHitbox, out) {
-        const relativeAngle = Math.atan2(relativeHitbox.position.y, relativeHitbox.position.x);
-        const relativeDist = Math.hypot(relativeHitbox.position.x, relativeHitbox.position.y);
+        const relativeAngle = atan2(relativeHitbox.position.y, relativeHitbox.position.x);
+        const relativeDist = hypot(relativeHitbox.position.x, relativeHitbox.position.y);
 
-        out.position.x = this.position.x + Math.cos(relativeAngle + this.rotation) * relativeDist;
-        out.position.y = this.position.y + Math.sin(relativeAngle + this.rotation) * relativeDist;
+        out.position.x = this.position.x + cos(relativeAngle + this.rotation) * relativeDist;
+        out.position.y = this.position.y + sin(relativeAngle + this.rotation) * relativeDist;
         out.radius = relativeHitbox.radius;
         return out;
     }
@@ -47,7 +47,7 @@ class PhysicsObject extends Entity {
     avgAngleToPoint(hitboxes, point) {
         let avg = 0;
         for (const hb of hitboxes) { // TODO maybe reduce
-            avg += Math.atan2(
+            avg += atan2(
                 hb.position.y - point.y,
                 hb.position.x - point.x,
             ) / hitboxes.length;
@@ -58,15 +58,15 @@ class PhysicsObject extends Entity {
     cycle(elapsed) {
         super.cycle(elapsed);
 
-        const safeDist = Math.min(...this.hitboxes.map((hb) => hb.radius)) / 2;
-        const maxHitboxDist = Math.max(...this.hitboxes.map((hb) => pointDistance(0, 0, hb.position.x, hb.position.y)));
+        const safeDist = min(...this.hitboxes.map((hb) => hb.radius)) / 2;
+        const maxHitboxDist = max(...this.hitboxes.map((hb) => pointDistance(0, 0, hb.position.x, hb.position.y)));
         const speed = pointDistance(0, 0, this.momentum.position.x, this.momentum.position.y)
-            + Math.abs(this.momentum.rotation) * maxHitboxDist;
+            + abs(this.momentum.rotation) * maxHitboxDist;
         const step = speed > 0 ? safeDist / speed : elapsed;
 
         let remaining = elapsed;
         while (remaining > 0) {
-            const rem = Math.min(remaining, step);
+            const rem = min(remaining, step);
             remaining -= rem;
             this.cycleUnsafe(rem);
         }
@@ -144,8 +144,8 @@ class PhysicsObject extends Entity {
                 this.momentum.position.x -= linearProj * nx;
                 this.momentum.position.y -= linearProj * ny;
 
-                if (Math.abs(readjustmentAngle) > 0.0001) {
-                    const na = Math.sign(readjustmentAngle);
+                if (abs(readjustmentAngle) > 0.0001) {
+                    const na = sign(readjustmentAngle);
                     const rotProj = this.momentum.rotation * na;
                     if (rotProj < 0) this.momentum.rotation -= rotProj * na;
 
@@ -178,7 +178,7 @@ class PhysicsObject extends Entity {
                 ctx.lineWidth = 2;
                 ctx.strokeStyle = color.shift();
                 ctx.beginPath();
-                ctx.arc(0, 0, hb.radius, 0, 2 * Math.PI);
+                ctx.arc(0, 0, hb.radius, 0, 2 * PI);
                 ctx.stroke();
                 ctx.restore();
             }
@@ -197,7 +197,7 @@ class PhysicsObject extends Entity {
             ctx.lineWidth = 5;
             ctx.beginPath();
             ctx.moveTo(this.position.x, this.position.y);
-            ctx.lineTo(this.position.x + Math.cos(this.rotation) * 50, this.position.y + Math.sin(this.rotation) * 50);
+            ctx.lineTo(this.position.x + cos(this.rotation) * 50, this.position.y + sin(this.rotation) * 50);
             ctx.stroke();
         });
     }

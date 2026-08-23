@@ -6,7 +6,7 @@ class PerlinCurve {
         this.seeds = [];
         this.multiplier = opts.multiplier ?? (() => 1);
         for (let i = 0 ; i < 50 ; i++) {
-            this.seeds.push(Math.random());
+            this.seeds.push(random());
         }
     }
 
@@ -30,8 +30,8 @@ class PerlinCurve {
         const before = this.seeds[((index % this.seeds.length) + this.seeds.length) % this.seeds.length];
         const after = this.seeds[(((index + 1) % this.seeds.length) + this.seeds.length) % this.seeds.length];
 
-        const gradientBefore = (Math.cos(before * Math.PI * 2) + Math.sin(before * Math.PI * 2)) * ratio;
-        const gradientAfter = (Math.cos(after * Math.PI * 2) + Math.sin(after * Math.PI * 2)) * (ratio - 1);
+        const gradientBefore = (cos(before * PI * 2) + sin(before * PI * 2)) * ratio;
+        const gradientAfter = (cos(after * PI * 2) + sin(after * PI * 2)) * (ratio - 1);
 
         return (plus + interpolate(
             gradientBefore * this.amplitude,
@@ -48,13 +48,13 @@ class PerlinCurve {
         yield* this.slopeChanges(fromX, toX, -1, radius);
     }
 
-    * slopeChanges(fromX, toX, sign, radius) {
+    * slopeChanges(fromX, toX, wantedSign, radius) {
         const step = 5;
         let slopeBefore = 0;
         for (let x = fromX ; x < toX ; x += step) {
-            const slope = Math.sign(this.slopeFor(x, radius));
+            const slope = sign(this.slopeFor(x, radius));
 
-            if (slope !== slopeBefore && slope === sign) {
+            if (slope !== slopeBefore && slope === wantedSign) {
                 yield x;
             }
 
