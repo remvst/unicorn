@@ -15,7 +15,7 @@ class PerlinCurve {
     }
 
     angleFor(x, radius = 1) {
-        return atan2(this.slopeFor(x, radius), radius * 2);
+        return atan2(this.slopeFor(x, radius), 1);
     }
 
     yFor(x) {
