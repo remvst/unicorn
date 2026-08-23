@@ -1,3 +1,11 @@
+BG_COLORS = [
+    '#f97',
+    '#6db',
+    '#55b',
+    '#d8c',
+    '#fb6',
+]
+
 class Background extends Entity {
 
     alpha = 1;
@@ -12,20 +20,13 @@ class Background extends Entity {
         const camera = firstItem(this.world.category(Camera));
 
         ctx.wrap(() => {
-            ctx.fillStyle = (this.backgroundGradientCache ||= new Cache()).getOrCreate(this.colorIndex, () => {
+            ctx.fillStyle = (this.bgGradient ||= (() => {
                 const gradient = ctx.createLinearGradient(0, CANVAS_HEIGHT, CANVAS_WIDTH, 0);
-                const colors = [
-                    '#f97',
-                    '#6db',
-                    '#55b',
-                    '#d8c',
-                    '#fb6',
-                ];
                 for (let i = 0; i < BACKGROUND_COLOR_COUNT; i++) {
-                    gradient.addColorStop(i / BACKGROUND_COLOR_COUNT, colors[~~(i + this.colorIndex) % colors.length]);
+                    gradient.addColorStop(i / BACKGROUND_COLOR_COUNT, BG_COLORS[~~(i + this.colorIndex) % BG_COLORS.length]);
                 }
                 return gradient;
-            });
+            })());
             ctx.globalAlpha = this.alpha;
             ctx.translate(camera.position.x - CANVAS_WIDTH / 2, camera.position.y - CANVAS_HEIGHT / 2)
             ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
