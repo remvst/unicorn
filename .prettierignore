@@ -1,7 +1,0 @@
-build/
-dist/
-node_modules/
-Efficient-Compression-Tool/
-song-previews/
-*.zip
-*.html
