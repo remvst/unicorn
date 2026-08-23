@@ -16,8 +16,6 @@ class MainLevel extends Level {
             }
         });
 
-        this.world.clearCategory(Unicorn); // TODO this clears on-screen unicorns, not good
-
         this.world.addUnique(new ItemGenerator());
         this.world.addUnique(new UnicornGenerator());
 
