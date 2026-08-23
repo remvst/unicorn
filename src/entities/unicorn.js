@@ -88,25 +88,45 @@ class UnicornRenderable extends SkeletonRenderable {
         this.nose = {};
         this.hornTip = {};
 
+        this.maineTop = {};
+        this.maineBottom = {};
+
         this.add(
-            setColor('#fff'),
             setLineCap('butt'),
+
+            setColor('#ff0'),
+            () => {
+                ctx.beginPath();
+                ctx.lineTo(this.head.x - 4, this.head.y);
+                ctx.lineTo(this.head.x + 4, this.head.y);
+                ctx.lineTo(this.hornTip.x, this.hornTip.y);
+                ctx.fill();
+            },
+
+            setColor('#ccc'),
             setThickness(6),
             lineRenderable(this.backLegAttach, this.rightBackFoot),
             lineRenderable(this.frontLegAttach, this.rightFrontFoot),
-            lineRenderable(this.backLegAttach, this.leftBackFoot),
-            lineRenderable(this.frontLegAttach, this.leftFrontFoot),
+
+            setColor('#a167a4'),
             setThickness(5),
             lineRenderable(this.tailBase, this.tailTip),
+
+            setColor('#fff'),
+            lineRenderable(this.backLegAttach, this.leftBackFoot),
+            lineRenderable(this.frontLegAttach, this.leftFrontFoot),
+
             setThickness(15),
             lineRenderable(this.neckBase, this.head),
-            setThickness(2),
-            lineRenderable(this.head, this.hornTip),
             setThickness(25),
             lineRenderable(this.butt, this.shoulders),
             setLineCap('square'),
             setThickness(12),
             lineRenderable(this.head, this.nose),
+
+            setColor('#a167a4'),
+            setThickness(5),
+            lineRenderable(this.maineBottom, this.maineTop),
         );
     }
 
@@ -156,6 +176,12 @@ class UnicornRenderable extends SkeletonRenderable {
         // Head
         this.neckBase.x = this.shoulders.x - 7;
         this.neckBase.y = this.shoulders.y - 6;
+
+        this.maineTop.x = this.head.x;
+        this.maineTop.y = this.head.y - 8;
+
+        this.maineBottom.x = this.neckBase.x;
+        this.maineBottom.y = this.neckBase.y - 8;
 
         const neckAngle = -PI / 4;
         const neckToHeadLength = 24;
