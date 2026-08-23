@@ -9,7 +9,7 @@ class MainMenu extends Menu {
         ], document.title.split(':')[1].trim());
 
         this.renderButton(nomangle('[SPACE] - STORY MODE'));
-        if (G?.bestCombo) this.renderButton(nomangle('[T] - TRICK ATTACK MODE'));
+        this.renderButton(nomangle('[T] - TRICK ATTACK MODE'));
     }
 
     cycle(elapsed) {
