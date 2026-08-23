@@ -1,26 +1,35 @@
 class Background extends Entity {
 
-    constructor() {
+    alpha = 1;
+
+    constructor(colorIndex = 0) {
         super();
         this.curve = new PerlinCurve({ step: 400, amplitude: 400 });
-
-        this.gradient = ctx.createLinearGradient(0, CANVAS_HEIGHT, CANVAS_WIDTH, 0);
-        this.gradient.addColorStop(0, '#aba3da');
-        this.gradient.addColorStop(0.5, '#d862a9');
-        this.gradient.addColorStop(1, '#da88cc');
+        this.colorIndex = colorIndex;
     }
 
     render() {
         const camera = firstItem(this.world.category(Camera));
 
-        // Background color
-        ctx.fillStyle = this.gradient;
         ctx.wrap(() => {
+            ctx.fillStyle = (this.backgroundGradientCache ||= new Cache()).getOrCreate(this.colorIndex, () => {
+                const gradient = ctx.createLinearGradient(0, CANVAS_HEIGHT, CANVAS_WIDTH, 0);
+                const colors = [
+                    '#f97',
+                    '#6db',
+                    '#55b',
+                    '#d8c',
+                    '#fb6',
+                ];
+                for (let i = 0; i < BACKGROUND_COLOR_COUNT; i++) {
+                    gradient.addColorStop(i / BACKGROUND_COLOR_COUNT, colors[~~(i + this.colorIndex) % colors.length]);
+                }
+                return gradient;
+            });
+            ctx.globalAlpha = this.alpha;
             ctx.translate(camera.position.x - CANVAS_WIDTH / 2, camera.position.y - CANVAS_HEIGHT / 2)
             ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
         });
-
-        const { rng } = this;
 
         const {
             centerX: layerCameraX,

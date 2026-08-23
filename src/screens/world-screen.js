@@ -7,6 +7,7 @@ class WorldScreen extends Screen {
                 level.world = this.level?.world;
                 this.level = level;
                 await this.level.start();
+                this.transitionBg();
             }
         })();
 
@@ -23,6 +24,16 @@ class WorldScreen extends Screen {
             }
             return vals;
         };
+    }
+
+    async transitionBg() {
+        const oldBg = firstItem(this.level?.world.category(Background));
+
+        const newBg = this.level.world.add(new Background(oldBg.colorIndex + 1));
+        newBg.curve = oldBg.curve;
+        await newBg.interp(newBg, 'alpha', 0, 1, 1);
+
+        this.level.world.remove(oldBg);
     }
 
     cycle(elapsed) {
