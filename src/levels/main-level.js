@@ -10,7 +10,10 @@ class MainLevel extends Level {
 
         await this.levelTransition({
             curve: regularLevel(),
-            transition: (x) => this.announceLevelTitle(x, this.title)
+            transition: (x) => {
+                this.announceLevelTitle(x, this.title);
+                return waitFor(this.world, () => this.basics().camera.position.x > x + CANVAS_WIDTH);
+            }
         });
 
         this.world.clearCategory(Unicorn); // TODO this clears on-screen unicorns, not good
