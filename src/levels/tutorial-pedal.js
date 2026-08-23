@@ -8,7 +8,7 @@ class TutorialPedal extends Level {
         await this.runObjectives({
             objectives: [
                 new Objective(
-                    nomangle('Go right →'),
+                    nomangle('GO RIGHT →'),
                     1,
                     () => waitFor(this.world, () => this.player?.position.x > startX + 1000),
                 ),
