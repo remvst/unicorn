@@ -84,7 +84,7 @@ class Wheelie extends TrickTracker {
 
     reset() {
         super.reset();
-        this.accX = 0;
+        this.accX = -1;
     }
 
     cycle(elapsed) {
@@ -102,6 +102,13 @@ class Wheelie extends TrickTracker {
             if (this.trick.label && this.trick.label !== targetTrickLabel) {
                 this.reset();
             }
+
+            // Don't allow starting a wheelie until the user is actively balancing
+            if (back && this.bike.controls.raiseWheel || front && this.bike.controls.lowerWheel) {
+                this.accX = 0;
+            }
+
+            if (this.accX < 0) return;
 
             this.accX += abs(changeX);
             this.trick.label = targetTrickLabel;
