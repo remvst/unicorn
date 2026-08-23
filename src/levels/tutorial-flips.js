@@ -1,9 +1,9 @@
 class TutorialFlips extends Level {
     async setup() {
         await this.runUnicornDialog(0, [
-            'A bike in unicorn land? Why?',
+            nomangle('A bike in unicorn land? Why?'),
             '...',
-            'Think you can backflip over those hills?',
+            nomangle('Think you can backflip over those hills?'),
         ]);
         await this.transitionIntoCurve(simpleBumps());
 
