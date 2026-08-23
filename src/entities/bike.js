@@ -344,7 +344,7 @@ class BikeAndRiderRenderable extends BikeRenderable {
             // (yes I know it's technically the left leg but whatever, why are you even reading this)
             .prepend(
                 setThickness(4),
-                setColor('#fff'),
+                setColor('#ccc'),
                 setLineCap('round'),
                 lineRenderable(this.rightFoot, this.rightKnee),
                 lineRenderable(this.rightKnee, this.butt),
