@@ -5,6 +5,15 @@ class Rainbow extends Entity {
         this.radius = rnd(50, 200);
     }
 
+    cycle(elapsed) {
+        super.cycle(elapsed);
+
+        const camera = firstItem(this.world.category(Camera));
+        if (this.position.x < camera.position.x - CANVAS_WIDTH) {
+            this.world.remove(this);
+        }
+    }
+
     render() {
         ctx.translate(this.position.x, this.position.y);
 
