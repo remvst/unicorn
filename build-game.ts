@@ -233,6 +233,10 @@ const MANGLE_PARAMS = {
         "position",
         "setColor",
         "setLineCap",
+        "curve",
+        "amplitude",
+        "screenX",
+        "screenY",
     ]
 };
 
