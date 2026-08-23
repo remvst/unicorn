@@ -109,6 +109,8 @@ class Bike extends PhysicsObject {
             accelerate,
         } = this.controls;
 
+        const momentumYBefore = this.momentum.position.y;
+
         super.cycle(elapsed);
 
         const backWheelOnGround = this.hasCollision(this.backWheel);
@@ -171,7 +173,7 @@ class Bike extends PhysicsObject {
                     x: wheel.absolute.position.x,
                     y: wheel.absolute.position.y + wheel.radius,
                 },
-                radius: 5,
+                radius: interpolate(5, 15, abs(momentumYBefore) / 1000),
                 density: 1 / (5 * 5),
                 duration: [0.25, 1],
                 x: [-40, 0],
