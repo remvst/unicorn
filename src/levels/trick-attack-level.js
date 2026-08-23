@@ -3,7 +3,7 @@ class TrickAttackLevel extends Level {
         await this.transitionIntoCurve(regularLevel());
         await this.announceLevelTitle(0, nomangle('TRICK ATTACK'));
 
-        this.world.add(new ItemGenerator());
+        this.world.addUnique(new ItemGenerator());
 
         const combos = new Set();
 
