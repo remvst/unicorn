@@ -19,6 +19,11 @@ RAINBOW_PATTERN = (() => {
 })();
 
 class Menu extends Screen {
+    cycle(elapsed) {
+        super.cycle(elapsed);
+        this.nextButtonY = CANVAS_HEIGHT * 0.7;
+    }
+
     renderTitle(lines, subtitle) {
         ctx.lineWidth = 20;
         ctx.strokeStyle = '#000';
@@ -46,12 +51,15 @@ class Menu extends Screen {
     }
 
     renderButton(l) {
-        ctx.fillStyle = '#fff';
-        ctx.strokeStyle = '#000';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'top';
-        ctx.strokeStyle = '#000';
-        ctx.font = 'bold 24pt Impact';
-        if (this.age % 2 > 0.5) epicText(l, CANVAS_WIDTH / 2, CANVAS_HEIGHT * 0.7);
+        ctx.wrap(() => {
+            ctx.fillStyle = '#fff';
+            ctx.strokeStyle = '#000';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'top';
+            ctx.strokeStyle = '#000';
+            ctx.font = 'bold 24pt Impact';
+            if (this.age % 2 < 0.5) ctx.globalAlpha = 0;
+            this.nextButtonY = epicText(l, CANVAS_WIDTH / 2, this.nextButtonY).b + 30;
+        });
     }
 }
