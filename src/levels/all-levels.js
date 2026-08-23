@@ -46,9 +46,6 @@ function* allLevels() {
         new Objective(doA + nomangle('10X COMBO'), 1, (world) => awaitCombo(world, comboMust(beOfSize(10)))),
         new Objective(doA + nomangle('15X COMBO'), 1, (world) => awaitCombo(world, comboMust(beOfSize(15)))),
         new Objective(doA + nomangle('20X COMBO'), 1, (world) => awaitCombo(world, comboMust(beOfSize(20)))),
-        new Objective(doA + nomangle('30X COMBO'), 1, (world) => awaitCombo(world, comboMust(beOfSize(30)))),
-        new Objective(doA + nomangle('40X COMBO'), 1, (world) => awaitCombo(world, comboMust(beOfSize(40)))),
-        new Objective(doA + nomangle('50X COMBO'), 1, (world) => awaitCombo(world, comboMust(beOfSize(50)))),
     ];
 
     const comboTricksObjectives = [
