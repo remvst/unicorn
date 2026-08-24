@@ -10,6 +10,7 @@ class HUD extends Entity {
     constructor() {
         super();
         this.comboChange = new ValueChangeHelper();
+        this.objectivesChange = new ValueChangeHelper();
     }
 
     renderCombo(comboTracker) {
@@ -104,9 +105,19 @@ class HUD extends Entity {
         ctx.strokeStyle = '#000';
         ctx.lineWidth = 20;
 
-        if (firstItem(this.world.category(Objective))) {
+        const [objectiveBefore, objectiveAfter] = this.objectivesChange.change(firstItem(this.world.category(Objective)));
+        if (objectiveBefore != objectiveAfter) {
+            this.objectiveChangeAge = this.age;
+        }
+
+        if (objectiveAfter) {
             ctx.wrap(() => {
                 ctx.translate(CANVAS_WIDTH - 40, 40);
+                ctx.translate(
+                    interpolate(CANVAS_WIDTH / 2, 0, (this.age - this.objectiveChangeAge) / 0.3),
+                    0,
+                );
+
                 ctx.textAlign = 'right';
 
                 let y = 0;

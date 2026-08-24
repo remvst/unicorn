@@ -139,7 +139,7 @@ class Level {
 
         // Restore player control
         this.player.controlsOverride = null;
-        camera.interp(camera, 'zoom', camera.zoom, 1, 0.3);
+        await camera.interp(camera, 'zoom', camera.zoom, 1, 0.3);
     }
 
     async runObjectives({ objectives }) {
