@@ -2,8 +2,6 @@ class Bike extends PhysicsObject {
     constructor() {
         super();
 
-        this.power = 0;
-
         this.pedalAge = 0;
 
         this.frontWheel = this.addHitbox();
@@ -24,8 +22,6 @@ class Bike extends PhysicsObject {
 
         this.backWheelOnGroundChange = new ValueChangeHelper();
         this.frontWheelOnGroundChange = new ValueChangeHelper();
-
-        this.usingPower = false;
 
         this.renderable = new BikeAndRiderRenderable(this);
 
@@ -97,8 +93,6 @@ class Bike extends PhysicsObject {
             this.momentum.rotation,
             PI * 2,
         );
-
-        this.power = max(0, this.power - elapsed / 8);
     }
 
     cycle(elapsed) {
@@ -119,10 +113,10 @@ class Bike extends PhysicsObject {
 
         let forwardPush = 0;
         if (accelerate) {
-            forwardPush += (this.power > 0 ? 1000 : 500) * elapsed;
-
             const momentum = pointDistance(0, 0, this.momentum.position.x, this.momentum.position.y);
             this.pedalAge += elapsed * interpolate(0, 1, momentum / 500);
+
+            if (momentum < 1500) forwardPush += 500 * elapsed;
         }
 
         if (forwardPush && backWheelOnGround) {
@@ -148,7 +142,7 @@ class Bike extends PhysicsObject {
         let friction = 0;
         if (backWheelOnGround || frontWheelOnGround) {
             if (accelerate) friction = 0;
-            else if (jump) friction = 50;
+            else if (jump) friction = 200;
             else if (brake) friction = 1000;
             else friction = 200;
         }
