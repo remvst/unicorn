@@ -12,6 +12,15 @@ class Game {
         }
 
         this.frame();
+
+        if (DEBUG) {
+            let i = 0;
+            for (const obj of allObjectives()) {
+                if (!(i % 3)) console.log('========');
+                console.log(obj.label);
+                i++;
+            }
+        }
     }
 
     mainMenu() {
