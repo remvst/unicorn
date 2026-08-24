@@ -45,6 +45,11 @@ onresize = () => {
         }
     }
 
+    if (ICON_MODE) {
+        CANVAS_WIDTH = appliedWidth = 1024;
+        CANVAS_HEIGHT = appliedHeight = 1024;
+    }
+
     can.width = CANVAS_WIDTH;
     can.height = CANVAS_HEIGHT;
 

@@ -47,7 +47,7 @@ class Background extends Entity {
         surfaceSweep(
             this.world,
             this.rng,
-            100,
+            ICON_MODE ? 200 : 100,
             ({ x, y }) => {
                 const period = interpolate(2, 4, this.rng.floating());
                 const s = this.rng.floating();
@@ -133,7 +133,7 @@ surfaceSweep = (
             for (let i = 0 ; i < density ; i++) {
                 opts.x = tileX + rng.floating() * CANVAS_WIDTH;
                 opts.y = tileY + rng.floating() * CANVAS_HEIGHT;
-                opts.groundY = ground.curveAt(opts.x);
+                opts.groundY = ground?.curveAt(opts.x);
                 opts.screenX = opts.x - camera.position.x + CANVAS_WIDTH / 2;
                 opts.screenY = opts.y - camera.position.y + CANVAS_HEIGHT / 2;
                 ctx.wrap(() => populate(opts));
@@ -161,7 +161,7 @@ xSweep = (
         x += step
     ) {
         opts.x = x;
-        opts.groundY = ground.curveAt(x);
+        opts.groundY = ground?.curveAt(x);
         forward(opts);
     }
     for (
@@ -170,7 +170,7 @@ xSweep = (
         x -= step
     ) {
         opts.x = x;
-        opts.groundY = ground.curveAt(x);
+        opts.groundY = ground?.curveAt(x);
         backward(opts);
     }
 }

@@ -6,6 +6,11 @@ class Game {
         }
 
         this.mainMenu();
+
+        if (ICON_MODE) {
+            this.screens = [new WorldScreen(() => [new IconLevel()])];
+        }
+
         this.frame();
     }
 
@@ -29,7 +34,7 @@ class Game {
         const elapsed = min((now - (this.lastFrame || 0)) / 1000, 1 / 30);
         this.lastFrame = now;
 
-        if (!DEBUG || document.hasFocus()) {
+        if (!DEBUG || document.hasFocus() || ICON_MODE) {
             // Slomo/fast forward
             if (DEBUG) {
                 if (downKeys[71]) elapsed *= 0.1;
@@ -76,6 +81,7 @@ class Game {
             });
         }
 
+        if (ICON_MODE) return;
         requestAnimationFrame(() => this.frame());
     }
 }

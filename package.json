@@ -8,6 +8,7 @@
     "build:rebeautified": "tsx build-game.ts --mangle --minify --beautify --html=build/rebeautified.html",
     "build:preprod": "tsx build-game.ts --mangle --minify --roadroll-level=1 --html=build/preprod.html",
     "build:prod": "tsx build-game.ts --mangle --minify --roadroll-level=2 --html=build/index.html",
+    "build:icon": "tsx build-game.ts --icon --html=build/icon.html",
     "zip:preprod": "tsx build-zip.ts --html=build/preprod.html --zip=build/preprod.zip",
     "zip:prod": "tsx build-zip.ts --html=build/index.html --zip=build/game.zip --optimize",
     "watch": "nodemon --watch 'src/**' --watch 'build-game.ts' -x \"npm run build:debug\"",
