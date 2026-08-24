@@ -29,7 +29,7 @@ class Unicorn extends Entity {
 
 class UnicornGenerator extends EntityGenerator {
     constructor() {
-        super(AudienceUnicorn, CANVAS_WIDTH * 3, 3, 100);
+        super(AudienceUnicorn, CANVAS_WIDTH * 2, 3, 100);
     }
 }
 
