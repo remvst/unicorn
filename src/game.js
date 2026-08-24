@@ -8,7 +8,7 @@ class Game {
         this.mainMenu();
 
         if (ICON_MODE) {
-            this.screens = [new WorldScreen(() => [new IconLevel()])];
+            this.screens = [new WorldScreen([new IconLevel()])];
         }
 
         this.frame();
@@ -16,7 +16,7 @@ class Game {
 
     mainMenu() {
         this.screens = [
-            new WorldScreen(() => [new IntroLevel()]),
+            new WorldScreen([new IntroLevel()]),
             new MainMenu(),
         ];
     }

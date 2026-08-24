@@ -23,7 +23,6 @@ class MainLevel extends Level {
 
         await this.runObjectives({
             objectives: this.objectives,
-            requiredCount: max(1, this.objectives.length - 1),
         });
     }
 }

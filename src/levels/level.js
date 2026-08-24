@@ -142,16 +142,9 @@ class Level {
         camera.interp(camera, 'zoom', camera.zoom, 1, 0.3);
     }
 
-    async runObjectives({ objectives, requiredCount }) {
+    async runObjectives({ objectives }) {
         this.world.clearCategory(Objective);
-
-        requiredCount ??= objectives.length;
-
-        let completedCount = 0;
-        for (const obj of objectives) {
-            this.world.add(obj).start().then(() => completedCount++);
-        }
-
-        await waitFor(this.world, () => completedCount >= requiredCount);
+        for (const obj of objectives) this.world.add(obj);
+        await Promise.all(objectives.map(o => o.start()));
     }
 }

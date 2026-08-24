@@ -17,10 +17,10 @@ class MainMenu extends Menu {
     cycle(elapsed) {
         super.cycle(elapsed);
         if (downKeys[32] || TOUCH_DOWN) {
-            G.screens = [new WorldScreen(allLevels)];
+            G.screens = [new WorldScreen(withSavedProgress(allLevels()))];
         }
         if (downKeys[84]) {
-            G.screens = [new WorldScreen(trickAttackMode)];
+            G.screens = [new WorldScreen(trickAttackMode())];
         }
     }
 }

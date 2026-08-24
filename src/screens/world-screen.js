@@ -1,9 +1,9 @@
 class WorldScreen extends Screen {
-    constructor(levelsGenerator) {
+    constructor(levels) {
         super();
 
         (async () => {
-            for (const level of levelsGenerator()) {
+            for (const level of levels) {
                 level.world = this.level?.world;
                 this.level = level;
                 await this.level.start();

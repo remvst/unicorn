@@ -45,7 +45,6 @@ class TestLevel extends Level {
             const newObjectives = remainingObjectives.slice(0, 2);
             await this.runObjectives({
                 objectives: newObjectives,
-                requiredCount: 1,
             });
 
             for (const obj of [...this.world.category(Objective)]) {

@@ -19,9 +19,7 @@ class PauseMenu extends Menu {
         }
 
         if (downKeys[77]) {
-            if (confirm(nomangle('Exit? (your progress will be lost'))) {
-                G.mainMenu();
-            }
+            G.mainMenu();
         }
     }
 }

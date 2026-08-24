@@ -1,14 +1,24 @@
-function* allLevels() {
-    const titles = [
-        nomangle('SPARKLE PLAINS'),
-        nomangle('STARRY HILLS'),
-        nomangle('RAINBOW MEADOWS'),
-        nomangle('GLITTERING FIELDS'),
-        nomangle('CELESTIAL VALLEY'),
-        nomangle('MAGICAL RIDGE'),
-        nomangle('TWINKLEWOOD'),
-    ];
+function* withSavedProgress(generator) {
+    let startAt = parseInt(localStorage[LOCALSTORAGE_PROGRESS_KEY]) || 0;
+    if (startAt && !confirm(nomangle("Resume where you left off?"))) {
+        startAt = 0;
+    }
 
+    let i = 0;
+
+    // Skip until we get the level we want
+    for (; i < startAt; i++) {
+        generator.next();
+    }
+
+    // Then yield levels as normal
+    for (const level of generator) {
+        yield level;
+        localStorage[LOCALSTORAGE_PROGRESS_KEY] = ++i;
+    }
+}
+
+function allObjectives() {
     const doA = nomangle('DO A ');
     const inFrontOfAUnicorn = nomangle(' IN FRONT OF UNICORNS');
     const combo = nomangle('COMBO: ');
@@ -93,8 +103,28 @@ function* allLevels() {
         ].filter(Boolean));
     }
 
+    return allObjectives;
+}
+
+function* allLevels() {
+    const titles = [
+        nomangle('SPARKLE PLAINS'),
+        nomangle('STARRY HILLS'),
+        nomangle('RAINBOW MEADOWS'),
+        nomangle('GLITTERING FIELDS'),
+        nomangle('CELESTIAL VALLEY'),
+        nomangle('MAGICAL RIDGE'),
+        nomangle('TWINKLEWOOD'),
+    ];
+
+    const objectives = allObjectives();
+
     function pickNextMainObjectives() {
-        return allObjectives.filter(o => !o.completed).slice(0, 3);
+        return [
+            objectives.shift(),
+            objectives.shift(),
+            objectives.shift(),
+        ].filter(Boolean);
     }
 
     function pickNextTitle() {
