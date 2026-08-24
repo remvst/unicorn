@@ -43,6 +43,7 @@ function* allLevels() {
 
     // Combo size: number of tricks in a combo
     const comboSizeObjectives = [
+        new Objective(doA + nomangle('3X COMBO'), 1, (world) => awaitCombo(world, comboMust(beOfSize(3)))),
         new Objective(doA + nomangle('5X COMBO'), 1, (world) => awaitCombo(world, comboMust(beOfSize(5)))),
         new Objective(doA + nomangle('10X COMBO'), 1, (world) => awaitCombo(world, comboMust(beOfSize(10)))),
         new Objective(doA + nomangle('15X COMBO'), 1, (world) => awaitCombo(world, comboMust(beOfSize(15)))),
