@@ -127,6 +127,7 @@ class UnicornRenderable extends SkeletonRenderable {
             setThickness(5),
             lineRenderable(this.maineBottom, this.maineTop),
         );
+        this.prependShadow();
     }
 
     render() {

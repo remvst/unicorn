@@ -368,6 +368,8 @@ class BikeAndRiderRenderable extends BikeRenderable {
                 circleRenderable(this.leftHand, true),
             )
             ;
+
+        this.prependShadow();
     }
 
     render() {

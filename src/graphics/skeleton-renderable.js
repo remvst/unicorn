@@ -19,6 +19,21 @@ class SkeletonRenderable {
             renderer();
         }
     }
+
+    prependShadow() {
+        this.prepend(...[
+            () => {
+                ctx.shadowColor = 'rgba(0,0,0,0.3)';
+                ctx.shadowOffsetX = 2;
+                ctx.shadowOffsetY = 2;
+            },
+            ...this.pieces,
+            () => {
+                ctx.shadowOffsetX = 0;
+                ctx.shadowOffsetY = 0;
+            },
+        ]);
+    }
 }
 
 setColor = (x) => () => {
@@ -45,4 +60,3 @@ circleRenderable = (center, radius, fill = false) => () => {
     ctx.arc(center.x, center.y, radius, 0, PI * 2);
     if (fill) ctx.fill(); else ctx.stroke();
 }
-
