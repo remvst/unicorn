@@ -38,7 +38,7 @@ class ComboTracker {
             trick.started = true;
             this.startedTricks.push(trick);
 
-            this.comboPower = min(1, this.comboPower + 0.5);
+            this.comboPower = 1;
         }
 
         this.lastChange = this.bike.age;
@@ -60,7 +60,7 @@ class ComboTracker {
         const front = this.bike.hasCollision(this.bike.frontWheel);
 
         if (this.bike.age - this.lastChange > 0.2) {
-            this.comboPower = max(0, this.comboPower - elapsed / 4);
+            this.comboPower = max(0, this.comboPower - elapsed / 6);
         }
 
         // Both wheels down, mark tricks as landed
