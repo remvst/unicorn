@@ -66,8 +66,9 @@ class Flip extends JumpTracker {
             this.trick.points =
                 200 * // base
                 (this.acc.rotation < 0 ? 1 : 3) * // increase base if frontflip
-                pow(3, flipCount - 1) // exponential as the number of flips increase
+                pow(2, flipCount - 1) // exponential as the number of flips increase
                 ;
+            this.trick.multiplier = flipCount;
 
             this.combo.addTrick(this.trick);
         }

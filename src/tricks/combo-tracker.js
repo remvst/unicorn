@@ -23,7 +23,11 @@ class ComboTracker {
     }
 
     get totalPoints() {
-        return this.points * this.startedTricks.length;
+        return this.points * this.multiplier;
+    }
+
+    get multiplier() {
+        return this.startedTricks.reduce((acc, t) => acc + t.multiplier, 0);
     }
 
     * unfinishedTricks() {

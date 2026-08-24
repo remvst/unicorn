@@ -52,7 +52,7 @@ doubleFrontflip = haveLabel(nomangle('DOUBLE FRONTFLIP'));
 // Combo matchers
 comboMust = (...predicates) => (comboTracker) => !predicates.some((p) => !p(comboTracker));
 
-beOfSize = size => comboTracker => comboTracker.startedTricks.length >= size;
+beOfSize = size => comboTracker => comboTracker.multiplier >= size;
 
 repeatedTrick = (x, predicate) => {
     const res = [];

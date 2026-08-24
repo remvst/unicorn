@@ -19,6 +19,7 @@ class HUD extends Entity {
             comboPower,
             points,
             totalPoints,
+            multiplier,
             startedTricks,
         } = comboTracker;
 
@@ -39,7 +40,7 @@ class HUD extends Entity {
 
             const comboNumber = failed || validated
                 ? totalPoints.toLocaleString('en')
-                : `${points.toLocaleString('en')}   X ${startedTricks.length}`;
+                : `${points.toLocaleString('en')}   X ${multiplier}`;
             const comboNumberSize = ctx.wrap(() => {
                 if (failed) {
                     ctx.fillStyle = '#900';
