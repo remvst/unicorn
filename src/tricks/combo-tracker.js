@@ -63,8 +63,8 @@ class ComboTracker {
         const back = this.bike.hasCollision(this.bike.backWheel);
         const front = this.bike.hasCollision(this.bike.frontWheel);
 
-        if (this.bike.age - this.lastChange > 0.2) {
-            this.comboPower = max(0, this.comboPower - elapsed / 6);
+        if (this.bike.age - this.lastChange > 0.2 && !this.bike.airborne(0.3)) {
+            this.comboPower = max(0, this.comboPower - elapsed / 4);
         }
 
         // Both wheels down, mark tricks as landed
