@@ -4,6 +4,7 @@ ontouchstart = (evt) => {
     inputMode = INPUT_MODE_TOUCH;
     evt.preventDefault();
     updateTouches(evt.touches);
+    playSong();
 };
 
 ontouchmove = (evt) => {
