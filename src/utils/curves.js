@@ -1,6 +1,6 @@
 simpleBumps = () => new PerlinCurve({ step: 500, amplitude: 250 });
 mountains = () => new PerlinCurve({ step: 2000, amplitude: 800 });
-plains = () => new PerlinCurve({ step: 2000, amplitude: 200 });
+plains = () => new PerlinCurve({ step: 2000, amplitude: 300 });
 
 regularLevel = () => new PerlinCurve({
     plus: [
