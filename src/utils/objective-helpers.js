@@ -22,7 +22,7 @@ awaitChange = async (world, valueGetter) => {
 }
 
 awaitCombo = async (world, predicate) => {
-    await awaitChange(world, () => firstItem(world.category(Player))?.comboTracker.startedTricks.length === 0);
+    // await awaitChange(world, () => firstItem(world.category(Player))?.comboTracker.startedTricks.length === 0);
     await waitFor(world, () => {
         const player = firstItem(world.category(Player));
         return player && predicate(player.comboTracker);
