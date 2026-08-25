@@ -34,12 +34,13 @@ function allObjectives() {
         new Objective(combo + nomangle('3 FLIPS'), 1, (world) => awaitCombo(world, comboMust(
             haveDistinctLandedTricks(...repeatedTrick(3, anyFlip)),
         ))),
-        new Objective(combo + nomangle('WHEELIE + BACKFLIP'), 1, (world) => awaitCombo(world, comboMust(
-            haveDistinctLandedTricks(wheelie, backflip),
-        ))),
-        new Objective(getA + nomangle('10X COMBO'), 1, (world) => awaitCombo(world, comboMust(beOfSize(10)))),
         new Objective(combo + nomangle('BACKFLIP + FRONTFLIP'), 1, (world) => awaitCombo(world, comboMust(
             haveDistinctLandedTricks(backflip, frontflip),
+        ))),
+
+        new Objective(getA + nomangle('10X COMBO'), 1, (world) => awaitCombo(world, comboMust(beOfSize(10)))),
+        new Objective(combo + nomangle('WHEELIE + BACKFLIP'), 1, (world) => awaitCombo(world, comboMust(
+            haveDistinctLandedTricks(wheelie, backflip),
         ))),
         new Objective(doA + nomangle('DOUBLE BACKFLIP') + inFrontOfAUnicorn, 1, (world) => awaitTrick(world, trickMust(doubleBackflip, beInFrontOfAudience()))),
         new Objective(combo + nomangle('NOSEWHEELIE + FRONTFLIP'), 1, (world) => awaitCombo(world, comboMust(
