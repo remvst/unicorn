@@ -175,21 +175,19 @@ xSweep = (
     }
 }
 
-function multiplyColor(color, factor) {
+multiplyColor = (color, factor) => {
     const [r, g, b] = getRGB(color);
     return buildColor(r * factor, g * factor, b * factor);
 }
 
-function getRGB(color) {
-    return [
-        (color >> (8 * 2)) % 256,
-        (color >> (8 * 1)) % 256,
-        (color >> (8 * 0)) % 256,
-    ];
-}
+getRGB = (color) => [
+    (color >> (8 * 2)) % 256,
+    (color >> (8 * 1)) % 256,
+    (color >> (8 * 0)) % 256,
+];
 
 
-function buildColor(r, g, b) {
+buildColor = (r, g, b) => {
     r = min(r, 255);
     g = min(g, 255);
     b = min(b, 255);
@@ -197,6 +195,4 @@ function buildColor(r, g, b) {
     return (r << (8 * 2)) | (g << (8 * 1)) | (b << (8  * 0));
 }
 
-function colorAsString(color) {
-    return '#' + color.toString(16).padStart(6, '0');
-}
+colorAsString = (color) => '#' + color.toString(16).padStart(6, '0');
