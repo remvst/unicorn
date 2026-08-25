@@ -24,7 +24,6 @@ class Particle extends Entity {
             let owner = this;
             if (propertyKey === 'x' || propertyKey === 'y') {
                 owner = this.position;
-                // console.log('yaya', owner[propertyKey]);
             }
             interps.push(this.interp(owner, propertyKey, owner[propertyKey], owner[propertyKey] + offset, duration));
         }
