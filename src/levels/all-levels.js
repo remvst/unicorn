@@ -1,5 +1,5 @@
 function* withSavedProgress(generator) {
-    let startAt = parseInt(localStorage[LOCALSTORAGE_PROGRESS_KEY]) || 0;
+    let startAt = parseInt(readLocalStorage(LOCALSTORAGE_PROGRESS_KEY)) || 0;
     if (startAt && !confirm(nomangle("Resume where you left off?"))) {
         startAt = 0;
     }
@@ -14,7 +14,7 @@ function* withSavedProgress(generator) {
     // Then yield levels as normal
     for (const level of generator) {
         yield level;
-        localStorage[LOCALSTORAGE_PROGRESS_KEY] = ++i;
+        writeLocalStorage(LOCALSTORAGE_PROGRESS_KEY, ++i);
     }
 }
 

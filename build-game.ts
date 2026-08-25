@@ -27,6 +27,7 @@ const JS_FILES = [
     'utils/superclasses.js',
     'utils/curves.js',
     'utils/objective-helpers.js',
+    'utils/local-storage.js',
 
     'tricks/trick.js',
     'tricks/trick-tracker.js',

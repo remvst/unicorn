@@ -31,11 +31,11 @@ class Game {
     }
 
     get bestCombo() {
-        return parseInt(localStorage["bc"]) || 0;
+        return parseInt(readLocalStorage("bc")) || 0;
     }
 
     set bestCombo(x) {
-        localStorage["bc"] = x;
+        writeLocalStorage("bc", x);
     }
 
     frame() {
