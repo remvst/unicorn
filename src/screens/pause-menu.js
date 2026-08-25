@@ -13,7 +13,7 @@ class PauseMenu extends Menu {
     cycle(elapsed) {
         super.cycle(elapsed);
 
-        const [pauseBefore, pauseAfter] = this.pauseChange.change(downKeys[27]);
+        const [pauseBefore, pauseAfter] = this.pauseChange.change(downKeys[27] || gamepadButtonValue(9));
         if (!pauseBefore && pauseAfter) {
             G.screens.pop();
         }

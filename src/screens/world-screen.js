@@ -40,7 +40,7 @@ class WorldScreen extends Screen {
         super.cycle(elapsed);
         this.level?.world.cycle(elapsed);
 
-        const [pauseBefore, pauseAfter] = this.pauseChange.change(downKeys[27]);
+        const [pauseBefore, pauseAfter] = this.pauseChange.change(downKeys[27] || gamepadButtonValue(9));
         if (this.isForeground && !pauseBefore && pauseAfter) {
             G.screens.push(new PauseMenu());
         }

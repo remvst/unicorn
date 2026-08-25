@@ -16,7 +16,7 @@ class MainMenu extends Menu {
 
     cycle(elapsed) {
         super.cycle(elapsed);
-        if (downKeys[32] || TOUCH_DOWN) {
+        if (downKeys[32] || TOUCH_DOWN || gamepadButtonValue(0)) {
             G.screens = [new WorldScreen(withSavedProgress(allLevels()))];
         }
         if (downKeys[84]) {
