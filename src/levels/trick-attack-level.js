@@ -22,7 +22,7 @@ class TrickAttackLevel extends Level {
 
                 const totalTime = world.age - startAge;
                 const timeLeft = max(0, 120 - totalTime);
-                obj.label = nomangle('TIME LEFT: ') + floor(timeLeft);
+                obj.label = nomangle('TIME LEFT: ') + ~~(timeLeft);
                 return !timeLeft && !player?.comboTracker.startedTricks.length;
             });
         });

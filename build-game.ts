@@ -95,7 +95,7 @@ const CONSTANTS = {
     "null": 0,
     "Infinity": 999,
 
-    "LOCALSTORAGE_PROGRESS_KEY": "nomangle('P-')",
+    "LOCALSTORAGE_PROGRESS_KEY": "nomangle('P')",
 
     "SONG_VOLUME": 0.5,
 
