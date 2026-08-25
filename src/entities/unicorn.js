@@ -123,7 +123,7 @@ class UnicornRenderable extends SkeletonRenderable {
             setThickness(12),
             lineRenderable(this.head, this.nose),
 
-            setColor('#a167a4'),
+            setColor('#a6a'),
             setThickness(5),
             lineRenderable(this.maineBottom, this.maineTop),
         );

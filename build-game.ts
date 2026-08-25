@@ -141,6 +141,11 @@ const MANGLE_PARAMS = {
         "top",
         "middle",
         "alphabetic",
+
+        // Line caps
+        "square",
+        "butt",
+        "round",
     ],
     "force": [
         "a",
