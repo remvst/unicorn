@@ -21,7 +21,7 @@ class Foreground extends Entity {
         const { curve } = ground;
 
         // Path
-        ctx.fillStyle = '#d0c090';
+        ctx.fillStyle = '#dc9';
         ctx.beginPath();
         xSweep(
             this.world,
