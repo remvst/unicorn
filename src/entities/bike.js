@@ -26,10 +26,9 @@ class Bike extends PhysicsObject {
         this.renderable = new BikeAndRiderRenderable(this);
 
         this.controls = {
-            // raiseWheel: false,
-            // lowerWheel: false,
-            // accelerate: false,
-            // brake: false,
+            // spin: 0,
+            // accelerate: 0,
+            // brake: 0,
             // jump: false,
         }
     }
@@ -47,16 +46,14 @@ class Bike extends PhysicsObject {
 
     cycleUnsafe(elapsed) {
         const {
-            raiseWheel,
-            lowerWheel,
+            spin,
             jump,
-            brake,
         } = this.controls;
 
         // Backflip/frontflip
         // If the player is trying to counteract a flip, give extra power so it's easier to control
-        if (raiseWheel) this.momentum.rotation -= elapsed * (this.momentum.rotation > 0 ? PI * 4 : PI * 2);
-        if (lowerWheel) this.momentum.rotation += elapsed * (this.momentum.rotation < 0 ? PI * 4 : PI * 2);
+        if (spin < 0) this.momentum.rotation -= -spin * elapsed * (this.momentum.rotation > 0 ? PI * 4 : PI * 2);
+        if (spin > 0) this.momentum.rotation += spin * elapsed * (this.momentum.rotation < 0 ? PI * 4 : PI * 2);
 
         const momentumRotationBefore = this.momentum.rotation;
 
@@ -64,7 +61,7 @@ class Bike extends PhysicsObject {
 
         // Don't let ground contact damp out the player's input, no matter how many
         // substeps this frame got split into.
-        if (raiseWheel || lowerWheel) {
+        if (spin) {
             this.momentum.rotation = momentumRotationBefore;
         }
 
@@ -79,7 +76,7 @@ class Bike extends PhysicsObject {
         }
 
         // Rotation dampening
-        if (this.airborne(0.1) && !raiseWheel && !lowerWheel) {
+        if (this.airborne(0.1) && !spin) {
             this.momentum.rotation -= between(
                 -elapsed * PI * 2,
                 this.momentum.rotation,
@@ -97,8 +94,7 @@ class Bike extends PhysicsObject {
 
     cycle(elapsed) {
         const {
-            raiseWheel,
-            lowerWheel,
+            spin,
             jump,
             brake,
             accelerate,
@@ -116,7 +112,7 @@ class Bike extends PhysicsObject {
             const momentum = pointDistance(0, 0, this.momentum.position.x, this.momentum.position.y);
             this.pedalAge += elapsed * interpolate(0, 1, momentum / 500);
 
-            if (momentum < 1500) forwardPush += 500 * elapsed;
+            if (momentum < 1500) forwardPush += accelerate * 500 * elapsed;
         }
 
         if (forwardPush && backWheelOnGround) {
@@ -143,7 +139,7 @@ class Bike extends PhysicsObject {
         if (backWheelOnGround || frontWheelOnGround) {
             if (accelerate) friction = 0;
             else if (jump) friction = 200;
-            else if (brake) friction = 1000;
+            else if (brake) friction = brake * 1000;
             else friction = 200;
         }
         this.momentum.position.x += -sign(this.momentum.position.x) * min(
@@ -186,11 +182,7 @@ class Bike extends PhysicsObject {
             this.renderable.landAge += elapsed;
         }
 
-        const targetBalance = raiseWheel
-            ? -1
-            : lowerWheel
-            ? 1
-            : 0;
+        const targetBalance = spin || 0;
 
         this.renderable.balance += between(
             -elapsed * 2,

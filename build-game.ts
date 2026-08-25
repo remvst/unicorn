@@ -34,6 +34,8 @@ const JS_FILES = [
 
     'input/keyboard.js',
     'input/touch.js',
+    'input/gamepad.js',
+    'input/controls.js',
 
     'screens/screen.js',
     'screens/world-screen.js',

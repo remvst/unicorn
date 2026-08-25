@@ -38,11 +38,7 @@ class Player extends Bike {
     cycle(elapsed) {
         super.cycle(elapsed);
 
-        this.controls.raiseWheel = downKeys[37];
-        this.controls.lowerWheel = downKeys[39];
-        this.controls.jump = downKeys[32];
-        this.controls.brake = downKeys[40];
-        this.controls.accelerate = downKeys[38];
+        updateControls(this.controls);
 
         if (this.controlsOverride) {
             for (const key in this.controls) {

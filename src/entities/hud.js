@@ -160,8 +160,8 @@ class HUD extends Entity {
             const arrows = [
                 [-PI / 2, player?.controls.accelerate],
                 [PI / 2, player?.controls.brake],
-                [PI, player?.controls.raiseWheel],
-                [0, player?.controls.lowerWheel],
+                [PI, player?.controls.spin < 0],
+                [0, player?.controls.spin > 0],
             ];
             for (let i = 0; i < arrows.length; i++) {
                 ctx.wrap(() => {
