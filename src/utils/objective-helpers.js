@@ -25,7 +25,7 @@ awaitCombo = async (world, predicate) => {
 
 // Trick matchers
 trickMust = (...predicates) => trick => !predicates.some(p => !p(trick))
-haveLabel = label => (trick) => trick.label.includes(label);
+haveLabel = label => (trick) => trick.label === label;
 containLabel = label => (trick) => trick.label.includes(label);
 beInFrontOfAudience = () => (trick) => trick.inFrontOfAudience;
 
