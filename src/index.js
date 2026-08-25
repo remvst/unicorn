@@ -6,3 +6,5 @@ onload = () => {
 
     G = new Game();
 }
+
+onclick = () => playSong();
