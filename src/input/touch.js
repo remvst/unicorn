@@ -17,7 +17,9 @@ ontouchend = (evt) => {
     updateTouches(evt.touches);
 };
 
-oncontextmenu = (evt) => evt.preventDefault();
+if (!ICON_MODE) {
+    oncontextmenu = (evt) => evt.preventDefault();
+}
 
 updateTouches = (touches) => {
     downKeys = {};

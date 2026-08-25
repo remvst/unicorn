@@ -369,7 +369,7 @@ class BikeAndRiderRenderable extends BikeRenderable {
             )
             ;
 
-        this.prependShadow();
+        if (!ICON_MODE) this.prependShadow();
     }
 
     render() {

@@ -1,7 +1,7 @@
 # UNICORNS, RAINBOWS 'N BACKFLIPS: TRICK ATTACK ULTRA TURBO DELUXE EDITION
 
 <p align="center">
-<img src="/assets/icon.png" alt="Game icon" />
+<img src="/assets/icon-512x512.png" alt="Game icon" />
 </p>
 
 My entry for 2026's JS13K
