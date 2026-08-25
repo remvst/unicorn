@@ -17,9 +17,6 @@ class Foreground extends Entity {
     render() {
         const camera = firstItem(this.world.category(Camera));
 
-        const ground = firstItem(this.world.category(Ground));
-        const { curve } = ground;
-
         // Path
         ctx.fillStyle = '#dc9';
         ctx.beginPath();
