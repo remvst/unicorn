@@ -26,14 +26,14 @@ class Camera extends Entity {
 
     render(elapsed) {
         if (DEBUG) {
-            const target = firstItem(this.world.category(Bike));
-            if (!target) return;
+            // const target = firstItem(this.world.category(Bike));
+            // if (!target) return;
 
-            ctx.fillStyle = '#0f0';
-            ctx.fillRect(this.position.x - CANVAS_WIDTH / 2, this.position.y, CANVAS_WIDTH, 1);
+            // ctx.fillStyle = '#0f0';
+            // ctx.fillRect(this.position.x - CANVAS_WIDTH / 2, this.position.y, CANVAS_WIDTH, 1);
 
-            ctx.fillStyle = '#00f';
-            ctx.fillRect(this.position.x - CANVAS_WIDTH / 2, target.position.y, CANVAS_WIDTH, 1);
+            // ctx.fillStyle = '#00f';
+            // ctx.fillRect(this.position.x - CANVAS_WIDTH / 2, target.position.y, CANVAS_WIDTH, 1);
         }
     }
 }

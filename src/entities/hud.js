@@ -11,6 +11,7 @@ class HUD extends Entity {
         super();
         this.comboChange = new ValueChangeHelper();
         this.objectivesChange = new ValueChangeHelper();
+        this.scoreChange = new ValueChangeHelper();
     }
 
     renderCombo(comboTracker) {
@@ -104,6 +105,11 @@ class HUD extends Entity {
         const [validatedBefore, validatedAfter] = this.comboChange.change(this.lastComboTracker?.validated || this.lastComboTracker?.failed);
         if (validatedBefore != validatedAfter) {
             this.comboValidateTime = this.age;
+        }
+
+        const [tricksBefore, tricksAfter] = this.scoreChange.change(player?.comboTracker.multiplier || 0);
+        if (tricksBefore < tricksAfter) {
+            zzfx(...[.2,,200,.01,,0,1,.6,,351,,,,.3,,,,.9,.19,,511]); // Loaded Sound 379
         }
 
         if (this.lastComboTracker) this.renderCombo(this.lastComboTracker);
