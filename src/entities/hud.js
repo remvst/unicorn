@@ -27,6 +27,13 @@ class HUD extends Entity {
         ctx.lineWidth = 20;
 
         if (startedTricks.length) ctx.wrap(() => {
+            if (comboPower < 0.5 && !validated && !failed) {
+                ctx.translate(
+                    interpolate(5, 0, comboPower) * random(),
+                    interpolate(5, 0, comboPower) * random(),
+                );
+            }
+
             ctx.translate(CANVAS_WIDTH / 2, CANVAS_HEIGHT * 0.7);
             ctx.fillStyle = failed ? '#900' : '#fff';
             ctx.strokeStyle = failed ? '#400' : '#000';
