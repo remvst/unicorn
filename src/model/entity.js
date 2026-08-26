@@ -3,17 +3,16 @@ class Entity {
     static pools = new Map();
 
     static poolFor(entityClass) {
-        if (!this.pools.has(entityClass)) {
-            this.pools.set(entityClass, new Set());
+        if (!Entity.pools.has(entityClass)) {
+            Entity.pools.set(entityClass, new Set());
         }
-        return this.pools.get(entityClass);
+        return Entity.pools.get(entityClass);
     }
 
     static recycle(entityClass) {
-        const pool = this.poolFor(entityClass);
+        const pool = Entity.poolFor(entityClass);
         const entity = firstItem(pool) || new entityClass();
-        entity.pool = pool;
-        pool.delete(entity);
+        (entity.pool = pool).delete(entity);
         entity.reset();
         return entity;
     }
