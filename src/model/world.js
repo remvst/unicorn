@@ -19,11 +19,12 @@ getLayer = (entity) => {
 }
 
 class World {
+    age = 0;
+
     constructor() {
         this.entities = new Set();
         this.categories = new Map();
         this.layers = [];
-        this.age = 0;
     }
 
     add(entity) {
@@ -45,9 +46,7 @@ class World {
         for (const category of this.categories.values()) {
             category.delete(entity);
         }
-        for (const layer of Object.values(this.layers)) {
-            layer.delete(entity);
-        }
+        this.layers[entity.layer]?.delete(entity);
 
         // Allow the entity to be reused
         entity.pool?.add(entity);
