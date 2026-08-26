@@ -245,6 +245,7 @@ const MANGLE_PARAMS = {
         "amplitude",
         "screenX",
         "screenY",
+        "head",
     ]
 };
 
