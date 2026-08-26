@@ -39,6 +39,8 @@ class Bike extends PhysicsObject {
     }
 
     jump() {
+        this.backWheel.lastCollisionAge = -9;
+        this.frontWheel.lastCollisionAge = -9;
         this.momentum.position.y -= 200;
         this.momentum.rotation -= PI / 4;
         zzfx(...[.9,,231,,,.07,1,3.8,40,111,,,,,,,,.89,.04,,186]); // Jump 17
