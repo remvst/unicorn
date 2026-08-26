@@ -20,45 +20,36 @@ class TrickTracker {
     }
 }
 
-class JumpTracker extends TrickTracker {
+class Flip extends TrickTracker {
     constructor() {
         super();
         this.changeRotation = new ValueChangeHelper();
-        this.acc = {
-            rotation: 0,
-        };
+        this.acc = 0;
     }
 
     reset() {
         super.reset();
-        this.acc.rotation = 0;
+        this.acc = 0;
     }
 
     cycle(elapsed) {
         const landed = !this.bike.airborne();
         if (landed) this.reset();
 
-        this.acc.rotation += normalizeAngle(changeDiff(this.changeRotation.change(normalizeAngle(this.bike.rotation))));
-    }
-}
+        this.acc += normalizeAngle(changeDiff(this.changeRotation.change(normalizeAngle(this.bike.rotation))));
 
-class Flip extends JumpTracker {
-
-    cycle(elapsed) {
-        super.cycle(elapsed);
-
-        const flipCount = floor((abs(this.acc.rotation) + PI) / (PI * 2));
+        const flipCount = floor((abs(this.acc) + PI) / (PI * 2));
 
         if (flipCount >= 1) {
             const prefix = flipCount > 1 ? ([
                 nomangle('DOUBLE '),
                 nomangle('TRIPLE '),
             ][flipCount - 2] || `${flipCount}X `) : '';
-            const trick = (this.acc.rotation < 0 ? nomangle('BACK') : nomangle('FRONT')) + nomangle('FLIP');
+            const trick = (this.acc < 0 ? nomangle('BACK') : nomangle('FRONT')) + nomangle('FLIP');
             this.trick.label = prefix + trick;
             this.trick.points =
                 200 * // base
-                (this.acc.rotation < 0 ? 1 : 3) * // increase base if frontflip
+                (this.acc < 0 ? 1 : 3) * // increase base if frontflip
                 pow(2, flipCount - 1) // exponential as the number of flips increase
                 ;
             this.trick.multiplier = flipCount;
