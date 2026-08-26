@@ -233,6 +233,9 @@ const MANGLE_PARAMS = {
         "screen",
         "count",
         "detail",
+        "absolute",
+        "note",
+        "transition",
     ]
 };
 
