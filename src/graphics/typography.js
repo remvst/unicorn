@@ -21,7 +21,7 @@ epicText = (text, x, y, shiftX = 0) => ctx.wrap(() => {
     ctx.fillText(text, -shiftX, 0);
 
     return {
-        w: metrics.actualBoundingBoxRight + metrics.actualBoundingBoxLeft + padding * 2,
+        w: metrics.width + padding * 2,
         h: (metrics.actualBoundingBoxAscent + metrics.actualBoundingBoxDescent) + padding,
 
         t: y - (metrics.actualBoundingBoxAscent),
