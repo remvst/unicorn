@@ -40,10 +40,10 @@ frontflip = containLabel(nomangle('FRONTFLIP'));
 wheelie = haveLabel(nomangle('WHEELIE'));
 nosewheelie = containLabel(nomangle('NOSEWH'));
 
-doubleBackflip = trickMust(haveLabel(nomangle('DOUBLE BACKFLIP')), haveMultiplier(2));
-tripleBackflip = trickMust(haveLabel(nomangle('TRIPLE BACKFLIP')), haveMultiplier(3));
-doubleFrontflip = trickMust(haveLabel(nomangle('DOUBLE FRONTFLIP')), haveMultiplier(2));
-tripleFrontflip = trickMust(haveLabel(nomangle('TRIPLE FRONTFLIP')), haveMultiplier(3));
+doubleBackflip = trickMust(backflip, haveMultiplier(2));
+tripleBackflip = trickMust(backflip, haveMultiplier(3));
+doubleFrontflip = trickMust(frontflip, haveMultiplier(2));
+tripleFrontflip = trickMust(frontflip, haveMultiplier(3));
 
 // Combo matchers
 comboMust = (...predicates) => (comboTracker) => !predicates.some((p) => !p(comboTracker));
