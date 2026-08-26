@@ -3,21 +3,21 @@ class Segment {
     constructor(p1, p2) {
         this.p1 = p1 || new Point();
         this.p2 = p2 || new Point();
-    }
 
-    render() {
-        ctx.save();
-        ctx.lineWidth = 2;
-        ctx.strokeStyle = '#ff0';
-        ctx.beginPath();
-        ctx.moveTo(this.p1.x, this.p1.y);
-        ctx.lineTo(this.p2.x, this.p2.y);
-        ctx.stroke();
-        ctx.restore();
+        if (DEBUG && DEBUG_COLLISIONS) this.render = () => ctx.wrap(() => {
+            ctx.save();
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = '#ff0';
+            ctx.beginPath();
+            ctx.moveTo(this.p1.x, this.p1.y);
+            ctx.lineTo(this.p2.x, this.p2.y);
+            ctx.stroke();
+            ctx.restore();
 
-        ctx.fillStyle = '#f00';
-        ctx.fillRect(this.p1.x - 2, this.p1.y - 2, 4, 4);
-        ctx.fillRect(this.p2.x - 2, this.p2.y - 2, 4, 4);
+            ctx.fillStyle = '#f00';
+            ctx.fillRect(this.p1.x - 2, this.p1.y - 2, 4, 4);
+            ctx.fillRect(this.p2.x - 2, this.p2.y - 2, 4, 4);
+        });
     }
 
     distanceTo(point) {
