@@ -4,6 +4,24 @@ class Player extends Bike {
         this.comboTracker = new ComboTracker(this);
     }
 
+    onWheelLanded(wheel, momentumYBefore) {
+        zzfx(...[.5,,29,.01,.03,.02,3,2,,-24,-181,.22,,.8,,,,.7,.01,,-1362]); // Blip 79
+
+        dustCloud({
+            world: this.world,
+            position: {
+                x: wheel.absolute.position.x,
+                y: wheel.absolute.position.y + wheel.radius,
+            },
+            radius: interpolate(5, 15, abs(momentumYBefore) / 1000),
+            density: 1 / (5 * 5),
+            duration: [0.25, 1],
+            x: [-40, 0],
+            y: [-20, 0],
+            size: 5,
+        });
+    }
+
     die() {
         super.die();
         this.comboTracker.failed = true;

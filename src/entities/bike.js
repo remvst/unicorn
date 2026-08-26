@@ -153,27 +153,8 @@ class Bike extends PhysicsObject {
         const [backWheelBefore, backWheelAfter] = this.backWheelOnGroundChange.change(this.hasCollision(this.backWheel, 0.3));
         const [frontWheelBefore, frontWheelAfter] = this.frontWheelOnGroundChange.change(this.hasCollision(this.frontWheel, 0.3));
 
-        const wheelClouds = [];
-        if (!backWheelBefore && backWheelAfter) wheelClouds.push(this.backWheel);
-        if (!frontWheelBefore && frontWheelAfter) wheelClouds.push(this.frontWheel);
-
-        for (const wheel of wheelClouds) {
-            zzfx(...[.5,,29,.01,.03,.02,3,2,,-24,-181,.22,,.8,,,,.7,.01,,-1362]); // Blip 79
-
-            dustCloud({
-                world: this.world,
-                position: {
-                    x: wheel.absolute.position.x,
-                    y: wheel.absolute.position.y + wheel.radius,
-                },
-                radius: interpolate(5, 15, abs(momentumYBefore) / 1000),
-                density: 1 / (5 * 5),
-                duration: [0.25, 1],
-                x: [-40, 0],
-                y: [-20, 0],
-                size: 5,
-            });
-        }
+        if (!backWheelBefore && backWheelAfter) this.onWheelLanded(this.backWheel, momentumYBefore);
+        if (!frontWheelBefore && frontWheelAfter) this.onWheelLanded(this.frontWheel, momentumYBefore);
 
         // Animations
         if (this.airborne(0.3)) {
@@ -198,6 +179,10 @@ class Bike extends PhysicsObject {
             targetJumpPrep - this.renderable.jumpPrep,
             elapsed * 2,
         );
+    }
+
+    onWheelLanded(wheel, momentumYBefore) {
+        // override in subclasses
     }
 
     render() {
