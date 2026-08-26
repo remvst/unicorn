@@ -1,7 +1,4 @@
 class Particle extends Entity {
-
-    static pool = new Set();
-
     reset() {
         super.reset();
         this.alpha = 1;
