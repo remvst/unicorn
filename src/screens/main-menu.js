@@ -11,6 +11,7 @@ class MainMenu extends Menu {
         if (this.age > 2) {
             this.renderButton(nomangle('[SPACE] - STORY MODE'));
             this.renderButton(nomangle('[T] - TRICK ATTACK MODE'));
+            this.renderVolumeButton();
         }
     }
 

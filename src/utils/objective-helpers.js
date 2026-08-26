@@ -26,6 +26,7 @@ awaitCombo = async (world, predicate) => {
 // Trick matchers
 trickMust = (...predicates) => trick => !predicates.some(p => !p(trick))
 haveLabel = label => (trick) => trick.label === label;
+haveMultiplier = multiplier => (trick) => trick.multiplier >= multiplier;
 containLabel = label => (trick) => trick.label.includes(label);
 beInFrontOfAudience = () => (trick) => trick.inFrontOfAudience;
 
@@ -39,10 +40,10 @@ frontflip = containLabel(nomangle('FRONTFLIP'));
 wheelie = haveLabel(nomangle('WHEELIE'));
 nosewheelie = containLabel(nomangle('NOSEWH'));
 
-doubleBackflip = haveLabel(nomangle('DOUBLE BACKFLIP'));
-tripleBackflip = haveLabel(nomangle('TRIPLE BACKFLIP'));
-doubleFrontflip = haveLabel(nomangle('DOUBLE FRONTFLIP'));
-tripleFrontflip = haveLabel(nomangle('TRIPLE FRONTFLIP'));
+doubleBackflip = trickMust(haveLabel(nomangle('DOUBLE BACKFLIP')), haveMultiplier(2));
+tripleBackflip = trickMust(haveLabel(nomangle('TRIPLE BACKFLIP')), haveMultiplier(3));
+doubleFrontflip = trickMust(haveLabel(nomangle('DOUBLE FRONTFLIP')), haveMultiplier(2));
+tripleFrontflip = trickMust(haveLabel(nomangle('TRIPLE FRONTFLIP')), haveMultiplier(3));
 
 // Combo matchers
 comboMust = (...predicates) => (comboTracker) => !predicates.some((p) => !p(comboTracker));

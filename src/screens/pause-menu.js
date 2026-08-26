@@ -8,6 +8,7 @@ class PauseMenu extends Menu {
 
         this.renderButton(nomangle('[ESC] - RESUME'));
         this.renderButton(nomangle('[M] - MAIN MENU'));
+        this.renderVolumeButton();
     }
 
     cycle(elapsed) {

@@ -16,6 +16,10 @@ document.onkeydown = (evt) => {
     inputMode = INPUT_MODE_KEYBOARD;
     downKeys[ALT_KEYS[evt.keyCode] || evt.keyCode] = true;
     playSong();
+
+    if (evt.keyCode === 86) {
+        cycleVolume();
+    }
 };
 document.onkeyup = (evt) => downKeys[ALT_KEYS[evt.keyCode] || evt.keyCode] = false;
 onblur = () => downKeys = {};

@@ -78,4 +78,8 @@ class Menu extends Screen {
             this.nextButtonY = epicText(l, CANVAS_WIDTH / 2, this.nextButtonY).b + 30;
         });
     }
+
+    renderVolumeButton() {
+        this.renderButton(nomangle('[V] - VOLUME: ') + globalVolume() + '%');
+    }
 }

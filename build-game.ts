@@ -84,6 +84,7 @@ const JS_FILES = [
     'sound/zzfxm.js',
     'sound/zzfxm-song.js',
     'sound/play-song.js',
+    'sound/volume.js',
 
     'game.js',
     'index.js',
@@ -116,6 +117,9 @@ const CONSTANTS = {
     "AUDIENCE_RADIUS": 500,
 
     "MOBILE_BUTTON_SIZE": 100,
+
+    "DEFAULT_VOLUME": 20,
+    "VOLUME_PRECISION": 20,
 };
 
 const MANGLE_PARAMS = {
