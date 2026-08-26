@@ -10,6 +10,6 @@ class LevelFinale extends Level {
             curve: regularLevel(),
         });
 
-        this.world.addUnique(new Prompt(nomangle('THANKS FOR PLAYING'))).removeWhenAgeIs(5);
+        await this.world.addUnique(new Prompt(nomangle('THANKS FOR PLAYING'))).removeWhenAgeIs(5);
     }
 }
