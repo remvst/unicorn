@@ -2,9 +2,11 @@ class ValueChangeHelper {
     change(x) {
         this.initted ||= (this.x = x) || 1;
 
-        const res = [this.x, x];
+        this.res ||= [];
+        this.res[0] = this.x;
+        this.res[1] = x;
         this.x = x;
-        return res;
+        return this.res;
     }
 }
 
