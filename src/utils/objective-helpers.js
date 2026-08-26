@@ -34,8 +34,8 @@ anyWheelie = containLabel(nomangle('WH'));
 anyAir = containLabel(nomangle('AIR'));
 anyStomp = containLabel(nomangle('STOMP'));
 
-backflip = haveLabel(nomangle('BACKFLIP'));
-frontflip = haveLabel(nomangle('FRONTFLIP'));
+backflip = containLabel(nomangle('BACKFLIP'));
+frontflip = containLabel(nomangle('FRONTFLIP'));
 wheelie = haveLabel(nomangle('WHEELIE'));
 nosewheelie = containLabel(nomangle('NOSEWH'));
 
@@ -55,14 +55,17 @@ repeatedTrick = (x, predicate) => {
     return res;
 }
 haveDistinctLandedTricks = (...predicates) => {
-    const matchingTricks = new Set();
+    const remainingTricks = new Map();
     return (comboTracker) => {
-        matchingTricks.clear();
+        remainingTricks.clear();
+        for (const trick of comboTracker.landedTricks) {
+            remainingTricks.set(trick, trick.multiplier);
+        }
 
         predicateLoop: for (const predicate of predicates) {
-            for (const trick of comboTracker.landedTricks) {
-                if (!matchingTricks.has(trick) && predicate(trick)) {
-                    matchingTricks.add(trick);
+            for (const [trick, count] of remainingTricks.entries()) {
+                if (count > 0 && predicate(trick)) {
+                    remainingTricks.set(trick, count - 1);
                     continue predicateLoop;
                 }
             }
