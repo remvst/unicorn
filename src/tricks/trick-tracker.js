@@ -23,19 +23,14 @@ class TrickTracker {
 class JumpTracker extends TrickTracker {
     constructor() {
         super();
-        this.changeX = new ValueChangeHelper();
-        this.changeY = new ValueChangeHelper();
         this.changeRotation = new ValueChangeHelper();
         this.acc = {
-            position: {},
             rotation: 0,
         };
     }
 
     reset() {
         super.reset();
-        this.acc.position.x = 0;
-        this.acc.position.y = 0;
         this.acc.rotation = 0;
     }
 
@@ -43,8 +38,6 @@ class JumpTracker extends TrickTracker {
         const landed = !this.bike.airborne();
         if (landed) this.reset();
 
-        this.acc.position.x += changeDiff(this.changeX.change(this.bike.position.x));
-        this.acc.position.y += changeDiff(this.changeY.change(this.bike.position.y));
         this.acc.rotation += normalizeAngle(changeDiff(this.changeRotation.change(normalizeAngle(this.bike.rotation))));
     }
 }
