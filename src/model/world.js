@@ -85,8 +85,7 @@ class World {
             ctx.translate(-camera.position.x, -camera.position.y);
 
             for (const layer of this.layers) {
-                if (!layer) continue;
-                for (const entity of layer) {
+                for (const entity of layer || []) {
                     ctx.wrap(() => entity.render());
                 }
             }
