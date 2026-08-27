@@ -15,9 +15,11 @@ class Camera extends Entity {
         if (target) {
             target.cycle(0); // Cheat to force the camera to be locked
 
-            const ground = firstItem(this.world.category(Ground));
-            const altitude = ground.curveAt(target.position.x) - target.position.y;
-            this.extraOffsetY += (interpolate(0, 0.8, altitude / 2000) - this.extraOffsetY) * elapsed * 4;
+            if (!ICON_MODE) {
+                const ground = firstItem(this.world.category(Ground));
+                const altitude = (ground?.curveAt(target.position.x) ?? 0) - target.position.y;
+                this.extraOffsetY += (interpolate(0, 0.8, altitude / 2000) - this.extraOffsetY) * elapsed * 4;
+            }
 
             this.position.x = target.position.x + CANVAS_WIDTH * this.offset.x / this.zoom;
             this.position.y = target.position.y + CANVAS_HEIGHT * (this.extraOffsetY + this.offset.y) / this.zoom;

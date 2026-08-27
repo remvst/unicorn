@@ -125,7 +125,7 @@ class AirTime extends TrickTracker {
                 this.combo.addTrick(this.trick);
             }
 
-            G.updateBest(RECORD_AIR_TIME, this.acc);
+            G?.updateBest(RECORD_AIR_TIME, this.acc);
         }
     }
 }
