@@ -10,6 +10,9 @@ class Game {
         if (ICON_MODE) {
             this.screens = [new WorldScreen([new IconLevel()])];
         }
+        if (SCREENSHOT_MODE) {
+            this.screens = [new WorldScreen([new ScreenshotLevel()])];
+        }
 
         this.frame();
 
@@ -90,7 +93,7 @@ class Game {
             });
         }
 
-        if (ICON_MODE) return;
+        if (ICON_MODE || SCREENSHOT_MODE) return;
         requestAnimationFrame(() => this.frame());
     }
 }
