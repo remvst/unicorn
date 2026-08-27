@@ -10,11 +10,11 @@ inputMode = navigator.userAgent.match(nomangle(/andro|ipho|ipa|ipo/i)) || (navig
     : INPUT_MODE_KEYBOARD;
 
 RAINBOW_COLORS = [
-    '#f00',
-    '#f80',
-    '#ff0',
-    '#0f0',
-    '#00f',
-    '#408',
-    '#80f',
+    '#f66',
+    '#f96',
+    '#ff6',
+    '#6f6',
+    '#6cf',
+    '#66f',
+    '#c6f',
 ];
