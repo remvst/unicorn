@@ -11,7 +11,7 @@ class MainLevel extends Level {
         await this.levelTransition({
             curve: regularLevel(),
             transition: (x) => {
-                this.announceLevelTitle(x, this.title);
+                this.announceLevelTitle(x, nomangle('ENTERING ') + this.title);
                 return waitFor(this.world, () => this.camera.position.x > x + CANVAS_WIDTH);
             }
         });
