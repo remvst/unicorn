@@ -154,19 +154,25 @@ class HUD extends Entity {
             });
         }
 
-        if (G.bestCombo) ctx.wrap(() => {
+        ctx.wrap(() => {
             ctx.translate(40, 40);
             ctx.textAlign = 'left';
+            ctx.strokeStyle = 'rgba(0,0,0,0.5)';
 
             let y = 0;
 
-            ctx.font = 'bold 36pt Arial';
-            ctx.fillStyle = '#5ca5c7';
-            y += epicText(nomangle('BEST COMBO:'), 0, y).h + 15;
-
-            ctx.font = 'bold 18pt Arial';
-            ctx.fillStyle = '#fff';
-            y += epicText(G.bestCombo.toLocaleString('en'), 0, y).h + 15;
+            for (const key of [
+                RECORD_COMBO_SCORE,
+                RECORD_COMBO_MULTIPLIER,
+                RECORD_AIR_TIME
+            ]) {
+                const value = G.getBest(key);
+                if (value) {
+                    ctx.font = '14pt Arial';
+                    ctx.fillStyle = '#fff';
+                    y += epicText(key + ': ' + value.toLocaleString('en', { maximumFractionDigits: 2 }), 0, y).h + 15;
+                }
+            }
         });
 
         if (inputMode === INPUT_MODE_TOUCH) ctx.wrap(() => {

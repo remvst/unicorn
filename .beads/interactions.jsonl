@@ -82,3 +82,4 @@
 {"id":"int-4ad2265ae363fa89182ab9bc7b2dc1c8","kind":"field_change","created_at":"2026-08-26T05:07:37.286099Z","actor":"Remi Vansteelandt","issue_id":"unicorn-zui","extra":{"field":"status","new_value":"closed","old_value":"open","reason":"Closed"}}
 {"id":"int-84eab2e305f5307fa46809ec8dae6664","kind":"field_change","created_at":"2026-08-26T06:23:38.386053Z","actor":"Remi Vansteelandt","issue_id":"unicorn-718","extra":{"field":"priority","new_value":"0","old_value":"2"}}
 {"id":"int-c48e3e685c8527f3609ad33f37792b65","kind":"field_change","created_at":"2026-08-26T06:23:59.591299Z","actor":"Remi Vansteelandt","issue_id":"unicorn-q8t","extra":{"field":"priority","new_value":"0","old_value":"1"}}
+{"id":"int-eabf4d8f55dc303b7868e5d78f0792dc","kind":"field_change","created_at":"2026-08-27T00:09:32.581983Z","actor":"Remi Vansteelandt","issue_id":"unicorn-718","extra":{"field":"status","new_value":"closed","old_value":"open","reason":"Closed"}}

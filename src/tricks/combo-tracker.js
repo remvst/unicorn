@@ -48,6 +48,8 @@ class ComboTracker {
         this.lastChange = this.bike.age;
 
         this.points = roundToNearest(this.startedTricks.reduce((acc, t) => acc + t.points, 0), 10);
+
+        G.updateBest(RECORD_COMBO_MULTIPLIER, this.multiplier);
     }
 
     lockTrick(trick) {
@@ -87,7 +89,7 @@ class ComboTracker {
             tracker.reset();
         }
 
-        G.bestCombo = max(G.bestCombo, this.totalPoints);
+        G.updateBest(RECORD_COMBO_SCORE, this.totalPoints);
 
         this.bike.comboTracker = new ComboTracker(this.bike);
 

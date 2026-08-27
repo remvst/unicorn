@@ -30,12 +30,12 @@ class Game {
         ];
     }
 
-    get bestCombo() {
-        return parseInt(readLocalStorage("bc")) || 0;
+    getBest(key) {
+        return parseFloat(readLocalStorage(key)) || 0;
     }
 
-    set bestCombo(x) {
-        writeLocalStorage("bc", x);
+    updateBest(key, x) {
+        writeLocalStorage(key, max(this.getBest(key), x));
     }
 
     frame() {

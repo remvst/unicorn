@@ -124,6 +124,8 @@ class AirTime extends TrickTracker {
                 this.trick.label = this.acc.toFixed(1) + nomangle('S AIR TIME');
                 this.combo.addTrick(this.trick);
             }
+
+            G.updateBest(RECORD_AIR_TIME, this.acc);
         }
     }
 }

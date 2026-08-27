@@ -86,6 +86,7 @@ const JS_FILES = [
     'sound/play-song.js',
     'sound/volume.js',
 
+    'records.js',
     'game.js',
     'index.js',
 ];
