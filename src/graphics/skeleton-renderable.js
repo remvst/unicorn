@@ -55,6 +55,6 @@ lineRenderable = (from, to) => () => {
 
 circleRenderable = (center, radius, fill = false) => () => {
     ctx.beginPath();
-    ctx.arc(center.x, center.y, radius, 0, PI * 2);
+    ctx.arc(center.x, center.y, radius, 0, TWO_PI);
     if (fill) ctx.fill(); else ctx.stroke();
 }

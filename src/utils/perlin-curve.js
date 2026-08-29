@@ -30,8 +30,8 @@ class PerlinCurve {
         const before = this.seeds[((index % this.seeds.length) + this.seeds.length) % this.seeds.length];
         const after = this.seeds[(((index + 1) % this.seeds.length) + this.seeds.length) % this.seeds.length];
 
-        const gradientBefore = (cos(before * PI * 2) + sin(before * PI * 2)) * ratio;
-        const gradientAfter = (cos(after * PI * 2) + sin(after * PI * 2)) * (ratio - 1);
+        const gradientBefore = (cos(before * TWO_PI) + sin(before * TWO_PI)) * ratio;
+        const gradientAfter = (cos(after * TWO_PI) + sin(after * TWO_PI)) * (ratio - 1);
 
         return (plus + interpolate(
             gradientBefore * this.amplitude,

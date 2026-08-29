@@ -47,7 +47,7 @@ dustCloud = ({
     const count = area * density;
 
     for (let i = 0 ; i < count ; i ++) {
-        const angle = random() * PI * 2;
+        const angle = random() * TWO_PI;
         const dist = random() * radius;
 
         const p = Entity.recycle(Particle);

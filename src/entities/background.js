@@ -54,7 +54,7 @@ class Background extends Entity {
                 ctx.globalAlpha = interpolate(
                     s / 4,
                     s / 2,
-                    sin(this.rng.floating() + this.age * PI * 2 / period) / 2 + 0.5
+                    sin(this.rng.floating() + this.age * TWO_PI / period) / 2 + 0.5
                 );
                 ctx.fillStyle = '#fff';
                 ctx.translate(toScreenX(x), toScreenY(y));

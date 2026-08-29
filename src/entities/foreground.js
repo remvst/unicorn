@@ -108,7 +108,7 @@ class Foreground extends Entity {
                             x + rng.floating() * 30,
                             y + i * 5,
                         );
-                        ctx.rotate(sin((this.age + rng.floating()) * PI * 2) * (rng.floating() * PI / 8));
+                        ctx.rotate(sin((this.age + rng.floating()) * TWO_PI) * (rng.floating() * PI / 8));
 
                         ctx.fillRect(-2, 0, 4, -10);
 

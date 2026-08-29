@@ -54,8 +54,8 @@ class Bike extends PhysicsObject {
 
         // Backflip/frontflip
         // If the player is trying to counteract a flip, give extra power so it's easier to control
-        if (spin < 0) this.momentum.rotation -= -spin * elapsed * (this.momentum.rotation > 0 ? PI * 4 : PI * 2);
-        if (spin > 0) this.momentum.rotation += spin * elapsed * (this.momentum.rotation < 0 ? PI * 4 : PI * 2);
+        if (spin < 0) this.momentum.rotation -= -spin * elapsed * (this.momentum.rotation > 0 ? PI * 4 : TWO_PI);
+        if (spin > 0) this.momentum.rotation += spin * elapsed * (this.momentum.rotation < 0 ? PI * 4 : TWO_PI);
 
         const momentumRotationBefore = this.momentum.rotation;
 
@@ -80,17 +80,17 @@ class Bike extends PhysicsObject {
         // Rotation dampening
         if (this.airborne(0.1) && !spin) {
             this.momentum.rotation -= between(
-                -elapsed * PI * 2,
+                -elapsed * TWO_PI,
                 this.momentum.rotation,
-                elapsed * PI * 2,
+                elapsed * TWO_PI,
             );
         }
 
         // Cap spinning
         this.momentum.rotation = between(
-            -PI * 2,
+            -TWO_PI,
             this.momentum.rotation,
-            PI * 2,
+            TWO_PI,
         );
     }
 

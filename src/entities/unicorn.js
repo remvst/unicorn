@@ -56,7 +56,7 @@ class AudienceUnicorn extends Unicorn {
             ctx.lineWidth = 5;
             ctx.translate(this.position.x, this.position.y);
             ctx.beginPath();
-            ctx.arc(0, 0, AUDIENCE_RADIUS, 0, PI * 2);
+            ctx.arc(0, 0, AUDIENCE_RADIUS, 0, TWO_PI);
             ctx.stroke();
         });
 
@@ -158,7 +158,7 @@ class UnicornRenderable extends SkeletonRenderable {
         this.leftBackFoot.x = this.backLegAttach.x;
         this.leftBackFoot.y = this.shoulders.y + 42;
 
-        const footSine = sin(this.age * PI * 2 * 2) * 10;
+        const footSine = sin(this.age * TWO_PI * 2) * 10;
         this.leftBackFoot.x += footSine;
         this.rightBackFoot.x -= footSine;
         this.leftFrontFoot.x += footSine;

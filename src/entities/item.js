@@ -20,7 +20,7 @@ class Item extends Entity {
             });
         }
 
-        const s = 1 + sin(this.age * PI * 2) * 0.1;
+        const s = 1 + sin(this.age * TWO_PI) * 0.1;
         ctx.scale(s, s);
 
         ctx.lineWidth = 2;

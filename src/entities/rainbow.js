@@ -17,7 +17,7 @@ class Rainbow extends Entity {
     render() {
         ctx.translate(this.position.x, this.position.y);
 
-        const sweep = interpolate(0, PI * 2, this.age / (0.5));
+        const sweep = interpolate(0, TWO_PI, this.age / (0.5));
 
         const thickness = 10;
 
