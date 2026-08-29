@@ -13,8 +13,7 @@ class BikeGib extends Gib {
         bike
     ) {
         super();
-        this.position.x = bike.position.x;
-        this.position.y = bike.position.y;
+        this.position = { ...bike.position };
         this.rotation = bike.rotation;
         this.momentum.position.x = bike.momentum.position.x / 4;
         this.momentum.position.y = bike.momentum.position.y / 4;
@@ -29,8 +28,7 @@ class BikeGib extends Gib {
         ]) {
             const hb = this.addHitbox();
             hb.radius = 1;
-            hb.position.x = pt.x;
-            hb.position.y = pt.y;
+            hb.position = { ...pt };
         }
     }
 }
@@ -39,10 +37,9 @@ class WheelGib extends Gib {
     constructor(bike, wheel) {
         super();
 
-        this.position.x = wheel.absolute.position.x;
-        this.position.y = wheel.absolute.position.y;
-        this.momentum.position.x = bike.momentum.position.x;
-        this.momentum.position.y = bike.momentum.position.y;
+        this.position = { ...wheel.absolute.position };
+        this.momentum.position = { ...bike.momentum.position };
+        this.momentum.rotation = bike.momentum.rotation;
 
         const hb = this.addHitbox();
         hb.radius = wheel.radius;
