@@ -1,7 +1,6 @@
 let can,
     ctx,
-    G, // world
-    canvasPrototype = CanvasRenderingContext2D.prototype,
+    G,
     CANVAS_WIDTH = 1600,
     CANVAS_HEIGHT = 900;
 
