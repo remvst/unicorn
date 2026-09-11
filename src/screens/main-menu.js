@@ -1,3 +1,7 @@
+TITLE = nomangle('UNICORNS, RAINBOWS \'N BACKFLIPS')
+SUBTITLE = nomangle('TRICK ATTACK ULTRA TURBO DELUXE EDITION');
+document.title = TITLE + ': ' + SUBTITLE;
+
 class MainMenu extends Menu {
     absorb = false;
 
@@ -6,7 +10,7 @@ class MainMenu extends Menu {
             nomangle('UNICORNS'),
             nomangle('RAINBOWS \'N'),
             nomangle('BACKFLIPS'),
-        ], document.title.split(':')[1].trim());
+        ], SUBTITLE);
 
         if (this.age > 2) {
             this.renderButton(nomangle('[SPACE] - STORY MODE'));
