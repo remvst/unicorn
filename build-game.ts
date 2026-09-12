@@ -267,7 +267,7 @@ const argv = yargs(process.argv.slice(2)).options({
 
     if (constants.DEBUG) jsFiles.push('levels/test-level.js');
     if (constants.ICON_MODE) jsFiles.push('levels/icon-level.js');
-    if (constants.WAVEDASH) jsFiles.push('wavedash.js');
+    if (constants.WAVEDASH) jsFiles.push('wavedash.js', 'screens/leaderboard-menu.js');
 
     let js = (await Promise.all(
         jsFiles.map(path => fs.readFile('src/' + path, 'utf-8')))

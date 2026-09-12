@@ -40,10 +40,17 @@ class TrickAttackLevel extends Level {
 
         if (WAVEDASH) {
             (async () => {
-                const lb = await Wavedash.getOrCreateLeaderboard("trick-attack-highscore", 1, 0);
+                const lb = await TRICK_ATTACK_LEADERBOARD;
                 await Wavedash.uploadLeaderboardScore(lb.data.id, totalScore(), !!true);
             })();
         }
+
         await this.world.addUnique(new Prompt(nomangle('FINAL SCORE: ') + totalScore().toLocaleString('en'))).removeWhenAgeIs(5);
+
+        if (WAVEDASH) {
+            const leaderboardMenu = new LeaderboardMenu(5);
+            await G.screens.push(leaderboardMenu);
+            await waitFor(this.world, () => G.screens.filter(x => x === leaderboardMenu).length === 0);
+        }
     }
 }
