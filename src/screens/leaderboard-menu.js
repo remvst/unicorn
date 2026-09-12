@@ -77,6 +77,7 @@ class LeaderboardMenu extends Menu {
 
             ctx.fillStyle = highlight ? RAINBOW_PATTERN : '#fff'; // TODO only for current player
             ctx.font = '24pt Impact';
+            ctx.lineWidth = 10;
 
             ctx.textAlign = 'right';
             epicText(
