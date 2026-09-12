@@ -49,6 +49,8 @@ class Menu extends Screen {
     }
 
     renderTitle(lines, subtitle) {
+        if (WAVEDASH && !this.isForeground) return;
+
         this.nextTitleDelay = lines.length > 1 ? 0.9 : -1;
 
         if (subtitle) {
@@ -67,6 +69,8 @@ class Menu extends Screen {
     }
 
     renderButton(l) {
+        if (WAVEDASH && !this.isForeground) return;
+
         ctx.wrap(() => {
             ctx.fillStyle = '#fff';
             ctx.strokeStyle = '#000';

@@ -7,6 +7,7 @@ class PauseMenu extends Menu {
         ]);
 
         this.renderButton(nomangle('[ESC] - RESUME'));
+        if (WAVEDASH) this.renderButton(nomangle('[L] - LEADERBOARD'));
         this.renderButton(nomangle('[M] - MAIN MENU'));
         this.renderVolumeButton();
     }
@@ -21,6 +22,9 @@ class PauseMenu extends Menu {
 
         if (downKeys[77]) {
             G.mainMenu();
+        }
+        if (WAVEDASH && downKeys[76]) {
+            G.screens.push(new LeaderboardMenu());
         }
     }
 }

@@ -52,13 +52,13 @@ class LeaderboardMenu extends Menu {
         ctx.textAlign = 'center';
         ctx.textBaseline = 'alphabetic';
         ctx.fillStyle = '#fff';
-        ctx.lineWidth = 10;
+        ctx.lineWidth = 20;
 
         let y = CANVAS_HEIGHT / 5;
 
         ctx.font = '48pt Impact';
         y = epicText(
-            'LEADERBOARD',
+            'TRICK ATTACK LEADERBOARD',
             CANVAS_WIDTH / 2,
             y,
             this.age * 400,
@@ -104,12 +104,22 @@ class LeaderboardMenu extends Menu {
 
             y += 40;
         }
+
+        this.nextButtonY = CANVAS_HEIGHT * 4 / 5;
+        this.renderButton(
+            '[ESC] BACK' + (this.maxAge ? ` (${floor(this.maxAge - this.age)})` : ''),
+        );
     }
 
     cycle(elapsed) {
         super.cycle(elapsed);
 
         if (this.maxAge && this.age > this.maxAge) {
+            G.screens = G.screens.filter(x => x !== this);
+        }
+
+        const [pauseBefore, pauseAfter] = this.pauseChange.change(downKeys[27] || gamepadButtonValue(9));
+        if (this.isForeground && !pauseBefore && pauseAfter) {
             G.screens = G.screens.filter(x => x !== this);
         }
     }
