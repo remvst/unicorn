@@ -39,8 +39,10 @@ class TrickAttackLevel extends Level {
         });
 
         if (WAVEDASH) {
-            const lb = await Wavedash.getLeaderboard("trick-attack-highscore");
-            await Wavedash.uploadLeaderboardScore(lb.data.id, totalScore(), true);
+            (async () => {
+                const lb = await Wavedash.getOrCreateLeaderboard("trick-attack-highscore", 1, 0);
+                await Wavedash.uploadLeaderboardScore(lb.data.id, totalScore(), !!true);
+            })();
         }
         await this.world.addUnique(new Prompt(nomangle('FINAL SCORE: ') + totalScore().toLocaleString('en'))).removeWhenAgeIs(5);
     }
