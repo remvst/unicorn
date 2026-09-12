@@ -8,7 +8,7 @@ Unicorn land needs more rainbows, and the best way to create rainbows is to perf
 
 Backflip over the hills, connect your combos with wheelies, and show the unicorns what it's like to shred!
 
-![wawd](https://raw.githubusercontent.com/remvst/unicorn/refs/heads/main/assets/combo-description.gif)
+![Combo illustration](https://raw.githubusercontent.com/remvst/unicorn/refs/heads/main/assets/combo-description.gif)
 
 ## Controls
 
@@ -18,3 +18,9 @@ Backflip over the hills, connect your combos with wheelies, and show the unicorn
 | **Balance/Flip** | <kbd>←</kbd>/<kbd>→</kbd> | left joystick | left/right arrow |
 | **Jump/Stomp** |  <kbd>Space</kbd> | A | up arrow (top right) |
 | **Change volume** | <kbd>V</kbd> |  |  |
+
+## Wavedash leaderboard
+
+The game is also playable [on Wavedash](https://wavedash.com/games/unicorns-rainbows-n-backflips), where the trick attack mode features a leaderboard. 
+
+Try to beat my score!
