@@ -249,12 +249,14 @@ const argv = yargs(process.argv.slice(2)).options({
     'roadroll-level': { type: 'number', default: 0 },
     pack: { type: 'boolean', default: false },
     html: { type: 'string', demandOption: true },
+    wavedash: { type: 'boolean', default: false },
 }).parse();
 
 (async () => {
     const constants: Record<string, string | number | boolean> = {
         DEBUG: argv.debug,
         ICON_MODE: argv.icon,
+        WAVEDASH: argv.wavedash,
         ...CONSTANTS,
     };
 
@@ -265,6 +267,7 @@ const argv = yargs(process.argv.slice(2)).options({
 
     if (constants.DEBUG) jsFiles.push('levels/test-level.js');
     if (constants.ICON_MODE) jsFiles.push('levels/icon-level.js');
+    if (constants.WAVEDASH) jsFiles.push('wavedash.js');
 
     let js = (await Promise.all(
         jsFiles.map(path => fs.readFile('src/' + path, 'utf-8')))
