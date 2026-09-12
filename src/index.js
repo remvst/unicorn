@@ -1,5 +1,5 @@
 onload = () => {
-    if (WAVEDASH) {
+    if (WAVEDASH && !ICON_MODE) {
         Wavedash.updateLoadProgressZeroToOne(0);
     }
 
@@ -10,7 +10,7 @@ onload = () => {
 
     G = new Game();
 
-    if (WAVEDASH) {
+    if (WAVEDASH && !ICON_MODE) {
         Wavedash.updateLoadProgressZeroToOne(1);
         Wavedash.init({ debug: true });
     }

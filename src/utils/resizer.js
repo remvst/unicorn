@@ -48,6 +48,8 @@ onresize = () => {
     if (ICON_MODE) {
         CANVAS_WIDTH = appliedWidth = 1024;
         CANVAS_HEIGHT = appliedHeight = 1024;
+
+        if (WAVEDASH) CANVAS_HEIGHT = appliedHeight /= 250 / 140;
     }
 
     can.width = CANVAS_WIDTH;

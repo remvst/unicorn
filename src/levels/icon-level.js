@@ -8,7 +8,7 @@ class IconLevel extends Level {
 
         const { camera, ground, player } = this;
 
-        camera.zoom = 8;
+        camera.zoom = WAVEDASH ? 6 : 8;
         camera.offset.x = 0;
         camera.offset.y = 0.05;
 
