@@ -13,6 +13,7 @@ ALT_KEYS = {
 };
 
 document.onkeydown = (evt) => {
+    evt.preventDefault();
     inputMode = INPUT_MODE_KEYBOARD;
     downKeys[ALT_KEYS[evt.keyCode] || evt.keyCode] = true;
     playSong();
